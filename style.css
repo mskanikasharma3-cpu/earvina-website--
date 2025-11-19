@@ -1,0 +1,745 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f9fafb;
+  color: #1f1f1f;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== Base Styles ===== */
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+body {
+  font-family:'Poppins', sans-serif;
+  background:#f9fafb;
+  color:#1f1f1f;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+   * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f8f9fa;
+    }
+
+    /* HEADER */
+    header {
+      background: #fff;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo h1 {
+      color: #2fb86f;
+      font-size: 1.6rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #2fb86f;
+    }
+
+    /* DROPDOWN */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 200;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 15px;
+      color: #333;
+    }
+
+    .dropdown-menu a:hover {
+      background: #f4f4f4;
+      color: #2fb86f;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #333;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* Hamburger Animation */
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translateY(8px);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-8px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      padding-top: 80px;
+      transition: 0.4s ease;
+      z-index: 1500;
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px 25px;
+      border-bottom: 1px solid #f1f1f1;
+    }
+
+    .sidebar ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      color: #2fb86f;
+    }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+/* ===== Hero Section ===== */
+.hero-section {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:80px 8%;
+  flex-wrap:wrap;
+}
+.hero-content {flex:1; min-width:320px;}
+.hero-graphic {flex:1; display:flex; justify-content:center;}
+.graphic-video {width: 700px; border-radius:30px; box-shadow:0 10px 25px rgba(0,0,0,0.15);}
+.main-heading {font-size:60px; font-weight:800; color:#e85550; line-height:1.1;}
+.sub-heading {font-size:26px; color:#333; margin-bottom:25px;}
+.cta-btn {background:#e85550; border:none; color:white; padding:15px 40px; font-size:18px; border-radius:40px; cursor:pointer; font-weight:600; transition:all 0.3s ease;}
+.cta-btn:hover {transform:translateY(-3px); background:#cf3834;}
+
+/* ===== Responsive Media ===== */
+@media (max-width:768px){
+  nav ul {
+    flex-direction:column;
+    display:none;
+    gap:0;
+    background:white;
+    width:100%;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    margin-top:10px;
+  }
+  nav ul li {text-align:center; width:100%;}
+  .hamburger {display:flex;}
+  .dropdown-menu {position:static; display:none; box-shadow:none; border-radius:0; padding:5px 0;}
+  .dropdown.open .dropdown-menu {display:block;}
+  .hero-section {flex-direction:column; text-align:center;}
+  .graphic-video {width:100%; max-width:350px;}
+  .cta-btn {margin-top:20px;}
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 8%;
+  background: linear-gradient(135deg, #fff, #f8f9fa);
+  flex-wrap: wrap;
+}
+.hero-content {
+  flex: 1;
+  min-width: 320px;
+}
+.hero-content .welcome-text {
+  font-size: 28px;
+  color: #666;
+}
+.hero-content .main-heading {
+  font-size: 60px;
+  font-weight: 800;
+  color: #e85550;
+  line-height: 1.1;
+}
+.hero-content .sub-heading {
+  font-size: 26px;
+  color: #333;
+  margin-bottom: 25px;
+}
+.cta-btn {
+  background: #e85550;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  font-size: 18px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.cta-btn:hover {
+  transform: translateY(-3px);
+  background: #cf3834;
+}
+.hero-graphic {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.graphic-video {
+  width: 700px;
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Feature Highlight Section ===== */
+.feature-highlight-section {
+  padding: 70px 8%;
+  display: flex;
+  justify-content: center;
+}
+.blocks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.feature-block {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+  flex: 1;
+  min-width: 280px;
+}
+.feature-block:hover {
+  transform: translateY(-5px);
+}
+.blue-bg {
+  background: linear-gradient(145deg, #2ab7f6, #0078d4);
+  color: white;
+}
+.highlight-amount {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+.tata-block {
+  background: #fff3f2;
+  color: #1f1f1f;
+}
+.tata-img {
+  width: 140px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== How It Works Section ===== */
+.how-it-works {
+  text-align: center;
+  padding: 80px 8%;
+}
+.how-it-works h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #e85550;
+}
+.step-video-container {
+  display: flex;
+  justify-content: center;
+}
+.step-video {
+  width: 350px;
+  border-radius: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+/* ===== Highlights Section ===== */
+.highlights-container {
+  text-align: center;
+  padding: 70px 8%;
+}
+.highlights-container h2 {
+  font-size: 36px;
+  color: #e85550;
+  margin-bottom: 40px;
+}
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  transition: all 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-6px);
+}
+.stat-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: #2ab7f6;
+}
+.stat-label {
+  color: #1a783a;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* ===== Brands Profit Section ===== */
+.brands-profit-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 80px 8%;
+  gap: 40px;
+  background: #fff3f2;
+}
+.profit-highlight-card {
+  background: #e85550;
+  color: white;
+  text-align: center;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 360px;
+}
+.profit-text-small {
+  font-size: 24px;
+}
+.profit-percent {
+  font-size: 90px;
+  font-weight: 900;
+  color: #ffde00;
+  line-height: 1;
+}
+.profit-text-large {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.profit-text-bottom {
+  font-size: 18px;
+}
+
+/* ===== Profit Calculator ===== */
+.profit-calculator-section {
+  background: #f8f9fa;
+  padding: 80px 8%;
+  text-align: center;
+}
+.calculator-card {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: auto;
+}
+.sliders-container {
+  margin-top: 30px;
+}
+.category-slider {
+  position: relative;
+  margin: 25px 0;
+}
+.category-slider label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.order-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  outline: none;
+  appearance: none;
+  background: #e0e0e0;
+}
+.order-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #e85550;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.slider-value {
+  position: absolute;
+  top: -30px;
+  font-weight: 600;
+  color: #e85550;
+}
+.profit-estimate {
+  margin-top: 30px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ===== Learn To Earn ===== */
+.learn-to-earn-section {
+  padding: 80px 8%;
+  text-align: center;
+}
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+.overlay-cta-button {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(232, 85, 80, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+}
+
+/* ===== Rockstars Testimonials ===== */
+.rockstars-section {
+  background: #fff3f2;
+  padding: 80px 8%;
+  text-align: center;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+.testimonial-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.rockstar-profile img {
+  width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.rockstar-info {
+  font-weight: 600;
+}
+.red-text {
+  color: #e85550;
+  font-weight: 600;
+}
+
+/* ===== Recommended Brands ===== */
+.recommended-brands-section {
+  padding: 60px 8%;
+  text-align: center;
+}
+.brands-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 40px;
+}
+.brand-item {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+.brand-item:hover {
+  transform: scale(1.05);
+}
+.brand-logo {
+  width: 120px;
+}
+
+/* ===== FAQ Section ===== */
+.faq-section {
+  background: #f9fafb;
+  padding: 80px 8%;
+  text-align: center;
+}
+.faq-card {
+  background: white;
+  border-radius: 20px;
+  padding: 50px;
+  max-width: 900px;
+  margin: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+.faq-item {
+  margin-top: 20px;
+  text-align: left;
+}
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #e85550;
+  font-size: 18px;
+}
+.faq-item p {
+  margin-top: 10px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ===== Footer ===== */
+.main-footer {
+  background: #111;
+  color: white;
+  padding: 60px 8% 20px;
+}
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+}
+.col-heading {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #ffde00;
+}
+.footer-col ul {
+  list-style: none;
+}
+.footer-col a {
+  text-decoration: none;
+  color: #ccc;
+  display: block;
+  margin: 6px 0;
+  transition: color 0.3s;
+}
+.footer-col a:hover {
+  color: #ffde00;
+}
+.google-play-btn {
+  width: 160px;
+  margin-top: 10px;
+}
+.copyright-bar {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  color: #aaa;
+}
+.scroll-to-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #e85550;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.scroll-to-top:hover {
+  background: #cf3834;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .graphic-video {
+    width: 100%;
+    max-width: 350px;
+  }
+  .cta-btn {
+    margin-top: 20px;
+  }
+}
+/* ===== Dropdown Menu Styles (for 'Company') ===== */
+
+/* Dropdown Container */
+.dropdown {
+    position: relative; /* Menu ko iske relative position karne ke liye */
+    display: inline-block;
+}
+
+/* Dropdown Link style */
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Text aur arrow ke beech space */
+}
+
+/* Dropdown Arrow style */
+.dropdown-arrow {
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown Menu Box */
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Link ke neeche se shuru ho */
+    left: -20px; /* Thoda left shift karein jaisa image mein hai */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 200px;
+    padding: 10px 0;
+    /* By default hidden */
+    display: none; 
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+}
+
+/* Dropdown Item Link */
+.dropdown-item {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #444;
+    font-size: 15px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+    color: #1a783a; /* Green hover effect */
+}
+
+/* Icon styling */
+.dropdown-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+/* Show Dropdown when active/hovered */
+.dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Rotate arrow when open */
+.dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Mobile/Responsive adjustments (Zaroori agar aap mobile menu use kar rahe hain) */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: static; /* Mobile menu mein static rakhein */
+        box-shadow: none;
+        border-radius: 0;
+        padding: 5px 0;
+        min-width: auto;
+    }
+    .dropdown:hover .dropdown-menu {
+        transform: translateY(0);
+    }
+    .dropdown-item {
+        padding-left: 40px; /* Sub-item indent */
+    }
+}
+

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account</title>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        width: 420px;
+        background: rgba(255,255,255,0.25);
+        padding: 35px;
+        border-radius: 18px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 26px;
+        color: #333;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        margin: 12px 0;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background: rgba(255,255,255,0.6);
+        font-size: 15px;
+        transition: 0.25s;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    input:focus, select:focus {
+        background: white;
+        transform: scale(1.03);
+        box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 17px;
+        color: white;
+        background: linear-gradient(135deg, #42e695, #3bb2b8);
+        cursor: pointer;
+        margin-top: 15px;
+        transition: 0.3s ease;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #2ecc71, #16a085);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 12px;
+        font-size: 15px;
+    }
+
+    .login-link a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create Account</h2>
+
+    <input type="text" id="fname" placeholder="First Name" required>
+    <input type="text" id="lname" placeholder="Last Name" required>
+    <input type="email" id="email" placeholder="Email ID" required>
+    <input type="text" id="phone" placeholder="Phone Number" required>
+    <input type="text" id="username" placeholder="Username" required>
+
+    <select id="country">
+        <option value="">Select Country</option>
+        <option>India</option>
+        <option>Nepal</option>
+        <option>USA</option>
+        <option>UK</option>
+        <option>Dubai</option>
+        <option>Canada</option>
+        <option>Australia</option>
+        <option>Japan</option>
+        <option>France</option>
+        <option>Germany</option>
+        <option>China</option>
+        <option>Brazil</option>
+    </select>
+
+    <input type="password" id="password" placeholder="Password" required>
+
+    <button onclick="createAccount()">Create Account</button>
+
+    <div class="login-link">
+        Already have an account? <a href="LoginPage.html">Login Here</a>
+    </div>
+</div>
+
+<script>
+async function createAccount(){
+    let user = {
+        name: document.getElementById("fname").value + " " + document.getElementById("lname").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        method: "email"
+    };
+
+    if(user.email === "" || user.password === ""){
+        alert("Please fill all fields!");
+        return;
+    }
+
+    const res = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+        alert("Account Created Successfully!");
+        localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+        window.location.href = "LoginPage.html";
+    } else {
+        alert("❌ " + data.message);
+    }
+}
+/* ---------------------------------------
+    ADMIN PANEL
+---------------------------------------- */
+document.getElementById('show-saved').addEventListener('click', () => {
+    let email = prompt("Enter admin email:");
+    let password = prompt("Enter admin password:");
+
+    if(email === "admin@earnkaro.com" && password === "admin123"){
+        openAdminPanel();
+    } else {
+        alert("❌ Access Denied!");
+    }
+});
+
+function openAdminPanel(){
+    const popup = document.getElementById("saved-popup");
+    const data = document.getElementById("data-area");
+
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const logged = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+    data.textContent =
+        "Logged In User:\n" + JSON.stringify(logged, null, 2) +
+        "\n\nAll Users:\n" + JSON.stringify(users, null, 2);
+
+    popup.style.display = "flex";
+}
+
+document.getElementById("close-popup").addEventListener("click", () => {
+    document.getElementById("saved-popup").style.display = "none";
+});
+function createAccount() {
+    let fname = document.getElementById("fname").value;
+    let lname = document.getElementById("lname").value;
+    let email = document.getElementById("email").value;
+    let phone = document.getElementById("phone").value;
+    let username = document.getElementById("username").value;
+    let country = document.getElementById("country").value;
+    let password = document.getElementById("password").value;
+
+    if (!fname || !lname || !email || !phone || !username || !country || !password) {
+        alert("❌ Please fill all fields!");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if (users[email]) {
+        alert("❌ Account already exists!");
+        return;
+    }
+
+    users[email] = {
+        firstName: fname,
+        lastName: lname,
+        email: email,
+        phone: phone,
+        username: username,
+        country: country,
+        password: password,
+        createdAt: new Date().toLocaleString()
+    };
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("✅ Account Created Successfully!");
+    window.location.href = "LoginPage.html";
+}
+/* ---------------------------------------
+    ADMIN PANEL
+---------------------------------------- */
+document.getElementById('show-saved').addEventListener('click', () => {
+    let email = prompt("Enter admin email:");
+    let password = prompt("Enter admin password:");
+
+    if(email === "admin@earnkaro.com" && password === "admin123"){
+        openAdminPanel();
+    } else {
+        alert("❌ Access Denied!");
+    }
+});
+
+function openAdminPanel(){
+    const popup = document.getElementById("saved-popup");
+    const data = document.getElementById("data-area");
+
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const logged = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+    data.textContent =
+        "Logged In User:\n" + JSON.stringify(logged, null, 2) +
+        "\n\nAll Users:\n" + JSON.stringify(users, null, 2);
+
+    popup.style.display = "flex";
+}
+
+document.getElementById("close-popup").addEventListener("click", () => {
+    document.getElementById("saved-popup").style.display = "none";
+});
+
+
+</script>
+
+</body>
+</html>

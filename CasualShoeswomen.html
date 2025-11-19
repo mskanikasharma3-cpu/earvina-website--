@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earniva - Watches</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-icon {
+            background: none;
+            border: none;
+            font-size: 1.6em;
+            cursor: pointer;
+            color: #333;
+            display: none;
+        }
+
+        .logo-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo-karo {
+            color: #f7a01a;
+        }
+
+        .search-bar {
+            display: flex;
+            flex-grow: 1;
+            max-width: 450px;
+            margin: 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 8px 10px;
+            width: 100%;
+        }
+
+        .search-btn {
+            background: #f7a01a;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            color: #f7a01a;
+            margin-right: 5px;
+        }
+
+        /* Layout */
+        .main-content-wrapper {
+            display: grid;
+            grid-template-areas: "breadcrumb breadcrumb" "sidebar listing";
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .breadcrumb {
+            grid-area: breadcrumb;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            text-decoration: none;
+            color: #666;
+        }
+
+        .breadcrumb .current-page {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f7a01a;
+            padding-bottom: 5px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group h4 {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 8px;
+        }
+
+        .filter-options {
+            list-style: none;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .filter-options li {
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .filter-options input {
+            margin-right: 8px;
+        }
+
+        .price-range input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .go-btn {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        /* Product Section */
+        .product-listing {
+            grid-area: listing;
+        }
+
+        .page-title {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .deal-count {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .sort-options {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .sort-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sort-btn.active {
+            color: #f7a01a;
+            border-bottom: 2px solid #f7a01a;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #e84c3d;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 0.8em;
+            border-bottom-left-radius: 8px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .product-details {
+            text-align: left;
+        }
+
+        .brand {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .name {
+            font-size: 0.95em;
+            font-weight: 600;
+            margin: 5px 0 8px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .price-info {
+            margin-bottom: 10px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .sale-price {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #e84c3d;
+            margin-right: 5px;
+        }
+
+        .discount-percent {
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .your-profit {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .copy-link-btn,
+        .share-now-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.85em;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .copy-link-btn {
+            background: #f0f0f0;
+        }
+
+        .share-now-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                height: 100%;
+                width: 250px;
+                background: white;
+                box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
+                z-index: 2000;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content-wrapper {
+                grid-template-areas: "breadcrumb" "listing";
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo-section">
+            <button class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <span class="logo-text">Earniva<span class="logo-karo"></span></span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for partners or deals">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="nav-links">
+            <a href="profile.html" class="nav-item"><i class="fas fa-chart-line"></i> Profit Rates</a>
+            <a href="MakeLinks .html" class="nav-item"><i class="fas fa-link"></i> Make Links</a>
+            <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i> My Profile</a>
+        </nav>
+    </header>
+
+    <main class="main-content-wrapper">
+        <div class="breadcrumb">
+            <a href="earnkaro_dashboard_with_nav.html">Home</a> / <a
+                href="earnkaro_dashboard_with_nav.html">Accessories</a> / <span class="current-page">Casual shoes</span>
+        </div>
+
+        <aside class="sidebar" id="sidebar">
+            <h3>FILTER BY</h3>
+
+            <div class="filter-group">
+                <h4>Price Range</h4>
+                <div class="price-range">
+                    <input type="number" id="min-price" value="999">
+                    <input type="number" id="max-price" value="9999">
+                    <button class="go-btn" onclick="applyFilters()">Go</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div>
+                    <a href="CasualShoes.html" class="nav-item"><i class="fas fa-link"></i> Back</a>
+                </div>
+                <h4>Seller</h4>
+                <input type="text" placeholder="Search Seller" class="search-input">
+                <ul class="filter-options" id="seller-filters">
+                    <li><input type="checkbox" data-filter="seller" value="Flipkart" checked> Flipkart</li>
+                    <li><input type="checkbox" data-filter="seller" value="Ajio"> Ajio</li>
+                    <li><input type="checkbox" data-filter="seller" value="Amazon"> Amazon</li>
+                </ul>
+            </div>
+
+            <div class="filter-group">
+                <h4>Brand</h4>
+                <input type="text" placeholder="Search Brand" class="search-input">
+                <ul class="filter-options">
+                    <li><input type="checkbox" data-filter="brand" value="Van Heusen" checked> Van Heusen</li>
+                    <li><input type="checkbox" data-filter="brand" value="Louis Philippe"> Louis Philippe</li>
+                    <li><input type="checkbox" data-filter="brand" value="Blackberrys"> Blackberrys</li>
+                    <li><input type="checkbox" data-filter="brand" value="Wrangler"> Wrangler</li>
+                    <li><input type="checkbox" data-filter="brand" value="Arrow"> Arrow</li>
+                    <li><input type="checkbox" data-filter="brand" value="Roadster"> Roadster</li>
+                </ul>
+            </div>
+        </aside>
+
+        <section class="product-listing">
+            <h1 class="page-title">Casual Shoes</h1>
+            <p class="deal-count">Choose from <span id="deal-count-display">0</span> deals</p>
+
+            <div class="sort-options">
+                <button class="sort-btn active" onclick="sortProducts('popularity', this)">Popularity</button>
+                <button class="sort-btn" onclick="sortProducts('discount', this)">Discount</button>
+                <button class="sort-btn" onclick="sortProducts('high-price', this)">High Price</button>
+                <button class="sort-btn" onclick="sortProducts('low-price', this)">Low Price</button>
+
+            </div>
+
+            <div class="product-grid" id="product-grid"></div>
+        </section>
+    </main>
+
+    <script>
+        const productData = [
+            { id: 1, brand: "Nike", name: "Air Max Casual Sneakers", originalPrice: 7999, salePrice: 4999, discount: 38, yourProfit: 320, image: "data:image/webp;base64,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", isSale: true, link: "#" },
+            { id: 2, brand: "Adidas", name: "women’s Daily 3.0 Shoes", originalPrice: 6999, salePrice: 4199, discount: 40, yourProfit: 300, image: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS5JHrVO3_4Zip26xFMtYrGwVLR4Nnfg4hGbMC6atwQt6A9Y6QxYDK6n_cBvrsLnn_T0mTvRMiWa2aSPyRnCIAe0-wAoC65jub0S2CQ9xVZfZj0tRJGHiwduvtxmMJRBKbtEJQydQ&usqp=CAc", isSale: true, link: "#" },
+            { id: 3, brand: "Puma", name: "Smash V2 Casual Shoes", originalPrice: 4999, salePrice: 2999, discount: 40, yourProfit: 240, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTSSlfOvoUxBizXDk5c0x-Xeq_jQ53uaj2bOnQ3qh0xKgjx0JqSeqqYavaWQjdpOcqznV89-Easuq3MeS_YDX1Y5VK_BIkzZA3BcUo21FXBRt1FPQuBjVL1lIs", isSale: true, link: "#" },
+            { id: 4, brand: "Bata", name: "Women’s Leather Casual Shoes", originalPrice: 3999, salePrice: 2499, discount: 38, yourProfit: 200, image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTikxNv0tescseLf8YFh_Vop8AX3LZ9Tlv3FaecPZeSt3ag-WVE-PJsr5yoYULQGn34S0fOu_S08sCmsVgNMN9r1wPFmDkC-4IM8r6hT8iSMpP7rWpGNZRO", isSale: true, link: "#" },
+            { id: 5, brand: "Sparx", name: "Canvas Sneakers for Men", originalPrice: 1999, salePrice: 1299, discount: 35, yourProfit: 100, image: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQkWwtcCyrSLV-bclQdJU8uZXrs3Hgd6bQ8_YDKa3wodeIcV_UZ-10lYLps_xq32dNiqfKxXV2RK4rSloBCTnhyvMFDutah8yIUVqbfTW2u", isSale: true, link: "#" }
+        
+        ];
+        let currentProducts = [...productData];
+        const formatPrice = p => `₹${p.toLocaleString("en-IN")}`;
+
+
+      
+        function renderProducts(list) {
+            const grid = document.getElementById("product-grid");
+            grid.innerHTML = "";
+
+            list.forEach(p => {
+                grid.innerHTML += `
+      <div class="product-card">
+        ${p.discountPercent > 0 ? '<div class="sale-badge">SALE</div>' : ""}
+        <img src="${p.image}" class="main-image" alt="${p.name}">
+
+        <div class="product-details">
+          <p class="brand">Brand: ${p.brand}</p>
+          <p class="name">${p.name}</p>
+
+          <div class="price-info">
+            ${p.discountPercent ? `<span class="original-price">${formatPrice(p.originalPrice)}</span>` : ""}
+            <span class="sale-price">${formatPrice(p.salePrice)}</span>
+            ${p.discountPercent ? `<span class="discount-percent">(${p.discountPercent}% OFF)</span>` : ""}
+          </div>
+
+          <div class="your-profit">
+            <span>Your Profit</span>
+            <span>${formatPrice(p.yourProfit)}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="copy-link-btn" onclick="copyLink('${p.link}')">COPY LINK</button>
+          <button class="share-now-btn" onclick="shareProduct(${p.id})">
+            <i class="fas fa-share-alt"></i> SHARE
+          </button>
+        </div>
+      </div>`;
+            });
+
+            document.getElementById("deal-count-display").textContent = list.length;
+        }
+
+
+        // ==================== FILTER PRODUCTS ====================
+        function applyFilters() {
+            const min = +document.getElementById("min-price").value;
+            const max = +document.getElementById("max-price").value;
+
+            const selectedBrands = [...document.querySelectorAll('input[data-filter="brand"]:checked')]
+                .map(b => b.value);
+
+            const selectedSellers = [...document.querySelectorAll('input[data-filter="seller"]:checked')]
+                .map(s => s.value);
+
+            currentProducts = productData.filter(p =>
+                p.salePrice >= min &&
+                p.salePrice <= max &&
+                selectedBrands.includes(p.brand) &&
+                selectedSellers.includes(p.seller)
+            );
+
+            renderProducts(currentProducts);
+        }
+
+
+        // ==================== SORT PRODUCTS ====================
+        function sortProducts(type, btn) {
+            document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            if (type === "discount") currentProducts.sort((a, b) => b.discountPercent - a.discountPercent);
+            if (type === "high-price") currentProducts.sort((a, b) => b.salePrice - a.salePrice);
+            if (type === "low-price") currentProducts.sort((a, b) => a.salePrice - b.salePrice);
+
+            renderProducts(currentProducts);
+        }
+
+
+        // ==================== SIDEBAR TOGGLE ====================
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+
+
+        // ==================== COPY LINK FUNCTION ====================
+        function copyLink(link) {
+            navigator.clipboard.writeText(link)
+                .then(() => alert("✅ Link Copied Successfully!"))
+                .catch(() => alert("❌ Failed to copy link"));
+        }
+
+
+        // ==================== SHARE FUNCTION ====================
+        function shareProduct(productId) {
+            const product = productData.find(p => p.id === productId);
+            if (!product) return;
+
+            const shareData = {
+                title: product.name,
+                text: `Check out this ${product.brand}! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+                url: product.link
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .catch(() => copyLink(product.link));
+            } else {
+                copyLink(product.link);
+            }
+        }
+
+
+        // INITIAL RENDER
+        document.addEventListener("DOMContentLoaded", () => renderProducts(productData));
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener("change", applyFilters));
+
+    </script>
+</body>
+
+</html>

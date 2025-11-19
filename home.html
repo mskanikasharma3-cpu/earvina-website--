@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure OTP Login</title>
+</head>
+<body>
+    <h2>OTP Login</h2>
+    <input type="text" id="phone" placeholder="Phone (+91...)">
+    <input type="email" id="email" placeholder="Email">
+    <button id="sendOtpBtn">Send OTP</button>
+
+    <div id="otpSection" style="display:none;">
+        <input type="text" id="otpInput" placeholder="Enter OTP">
+        <button id="verifyOtpBtn">Verify OTP</button>
+    </div>
+
+    <p id="message"></p>
+
+    <script>
+        const sendOtpBtn = document.getElementById('sendOtpBtn');
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        const otpSection = document.getElementById('otpSection');
+        const message = document.getElementById('message');
+
+        let key = null; // phone or email
+
+        sendOtpBtn.addEventListener('click', async () => {
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            if(!phone && !email){
+                message.textContent = "Enter phone or email!";
+                return;
+            }
+
+            key = phone || email;
+
+            const res = await fetch('http://localhost:3000/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, email })
+            });
+
+            const data = await res.json();
+            message.textContent = data.message;
+            if(data.success) otpSection.style.display = 'block';
+        });
+
+        verifyOtpBtn.addEventListener('click', async () => {
+            const otp = document.getElementById('otpInput').value;
+
+            const res = await fetch('http://localhost:3000/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, otp })
+            });
+
+            const data = await res.json();
+            message.textContent = data.message;
+        });
+    </script>
+</body>
+</html>

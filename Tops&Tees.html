@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earniva - Watches</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Poppins", sans-serif; background: #f5f5f5; color: #333; }
+
+    /* Navbar */
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .logo-section { display: flex; align-items: center; gap: 10px; }
+    .menu-icon { background: none; border: none; font-size: 1.6em; cursor: pointer; color: #333; display: none; }
+    .logo-text { font-size: 1.5em; font-weight: bold; color: #333; }
+    .logo-karo { color: #f7a01a; }
+    .search-bar { display: flex; flex-grow: 1; max-width: 450px; margin: 0 20px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .search-bar input { border: none; outline: none; padding: 8px 10px; width: 100%; }
+    .search-btn { background: #f7a01a; color: #fff; border: none; padding: 8px 15px; cursor: pointer; }
+    .nav-links { display: flex; gap: 15px; align-items: center; }
+    .nav-item { text-decoration: none; color: #333; font-size: 0.95em; font-weight: 500; }
+    .nav-item i { color: #f7a01a; margin-right: 5px; }
+
+    /* Layout */
+    .main-content-wrapper {
+      display: grid; grid-template-areas: "breadcrumb breadcrumb" "sidebar listing";
+      grid-template-columns: 250px 1fr; gap: 20px; padding: 20px; max-width: 1400px; margin: auto;
+    }
+
+    .breadcrumb { grid-area: breadcrumb; font-size: 0.9em; color: #666; }
+    .breadcrumb a { text-decoration: none; color: #666; }
+    .breadcrumb .current-page { font-weight: bold; color: #333; }
+
+    /* Sidebar */
+    .sidebar {
+      grid-area: sidebar; background: #fff; border-radius: 8px; padding: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+    }
+    .sidebar h3 { font-size: 1.1em; margin-bottom: 10px; border-bottom: 2px solid #f7a01a; padding-bottom: 5px; }
+    .filter-group { margin-bottom: 20px; }
+    .filter-group h4 { font-size: 1em; margin-bottom: 10px; color: #555; }
+    .search-input { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 8px; }
+    .filter-options { list-style: none; max-height: 120px; overflow-y: auto; }
+    .filter-options li { margin-bottom: 6px; font-size: 0.9em; }
+    .filter-options input { margin-right: 8px; }
+    .price-range input { width: 60px; padding: 5px; text-align: center; }
+    .go-btn { background: #4caf50; color: #fff; border: none; padding: 6px 10px; border-radius: 4px; margin-left: 5px; cursor: pointer; }
+
+    /* Product Section */
+    .product-listing { grid-area: listing; }
+    .page-title { font-size: 1.8em; margin-bottom: 5px; }
+    .deal-count { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+    .sort-options { display: flex; flex-wrap: wrap; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px; }
+    .sort-btn { background: none; border: none; padding: 10px 15px; font-weight: 600; color: #666; cursor: pointer; transition: 0.3s; }
+    .sort-btn.active { color: #f7a01a; border-bottom: 2px solid #f7a01a; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+    .product-card {
+      background: #fff; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 15px; position: relative; overflow: hidden; transition: transform 0.3s;
+    }
+    .product-card:hover { transform: translateY(-3px); }
+    .sale-badge { position: absolute; top: 0; right: 0; background: #e84c3d; color: #fff; padding: 5px 10px; font-size: 0.8em; border-bottom-left-radius: 8px; }
+    .main-image { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
+    .product-details { text-align: left; }
+    .brand { font-size: 0.8em; color: #666; }
+    .name { font-size: 0.95em; font-weight: 600; margin: 5px 0 8px; height: 40px; overflow: hidden; }
+    .price-info { margin-bottom: 10px; }
+    .original-price { text-decoration: line-through; color: #999; font-size: 0.9em; }
+    .sale-price { font-size: 1.1em; font-weight: bold; color: #e84c3d; margin-right: 5px; }
+    .discount-percent { color: #4caf50; font-weight: bold; font-size: 0.9em; }
+    .your-profit { background: #e8f5e9; border: 1px solid #4caf50; border-radius: 6px; padding: 6px 8px; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 0.9em; }
+    .actions { display: flex; gap: 8px; }
+    .copy-link-btn, .share-now-btn { flex: 1; padding: 8px; font-size: 0.85em; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
+    .copy-link-btn { background: #f0f0f0; }
+    .share-now-btn { background: #4caf50; color: white; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-icon { display: block; }
+      .nav-links { display: none; }
+      .sidebar { position: fixed; left: -260px; top: 0; height: 100%; width: 250px; background: white; box-shadow: 3px 0 10px rgba(0,0,0,0.3); z-index: 2000; overflow-y: auto; transition: left 0.3s ease; }
+      .sidebar.active { left: 0; }
+      .main-content-wrapper { grid-template-areas: "breadcrumb" "listing"; grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo-section">
+      <button class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <span class="logo-text">Earniva<span class="logo-karo"></span></span>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for partners or deals">
+      <button class="search-btn"><i class="fas fa-search"></i></button>
+    </div>
+    <nav class="nav-links">
+      <a href="profile.html" class="nav-item"><i class="fas fa-chart-line"></i> Profit Rates</a>
+      <a href="MakeLinks .html" class="nav-item"><i class="fas fa-link"></i> Make Links</a>
+      <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i> My Profile</a>
+    </nav>
+  </header>
+
+  <main class="main-content-wrapper">
+    <div class="breadcrumb">
+      <a href="earnkaro_dashboard_with_nav.html">Home</a> / <a href="earnkaro_dashboard_with_nav.html">Accessories</a> / <span class="current-page">Watches</span>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+      <h3>FILTER BY</h3>
+
+      <div class="filter-group">
+        <h4>Price Range</h4>
+        <div class="price-range">
+          <input type="number" id="min-price" value="999">
+          <input type="number" id="max-price" value="9999">
+          <button class="go-btn" onclick="applyFilters()">Go</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div>
+                            <a href="Tops&Tees.html" class="nav-item"><i class="fas fa-link"></i> Back</a>
+                        </div>
+        <h4>Seller</h4>
+        <input type="text" placeholder="Search Seller" class="search-input">
+        <ul class="filter-options" id="seller-filters">
+          <li><input type="checkbox" data-filter="seller" value="Flipkart" checked> Flipkart</li>
+          <li><input type="checkbox" data-filter="seller" value="Ajio"> Ajio</li>
+          <li><input type="checkbox" data-filter="seller" value="Amazon"> Amazon</li>
+        </ul>
+      </div>
+
+      <div class="filter-group">
+        <h4>Brand</h4>
+        <input type="text" placeholder="Search Brand" class="search-input">
+        <ul class="filter-options">
+          <li><input type="checkbox" data-filter="brand" value="Bata" checked> </li>
+          <li><input type="checkbox" data-filter="brand" value="Red Chief"> Red Chief</li>
+          <li><input type="checkbox" data-filter="brand" value="Hush Puppies">Hush Puppies</li>
+          <li><input type="checkbox" data-filter="brand" value="Clarks">Clarks</li>
+          <li><input type="checkbox" data-filter="brand" value="Lee Cooper"> Lee Cooper</li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="product-listing">
+      <h1 class="page-title">Tops & Tees</h1>
+      <p class="deal-count">Choose from <span id="deal-count-display">0</span> deals</p>
+
+      <div class="sort-options">
+        <button class="sort-btn active" onclick="sortProducts('popularity', this)">Popularity</button>
+        <button class="sort-btn" onclick="sortProducts('discount', this)">Discount</button>
+        <button class="sort-btn" onclick="sortProducts('high-price', this)">High Price</button>
+        <button class="sort-btn" onclick="sortProducts('low-price', this)">Low Price</button>
+        
+      </div>
+
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const productData = [
+{
+    id: 1,
+    name: "Casual Cotton Printed Top",
+    brand: "Tops & Tees",
+    seller: "Flipkart",
+    originalPrice: 799,
+    salePrice: 499,
+    discountPercent: 38,
+    yourProfit: 220,
+    image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT3zVztBdolC90RR15ZTTj3iBbwGwXt3mtD9w832HzyBWbXYKtXLdiQEZ_oyNDPsqBkHws5mbPZKCbi6mwWRaE1rWrlDm3VVX2h8KH1Pdjl8sKFUSsq8S_qKPICHopY-lkzXk-0hyE&usqp=CAc",
+    link: "https://example.com/top1"
+  },
+  {
+    id: 2,
+    name: "Trendy Oversized T-Shirt",
+    brand: "Tops & Tees",
+    seller: "Amazon",
+    originalPrice: 999,
+    salePrice: 699,
+    discountPercent: 30,
+    yourProfit: 300,
+    image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSSLHlE3zZkUpaaAQYMTuapxlv_q9xK5x-xUJwRoAL5dTAg2s5DfjVdh98fWdYyZDyql3kQE-YwRL-PVAfzlofG8ulrV9Rzqn_8lOCyMcn41tZ1SxjfJWrlbVtjw5vntNWWwc6mK_W1&usqp=CAc",
+    link: "https://example.com/top2"
+  },
+  {
+    id: 3,
+    name: "Stylish Women's Ribbed Top",
+    brand: "Tops & Tees",
+    seller: "Ajio",
+    originalPrice: 1299,
+    salePrice: 899,
+    discountPercent: 31,
+    yourProfit: 350,
+    image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAKsAtwMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAADBAECBQAHBv/EADwQAAEEAAQFAQYDBAoDAAAAAAEAAgMRBBIhMQUiQVFhBhMyQnGBoQcUkSMzUtElJmJyorGyweHwJDSC/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFxEBAQEBAAAAAAAAAAAAAAAAAAERMf/aAAwDAQACEQMRAD8A+WxEjnkMGjB0UOGdnNv3UhtvPjuobVVr+iqBMb+0o7LTgLOWgkH6bBHgzaV0UGzDysNa2hyxFz840KnDEnlKaIBVGSA49NbpRI0aabo4hf7bframRmreyBePDNeSTpXhLYuGF5Mcejx8K0yAyMDslZImSublGo+LqgxWsbJKGms2WgCNlqcLYWxui3dnN/RZ+Lw0kOKa5q2uCPbI2yKAecx72gy8ZmbK8AEW6lky4V7crqsfDrqF9XxNgMoLQDXhY2JA3rlaapQZErc3MR8wepT0FPhcXbmtUvO3WwiQhzgGNG5pBPsiTHpsbTGJjLWtFdKT0GHPsw5wHtOnlWxUYIBrZUYGIcWRvB6pN1WB3TnEIzRAO6E+NoDQBag7hzPa1ZIc270WwZnEMDjdrNgJDc3UVVJsC2g3ugh93drlIp5omlyDSaRPbqq11Ft308ILZMoytFFHDg8AnoqF5tPKdhqINJo5hfySb/koiJYbFnSkG9hHC2k/F9loEMG6w4ZU9HiLZmdr4tAxkY15cRslZjTi4CyaRGvLwc256WoLLG4vTRAtiCXcoB+apFG5hJIojomYznd7PMA/yFGbJKHvokdbQZ3EmABjj7x+FX9PSf8AkzREjKbpTjXMmmNuAIF6pDgBc/G209/qg1caR7Q5dh1SroGuhLiNCbTXFC0BjGDmIu0rO8tj0dp0HdBm4mNoJ5eUdVTCNY2dp6Zk3iaIA6BADWtquhtQbBfbbAAPTwk8Q4kVavLJyivdPVCIHe1RmY2Mlt0lhG4hpO2teVpYr3NTWvZKsDjCGfCLr5qCI2UKR2j3W+aXMaKsHREaBYPY2gpKwXY0UK0g56v6rkF3Ny9bPdHiNtpCl9/L1V2DILJVFnUqjKBd2qEkqYwLshA1CT1TEZcl27ho3KfjjIZmKCSzKwanMUw6LLHms2qRNzlpcb1TclZMqBDKJJd68qZmujwrixocW70EDFvMd5dKQsTj5DBkHLbaJHVBlYvGubZY0Bx0sJjg8Qewvacrm1lWdKwO3cNDZPZabS1muGcMrayHbN/NQO4iJzvZOzW6iEhxAPiO1tugey0ICS3mdrR1KT4rK10YZe5tUK5sy6rNWqNNOoaojd7UDG7Mu4amsNBE9ubodvJS+Gbma42ign2jDGaIFj5oL4nBssMcLB0sIbMJFHEI2tprfui43EZIyBzGuvRKYfFZ4yHblAGSGn00U3soMZZuUwCSbGqjFVQcNigUkBAsrlTFloAAvVcgO9wLh/ETurHVmuqXDszxelBMaVVoKOOUWrMd2CDIdbRMNrtqqHodw4akJ4vuMgHZIRuANDRHiccpB6oH8Ps4+FeWQAWNUCA0CCd1zjpVfdAjxJ+ZzWgUVmzuORPY4gua69VnT7UFAm4Dmygkuq1p4QBkYbIBocoodULh7CZA6QcpAr6f9Kanc7mdG/3XUGjU2gdY1jocjvdtZXFRz5o9Mx27JuGUmM6fyXcXa1mSmUS0KjPgbZu0VnXxX6qsFBHlbkib2om/PRQGiO7I9yLRjEYy0yG9eiBhWgc+ajVI2Kc55YL37aIFcSS4ucCS13jZKszNN39lqMbyZXEV8kjK3Wh+qDo3ukeGk7okwLWAO2HRAgNPDj0V5ZDJy7+VQvI8vcGgXS5De6peRcoCE1JQV+as3RDOoDuh6qczsuXoghwJTELgyOgEtZ7q0b9KQOMcc6bjdSVibmZpujtaR1QMB/LYUOkd3QWk+791z3Ny5s2nbqgjFMDgCOiTEV3fRMmZrm5Rq47eU/wjg2N4zM+PBQktbWeU+4y+5/2GvhBXgvDJOI4yLC4OjIbBcRowVqT/AN1sd16Fh/Q/BIsL7GWOSSQm3TGUh19wBoN9qWXBHF6I4bIcHgsRxjibzUn5Zhyx6aAnWm/IEk69gPlJ+O+pcXj/AM3Pi8VhZG6RxMjcxjB2ynQ/W1Q36l4JJwHEtBkdJhpdYpC3bu0+fKy8ZMzERuqiWt946br7jhfEcX6j4ceH+oeDTZX74qJmQX0NE2D5FjwsLjPoriHD8PJLgHNx0F3yCpcvkdfpr4TB8bh2udVDckJ2cj2LG1oXKjIm+zY2QFj7Ngii09iFXGPILWEe7pY1sqC0ZJ5GalPBobyu1ck+HkZ7Oh7rRhislznXXWkAcpcSB0SUx0oD6rSncGWGjfqs3QqhYuqtN1XNpQ07HurvHu0gda/TwoKyitiuVpGki1yDjIA0AatARA623SVY5mTKe+6M13IPKCXGttVDTl3VdQLKrnvcWgfZIX8xNeAiNmPU0s6OQs5SpdN2NIHfzBDNSqYMTYvFxwYdj5JpHZWNaCS4pBzjIKBpeg/hHgmjiGNxkrLfFEyJhvQB5dmPz5R+qo0/T/oBkLGzcecC86jCxuof/buvyGnlfaxNjw8LYcNEyGJuzGAAK7zzEEAkId2aWsEPYHv9rFQcfeBHvLszho6GbPlJ5CMoq9DqCNlxdb9FFuG51+SIlolJt5aL301XF2oI3Bu/Ko4nqSuOleUCXFuC8O4s0fmsOBKNpo+V4+vX6rzv1d6UxnCWDGROGJwI0LwKdH/eHbyvVaSHGIhiuE46F9FrsO67HhLB4vE7nGXqtEve29eU/oszCxvyAEczdHDseoTwc32Is5ienZYVL5bYdDokXkxiym5XZQB2QZRnbRCBXPQJq7VWDM69lEjCDdokbcteUHH9mw5gNPK5BxtC2nWwDuuQJFvYUm2WYmHTXZJkkdUeMDLfwj7oGZacKb9PKWBF0iMvofl4U+zA5q+Y7IBN1fzKXNF0oe2n7qXkA2DaCH7ZoxovT/wnYY+B4qd13JjcovqGsaf83FeXiVwGVuy9g9EQ/lPR/C8wp2IMs/0JNH9KVg+qcbncemUFRBqST0VAcwcf7AH2U4c8j3dlpEQczz4XYg1sq4M5nOK7FGiB3QWlOUA91zzo0qJv3QPZQ43GCOiIP/K0rMM2Cxg6+xI+yZYczQe4pCZRkljPxNP+X/KK8hlwowfGccyqYZM7fIcL/wB0lFXthew+63PVcZhkw07bAkbkca6t/wCD9lhEaFzTss1UYh3Pm+yA+atyrv2BPVBbFd5taUHOcHdKVozmeG1VdUItIcQNaNJiChvogRxx/akdgAuVcYC7EODRalAmTaM1xDQ2tAhNFo5rogM05eiE+RxNv17+VcEHquLA5As8vMlWrhh6lXcy9lbLXVBSZhtoj3P2XvDsLFgYMDgYSPZYfDNY0DXYV/svCHtBFHULWZ6n4hg/Tr+HYeaYzF5Ecp19kyho3rehrt06VqVK9qY9v5JkgIILAbHVXi5cE4n4lg+lJDJ6P4L7QlxdhWAknxS3JjkwA8qpicCOQu7rsXu0q2DGWFDxnwoosmsKpDrCfCu7WFCgOpHdAaE2weFlQ8XiPrF3BfZv9ocIMQJPhqy0j5jRacOxHZeW+vOIYvhXrn81gZXRTOwDGtkb2JcCEAfVXFJpONYrhDoIPy+HxJLXiy+yO+w3KUdh8sAojTqs7CAyT+0kJe9xt7jqSe60ZJzeWhlWNUkTmLSBorvaOWj01VYspjADstdVANNeS4aE1r4tAnG8mR7zsHbK8LtObfsqPblwwde7yoaMzQ0GgUA587ZTXVcrvJMr9fdUIFomhxq6Vo2myDuEuCQ/dMAtaD1cetoDgMaasWuA0tVa5rwKAzHqrXXKNfKCzmh2/cLpmM9joNfmorS2m9AoJ/iNIBNPe1d8I6aeVLzfu/5I4yujomkHqnpE/wBUuEt7REf4it/HmoWNHVfPejjm9N8Kr+Bw/R7gt3HuuaJq2hzD8sVION2afNI0ejEDHHkb/eQGu4UtE6pKR4zcdJS8slohuM5Zj5Xln4psr1BgZD8WHI/Rx/mvUmn9oD3XmX4tD+lOFkdGSj/QpeLHzmBdqCR8/KdxBa2EuDbpI4QZmgt6pjE23DPzdFlSQe0RkjoofJmpgABN2qtDXMa3bSyqP0eTep6oLyC2Bl8otTG0gNKE426rV2lwpt7IOmayMOJGrq6rkCW3GybUoEqt1qxNmrU0AGkG7+ysY/jbqEHMcdM3RHY4AUdUvQdsa+iOzKdxSArBlNgq+W923rW6AHnoEfl+9oIldXuAFK4iQ1TbR5H5OiHmzDMACEHrPoN2f03wz+yJB/jcVuynPj3dmml87+HJ/q9hmndskv8Aqtb8BzzPcerltGk3RiBjj+yB7OR/gS+N/c/W0QSHViVcOfVHw7uRCxAp6oKw2weF5z+LLf6Q4We7JCfHur0WHVg8r4L8WYT+Y4RMToGytPknIf5rN4sfIYV+UAAbKOIT3y5kGJ2TdBnOZ6yqjJC2/LVZz7OxvsqOblcBd2KVdb3N97QWBJfoFfMbsE/oqxyBhstv6rnTZthlQXFdVyF7TwuQKMJqjqpEhHIDouag3zoGY3+QFcPvbRKEkI7EDTORt1ah0oaLKIOVmiWoB9ILPeCaJtc1zQ3KDQV2MaX7KwY3sg9N/Dx+T0u2Q7+0l1+oX0mEGjB1Jsr5X0Wa9MtaNvbu0+rV9Zhf3y2h+9KQMXzQE9lcoeJ/9ZyIrhHWxdiP3RPZUwfuK2I/cuVHYZ1gDsvhPxgmLcRwiH+L2rx9Mn819xhV57+LZLuN8LB1AgfX1cP5KUj4+MOGyqbBs6+EVgCh4/bLDQUxoknS0MvGfQWiTa7pRxp+iBprS5S8N6BRGT3VXIBPOXdSqS67rkH/2Q==",
+    link: "https://example.com/top3"
+  },
+  {
+    id: 4,
+    name: "Round Neck Graphic Tee",
+    brand: "Tops & Tees",
+    seller: "Flipkart",
+    originalPrice: 699,
+    salePrice: 399,
+    discountPercent: 43,
+    yourProfit: 200,
+    image: "data:image/jpeg;base64,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",
+    link: "https://example.com/top4"
+  }
+    ];
+let currentProducts = [...productData];
+const formatPrice = p => `₹${p.toLocaleString("en-IN")}`;
+
+
+// ==================== RENDER PRODUCTS ====================
+function renderProducts(list) {
+  const grid = document.getElementById("product-grid");
+  grid.innerHTML = "";
+
+  list.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card">
+        ${p.discountPercent > 0 ? '<div class="sale-badge">SALE</div>' : ""}
+        <img src="${p.image}" class="main-image" alt="${p.name}">
+
+        <div class="product-details">
+          <p class="brand">Brand: ${p.brand}</p>
+          <p class="name">${p.name}</p>
+
+          <div class="price-info">
+            ${p.discountPercent ? `<span class="original-price">${formatPrice(p.originalPrice)}</span>` : ""}
+            <span class="sale-price">${formatPrice(p.salePrice)}</span>
+            ${p.discountPercent ? `<span class="discount-percent">(${p.discountPercent}% OFF)</span>` : ""}
+          </div>
+
+          <div class="your-profit">
+            <span>Your Profit</span>
+            <span>${formatPrice(p.yourProfit)}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="copy-link-btn" onclick="copyLink('${p.link}')">COPY LINK</button>
+          <button class="share-now-btn" onclick="shareProduct(${p.id})">
+            <i class="fas fa-share-alt"></i> SHARE
+          </button>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById("deal-count-display").textContent = list.length;
+}
+
+
+// ==================== FILTER PRODUCTS ====================
+function applyFilters() {
+  const min = +document.getElementById("min-price").value;
+  const max = +document.getElementById("max-price").value;
+
+  const selectedBrands = [...document.querySelectorAll('input[data-filter="brand"]:checked')]
+    .map(b => b.value);
+
+  const selectedSellers = [...document.querySelectorAll('input[data-filter="seller"]:checked')]
+    .map(s => s.value);
+
+  currentProducts = productData.filter(p =>
+    p.salePrice >= min &&
+    p.salePrice <= max &&
+    selectedBrands.includes(p.brand) &&
+    selectedSellers.includes(p.seller)
+  );
+
+  renderProducts(currentProducts);
+}
+
+
+// ==================== SORT PRODUCTS ====================
+function sortProducts(type, btn) {
+  document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  if (type === "discount") currentProducts.sort((a, b) => b.discountPercent - a.discountPercent);
+  if (type === "high-price") currentProducts.sort((a, b) => b.salePrice - a.salePrice);
+  if (type === "low-price") currentProducts.sort((a, b) => a.salePrice - b.salePrice);
+
+  renderProducts(currentProducts);
+}
+
+
+// ==================== SIDEBAR TOGGLE ====================
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+
+// ==================== COPY LINK FUNCTION ====================
+function copyLink(link) {
+  navigator.clipboard.writeText(link)
+    .then(() => alert("✅ Link Copied Successfully!"))
+    .catch(() => alert("❌ Failed to copy link"));
+}
+
+
+// ==================== SHARE FUNCTION ====================
+function shareProduct(productId) {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareData = {
+    title: product.name,
+    text: `Check out this ${product.brand}! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+    url: product.link
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData)
+      .catch(() => copyLink(product.link));
+  } else {
+    copyLink(product.link);
+  }
+}
+
+
+// INITIAL RENDER
+document.addEventListener("DOMContentLoaded", () => renderProducts(productData));
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener("change", applyFilters));
+
+  </script>
+</body>
+</html>

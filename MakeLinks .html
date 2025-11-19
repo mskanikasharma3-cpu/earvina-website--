@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnKaro Dashboard + Links with Stats</title>
+<style>
+:root{
+    --green:#1dbf73;
+    --card-bg:#97daf9;
+    --page-bg:#f5f5f5;
+    --muted:#666;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;font-family:Inter, Arial, sans-serif;background:var(--page-bg);color:#222;
+}
+.header{
+    background:var(--green);
+    padding:15px 20px;
+    color:white;
+    font-size:20px;
+    font-weight:700;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.layout{
+    display:flex;
+    gap:20px;
+    padding:20px;
+    flex-wrap:wrap;
+}
+.sidebar{
+    width:220px;
+    background:var(--card-bg);
+    border-radius:10px;
+    padding:15px;
+    border:1px solid #eee;
+    flex-shrink:0;
+}
+.sidebar a{
+    display:block;
+    padding:10px;
+    margin-bottom:8px;
+    text-decoration:none;
+    color:#333;
+    background:#2bbeef;
+    font-weight:600;
+    border-radius:6px;
+    cursor:pointer;
+}
+.sidebar a:hover{background:#24d7ef;color:var(--green);}
+.content{flex:1;min-width:300px}
+.card{
+    background:var(--card-bg);
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(15,15,15,0.04);
+    border:1px solid #4dbddf;
+}
+h2,h3{margin:0 0 12px}
+.table{width:100%;border-collapse:collapse;margin-top:10px}
+.table th,.table td{border:1px solid #ddd;padding:8px;text-align:left;border-radius:4px}
+.table th{background:#f5f5f5}
+.profit{color:var(--green);font-weight:700}
+.btn{
+    background:var(--green);
+    border:none;color:white;padding:6px 10px;border-radius:6px;font-weight:700;cursor:pointer;
+}
+.btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.1);color:#333;}
+.btn-sm{padding:4px 6px;font-size:13px;margin-left:4px;}
+.modal-overlay{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.5);
+    display:none;align-items:center;justify-content:center;
+}
+.modal{
+    background:white;padding:20px;border-radius:12px;min-width:280px;max-width:400px;box-shadow:0 8px 24px rgba(0,0,0,0.2);
+}
+.modal h3{margin-top:0}
+.modal label{display:block;margin-top:10px;font-weight:600}
+.modal input{width:100%;padding:8px;margin-top:4px;border-radius:6px;border:1px solid #ddd}
+.modal-actions{margin-top:14px;text-align:right}
+.modal-actions .btn{margin-left:6px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <div>Earniva Dashboard</div>
+   
+</div>
+
+<div class="layout">
+    <div class="sidebar">
+            <a href="Dashboard.html" id="logoutSidebar">Dashboard</a>
+            <a href="MakeLinks .html" id="logoutSidebar">My Links</a>
+        <a href="earnkaro_dashboard_with_nav.html" id="logoutSidebar">Back To Affiliate panel</a>
+    </div>
+
+    <div class="content">
+        <!-- Dashboard view -->
+        <div id="dashboardView" class="view">
+            <div class="card">
+                <h2>Welcome, <span id="profileName"></span></h2>
+                <p>Email: <strong id="profileEmail"></strong></p>
+                <p>User ID: <strong id="profileUserId"></strong></p>
+                <p>Total Profit: <span class="profit" id="profileProfit"></span></p>
+                <p>Total Clicks: <strong id="profileClicks">0</strong></p>
+                <p>Total Links: <strong id="profileLinks">0</strong></p>
+                <p class="small muted">Joined: <span id="joinedDate"></span></p>
+            </div>
+        </div>
+
+        <!-- Links view -->
+        <div id="linksView" class="view" style="display:none">
+            <div class="card">
+                <h2>Your Referral / Affiliate Links</h2>
+                <p>Copy your links to share with others and earn profit.</p>
+                <button class="btn" id="addLinkBtn">Add New Link</button>
+                <table class="table" id="linksTable">
+                    <thead>
+                        <tr>
+                            <th>Link Name</th>
+                            <th>URL</th>
+                            <th>Clicks</th>
+                            <th>Profit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h3 id="modalTitle">Add New Link</h3>
+        <label for="linkName">Link Name</label>
+        <input type="text" id="linkName" placeholder="Example: Promo 4" />
+        <label for="linkURL">Link URL</label>
+        <input type="text" id="linkURL" placeholder="https://example.com/ref/4" />
+        <div class="modal-actions">
+            <button class="btn ghost" id="cancelBtn">Cancel</button>
+            <button class="btn" id="saveLinkBtn">Save</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- helper ---
+function jparse(v){try{return JSON.parse(v);}catch(e){return null;}}
+function ensureDemoUsers(){
+    let users=jparse(localStorage.getItem('users'));
+    if(!users||typeof users!=='object'){
+        users={};
+        users['alice@example.com']={name:'Alice Sharma',email:'alice@example.com',userId:'EKU'+Math.floor(Math.random()*9000+1000),totalProfit:'0',joinedDate:'2024-05-12'};
+        localStorage.setItem('users',JSON.stringify(users));
+    }
+}
+function getLoggedIn(){ const raw=localStorage.getItem('loggedInUser'); if(!raw) return null; let parsed=jparse(raw); if(parsed&&parsed.email) return parsed.email; return typeof raw==='string'?raw:null;}
+function doLogout(){localStorage.removeItem('loggedInUser'); alert('Logged out! Reload page.'); location.reload();}
+
+// --- Dashboard ---
+function updateDashboardStats(email){
+    const links=ensureDemoLinks(email);
+    let totalProfit=0,totalClicks=0;
+    links.forEach(l=>{totalProfit+=l.profit; totalClicks+=l.clicks;});
+    const users=jparse(localStorage.getItem('users'))||{}; if(users[email]) users[email].totalProfit=totalProfit; localStorage.setItem('users',JSON.stringify(users));
+    document.getElementById('profileProfit').textContent='₹'+totalProfit;
+    document.getElementById('profileClicks').textContent=totalClicks;
+    document.getElementById('profileLinks').textContent=links.length;
+}
+function renderDashboard(email){
+    const users=jparse(localStorage.getItem('users'))||{}; const u=users[email]; if(!u){alert('User not found');return;}
+    document.getElementById('profileName').textContent=u.name;
+    document.getElementById('profileEmail').textContent=u.email;
+    document.getElementById('profileUserId').textContent=u.userId;
+    document.getElementById('joinedDate').textContent=u.joinedDate;
+    updateDashboardStats(email);
+}
+
+// --- Links ---
+function ensureDemoLinks(email){
+    let links=jparse(localStorage.getItem('userLinks'))||{};
+    if(!links[email]){
+        links[email]=[
+            {name:'Promo 1','url':'https://earnkaro.com/ref/1','clicks':0,'profit':0},
+            {name:'Promo 2','url':'https://earnkaro.com/ref/2','clicks':0,'profit':0},
+        ];
+        localStorage.setItem('userLinks',JSON.stringify(links));
+    }
+    return links[email];
+}
+function saveAllLinks(email,links){ let all=jparse(localStorage.getItem('userLinks'))||{}; all[email]=links; localStorage.setItem('userLinks',JSON.stringify(all)); updateDashboardStats(email);}
+function renderLinks(email){
+    const links=ensureDemoLinks(email);
+    const tbody=document.querySelector('#linksTable tbody'); tbody.innerHTML='';
+    links.forEach((l,index)=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${l.name}</td><td><a href="${l.url}" target="_blank">${l.url}</a></td><td>${l.clicks}</td><td class="profit">₹${l.profit}</td>
+        <td>
+            <button class="btn-sm" onclick="simulateClick(${index})">Click</button>
+            <button class="btn-sm" onclick="editLink(${index})">Edit</button>
+            <button class="btn-sm" onclick="deleteLink(${index})">Delete</button>
+        </td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+// --- Actions ---
+let editIndex=null;
+function addNewLink(email,name,url){ if(!name||!url) return false; const links=ensureDemoLinks(email); links.push({name,url,clicks:0,profit:0}); saveAllLinks(email,links); renderLinks(email); return true;}
+function editLink(index){ const links=ensureDemoLinks(email); editIndex=index; document.getElementById('modalTitle').textContent='Edit Link'; document.getElementById('linkName').value=links[index].name; document.getElementById('linkURL').value=links[index].url; modal.style.display='flex';}
+function deleteLink(index){ if(!confirm('Delete this link?')) return; const links=ensureDemoLinks(email); links.splice(index,1); saveAllLinks(email,links); renderLinks(email);}
+function simulateClick(index){ const links=ensureDemoLinks(email); links[index].clicks+=1; links[index].profit+=Math.floor(Math.random()*50+10); saveAllLinks(email,links); renderLinks(email);}
+
+// --- Modal ---
+const modal=document.getElementById('modalOverlay');
+document.getElementById('addLinkBtn').onclick=()=>{editIndex=null; document.getElementById('modalTitle').textContent='Add New Link'; document.getElementById('linkName').value=''; document.getElementById('linkURL').value=''; modal.style.display='flex';};
+document.getElementById('cancelBtn').onclick=()=>modal.style.display='none';
+document.getElementById('saveLinkBtn').onclick=()=>{
+    const name=document.getElementById('linkName').value.trim();
+    const url=document.getElementById('linkURL').value.trim();
+    if(!name||!url){alert('Enter name and URL'); return;}
+    if(editIndex!==null){ const links=ensureDemoLinks(email); links[editIndex].name=name; links[editIndex].url=url; saveAllLinks(email,links);}
+    else addNewLink(email,name,url);
+    modal.style.display='none';
+    renderLinks(email);
+};
+modal.addEventListener('click',e=>{ if(e.target===modal) modal.style.display='none';});
+
+// --- Navigation ---
+function showView(viewId){ document.querySelectorAll('.view').forEach(v=>v.style.display='none'); document.getElementById(viewId).style.display='block'; }
+
+// --- Main ---
+ensureDemoUsers();
+const email=getLoggedIn();
+if(!email){ alert('Please login first on dashboard.'); }
+else{
+    renderDashboard(email);
+    renderLinks(email);
+}
+document.getElementById('navDashboard').onclick=()=>showView('dashboardView');
+document.getElementById('navLinks').onclick=()=>showView('linksView');
+document.getElementById('logoutBtn').onclick=doLogout;
+document.getElementById('logoutSidebar').onclick=doLogout;
+</script>
+</body>
+</html>

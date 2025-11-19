@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnKaro - Flipkart Super Sellers</title>
+    <style>
+        /* --- Base Reset and Setup --- */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4; /* हल्का ग्रे बैकग्राउंड */
+            line-height: 1.5;
+        }
+
+        h1, h2, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- 1. Top Navigation Bar --- */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1a4d3e; /* गहरा हरा */
+            color: white;
+            padding: 10px 20px;
+            flex-wrap: wrap; 
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .nav-center {
+            display: flex;
+            flex-grow: 1;
+            margin: 0 20px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+
+        .search-button {
+            background-color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .nav-right a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        /* --- 2. Main Content Area & Header --- */
+        .main-container {
+            padding: 0 20px 20px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            padding: 15px 0 5px 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .current-page {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .page-header p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        /* --- 3. Layout Container (Sidebar + Products) --- */
+        .layout-container {
+            display: grid;
+            /* डेस्कटॉप पर लेआउट: साइडबार और प्रोडक्ट */
+            grid-template-columns: 280px 1fr; 
+            gap: 20px;
+        }
+
+        /* --- 3a. Left Filter Sidebar --- */
+        .filter-sidebar {
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #eee;
+            height: fit-content;
+        }
+
+        .filter-heading {
+            font-size: 16px;
+            color: #555;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .filter-group {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .price-input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .price-input {
+            width: 60px;
+            padding: 6px 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .go-btn {
+            padding: 6px 10px;
+            background-color: #4CAF50; 
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-filter-input {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-option {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .checkbox-option label {
+            font-size: 14px;
+            color: #333;
+        }
+
+
+        /* --- 3b. Right Product Display Area --- */
+        .product-display {
+            padding: 0 5px;
+        }
+
+        /* Tabs */
+        .product-tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            background-color: transparent;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #777;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #1a4d3e;
+            font-weight: bold;
+            border-bottom: 3px solid #1a4d3e;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Sale Tags & Icon */
+        .card-header-icon {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .flipkart-icon {
+            width: 20px; 
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .sale-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 0 4px 0 4px;
+            text-transform: uppercase;
+        }
+
+        .sale-tag.summer { background-color: #ff7f50; }
+        .sale-tag.grab-now { background-color: #e83a48; }
+        .sale-tag.sale-time { background-color: #e83a48; }
+        .sale-tag.new { background-color: #3b5998; }
+
+
+        .product-image {
+            width: 80%;
+            max-height: 180px;
+            object-fit: contain;
+            margin: 10px 0;
+        }
+
+        .card-details {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            min-height: 50px;
+        }
+
+        .description {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .price-range {
+            font-size: 15px;
+            color: #333;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .earning-info {
+            padding: 10px 0;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .earning-info p:last-child {
+            color: #4CAF50; 
+            font-weight: bold;
+        }
+
+        /* --- तीन बटनों (Share, Copy, Start Now) के लिए CSS --- */
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .card-actions.three-btns .copy-link-btn,
+        .card-actions.three-btns .share-btn,
+        .card-actions.three-btns .start-now-btn {
+            padding: 8px 0;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 32%; 
+            font-size: 11px; 
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        .share-btn {
+            background-color: #f0f0f0; 
+            border: 1px solid #ccc;
+            color: #555;
+        }
+
+        .copy-link-btn {
+            background-color: transparent;
+            border: 1px solid #ccc;
+            color: #555;
+        }
+
+        .start-now-btn {
+            background-color: #4CAF50; 
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+
+        /* --- प्रतिक्रियाशीलता (Responsiveness) --- */
+        @media (max-width: 900px) {
+            .layout-container {
+                grid-template-columns: 1fr; 
+                gap: 0;
+            }
+            
+            .filter-sidebar {
+                width: 100%;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .top-nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-right {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="nav-left">
+            <span class="logo">☰ EARNKARO</span>
+        </div>
+        <div class="nav-center">
+            <input type="search" placeholder="Search for partners or deals" class="search-input">
+            <button class="search-button">🔍</button>
+        </div>
+        <div class="nav-right">
+            <a href="#">❓ Profit Rates</a>
+            <a href="#">🔗 Make Links</a>
+            <a href="#">👤 My Profile</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="breadcrumb">
+            Home / Super Sellers / <span class="current-page">Flipkart Super Sellers</span>
+        </div>
+
+        <div class="page-header">
+            <h1>FLIPKART SUPER SELLERS</h1>
+            <p>Choose from 200+ deals</p>
+        </div>
+
+        <div class="layout-container">
+
+            <aside class="filter-sidebar">
+                <h2 class="filter-heading">FILTER BY</h2>
+                
+                <div class="filter-group">
+                    <span class="filter-title">Super Sellers</span>
+                    <div class="checkbox-option"><input type="checkbox" checked><label>Flipkart Super Sellers</label></div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title-icon"><span class="filter-title">Price</span><span class="filter-icon">▼</span></div>
+                    <div class="price-input-group">
+                        <input type="number" placeholder="50" class="price-input min-price">
+                        <span class="price-separator">-</span>
+                        <input type="number" placeholder="1000" class="price-input max-price">
+                        <button class="go-btn">GO</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title-icon"><span class="filter-title">Seller</span><span class="filter-icon">▼</span></div>
+                    <input type="text" placeholder="Search Seller" class="search-filter-input">
+                    <div class="checkbox-option"><input type="checkbox" checked><label>Flipkart (148)</label></div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-title-icon"><span class="filter-title">Brand</span><span class="filter-icon">▼</span></div>
+                    <input type="text" placeholder="Search Brand" class="search-filter-input">
+                    <div class="checkbox-option"><input type="checkbox"><label>Flipkart (348)</label></div>
+                </div>
+
+            </aside>
+
+            <section class="product-display">
+                <nav class="product-tabs">
+                    <button class="tab active">Popularity</button>
+                    <button class="tab">Discount</button>
+                    <button class="tab">High Price</button>
+                    <button class="tab">Low Price</button>
+                </nav>
+
+                <div class="product-grid">
+                    
+                    <div class="product-card">
+                        <div class="card-header-icon">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZuZYAnEMIblzB5wTIrnfqIxHKyn0eX1GCjg&s" alt="Flipkart Icon" class="flipkart-icon">
+                            <span class="sale-tag summer">SUMMER DEAL</span>
+                        </div>
+                        <div class="card-image-wrapper"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZuZYAnEMIblzB5wTIrnfqIxHKyn0eX1GCjg&s" alt="Product 1" class="product-image"></div>
+                        <div class="card-details">
+                            <p class="description">Cleansers/Creams</p>
+                            <p class="price-range">Under **₹199**</p>
+                        </div>
+                        <div class="earning-info">
+                            <p>STARTING FROM **₹89**</p>
+                            <p>FOR SALE YOU EARN **Flat 3.2% Profit**</p>
+                        </div>
+                        <div class="card-actions three-btns">
+                            <button class="share-btn">🔗 SHARE</button> 
+                            <button class="copy-link-btn">COPY LINK</button> 
+                            <!-- <button class="start-now-btn">▶️ START NOW</button> -->
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-header-icon">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTXDSEI_i0g3dnGgGl52mOSwX43s38zoRkyg&s" alt="Flipkart Icon" class="flipkart-icon">
+                            <span class="sale-tag grab-now">GRAB NOW</span>
+                        </div>
+                        <div class="card-image-wrapper"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTXDSEI_i0g3dnGgGl52mOSwX43s38zoRkyg&s" alt="Product 2" class="product-image"></div>
+                        <div class="card-details">
+                            <p class="description">Trimmers</p>
+                            <p class="price-range">Starting **₹177**</p>
+                        </div>
+                        <div class="earning-info">
+                            <p>STARTING FROM **₹177**</p>
+                            <p>FOR SALE YOU EARN **Flat 2.4% Profit**</p>
+                        </div>
+                        <div class="card-actions three-btns">
+                            <button class="share-btn">🔗 SHARE</button> 
+                            <button class="copy-link-btn">COPY LINK</button> 
+                            <!-- <button class="start-now-btn">▶️ START NOW</button> -->
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="card-header-icon">
+                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Deal1%2037-1743078362.png" alt="Flipkart Icon" class="flipkart-icon">
+                            <span class="sale-tag sale-time">SALE TIME</span>
+                        </div>
+                        <div class="card-image-wrapper"><img src="https://asset22.ckassets.com/resources/image/staticpage_images/Deal1%2037-1743078362.png" alt="Product 3" class="product-image"></div>
+                        <div class="card-details">
+                            <p class="description">Flat 50% Off</p>
+                            <p class="price-range">on Water Geyzers</p>
+                        </div>
+                        <div class="earning-info">
+                            <p>STARTING FROM **₹225**</p>
+                            <p>FOR SALE YOU EARN **Flat 2.4% Profit**</p>
+                        </div>
+                        <div class="card-actions three-btns">
+                            <button class="share-btn">🔗 SHARE</button> 
+                            <button class="copy-link-btn">COPY LINK</button> 
+                            <!-- <button class="start-now-btn">▶️ START NOW</button> -->
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="card-header-icon">
+                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/trimmers1-1743747007.png" alt="Flipkart Icon" class="flipkart-icon">
+                            <span class="sale-tag sale-time">SALE TIME</span>
+                        </div>
+                        <div class="card-image-wrapper"><img src="https://asset22.ckassets.com/resources/image/staticpage_images/trimmers1-1743747007.png" alt="Product 4" class="product-image"></div>
+                        <div class="card-details">
+                            <p class="description">Vellora & Delta</p>
+                            <p class="price-range">Under **₹299**</p>
+                        </div>
+                        <div class="earning-info">
+                            <p>STARTING FROM **₹99**</p>
+                            <p>FOR SALE YOU EARN **Flat 2.4% Profit**</p>
+                        </div>
+                        <div class="card-actions three-btns">
+                            <button class="share-btn">🔗 SHARE</button> 
+                            <button class="copy-link-btn">COPY LINK</button> 
+                            <!-- <button class="start-now-btn">▶️ START NOW</button> -->
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-header-icon">
+                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Flipkart-Women's%20Jeans-1740036817.png" alt="Flipkart Icon" class="flipkart-icon">
+                            <span class="sale-tag new">NEW ARRIVAL</span>
+                        </div>
+                        <div class="card-image-wrapper"><img src="https://asset22.ckassets.com/resources/image/staticpage_images/Flipkart-Women's%20Jeans-1740036817.png" alt="Product 5" class="product-image"></div>
+                        <div class="card-details">
+                            <p class="description">Smart Watches</p>
+                            <p class="price-range">Flat **30% Off**</p>
+                        </div>
+                        <div class="earning-info">
+                            <p>STARTING FROM **₹899**</p>
+                            <p>FOR SALE YOU EARN **Flat 4.0% Profit**</p>
+                        </div>
+                        <div class="card-actions three-btns">
+                            <button class="share-btn">🔗 SHARE</button> 
+                            <button class="copy-link-btn">COPY LINK</button> 
+                            <!-- <button class="start-now-btn">▶️ START NOW</button> -->
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-header-icon">
+                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Flipkart-Formal%20Shirts-1739959369.png" alt="Flipkart Icon" class="flipkart-icon">
+                            <span class="sale-tag grab-now">HOT DEAL</span>
+                        </div>
+                        <div class="card-image-wrapper"><img src="https://asset22.ckassets.com/resources/image/staticpage_images/Flipkart-Formal%20Shirts-1739959369.png" alt="Product 6" class="product-image"></div>
+                        <div class="card-details">
+                            <p class="description">Mobile Covers</p>
+                            <p class="price-range">Under **₹149**</p>
+                        </div>
+                        <div class="earning-info">
+                            <p>STARTING FROM **₹30**</p>
+                            <p>FOR SALE YOU EARN **Flat 1.5% Profit**</p>
+                        </div>
+                        <div class="card-actions three-btns">
+                            <button class="share-btn">🔗 SHARE</button> 
+                            <button class="copy-link-btn">COPY LINK</button> 
+                            <!-- <button class="start-now-btn">▶️ START NOW</button> -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+<script>
+    // 1. कॉपी लिंक कार्यक्षमता (Copy Link Functionality)
+    function handleCopyLink() {
+        const copyButtons = document.querySelectorAll('.copy-link-btn');
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // यह सिर्फ एक उदाहरण URL है, असली में आप डायनेमिक URL का उपयोग करेंगे
+                const linkToCopy = 'https://earnkaro.in/product-share-link-' + Math.random().toString(36).substring(2, 7);
+                
+                // क्लिपबोर्ड API का उपयोग करें
+                navigator.clipboard.writeText(linkToCopy)
+                    .then(() => {
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '✅ COPIED!';
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Copy failed:', err);
+                        alert('Could not copy link. Please try again.');
+                    });
+            });
+        });
+    }
+
+    // 2. शेयर कार्यक्षमता (Share Functionality)
+    function handleShare() {
+        const shareButtons = document.querySelectorAll('.share-btn');
+
+        shareButtons.forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const productCard = e.target.closest('.product-card');
+                const productTitle = productCard ? productCard.querySelector('.description').textContent : 'Check out this amazing deal!';
+                
+                // शेयर करने के लिए उदाहरण URL
+                const shareUrl = window.location.href; 
+
+                // Web Share API की जांच करें
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: productTitle,
+                            text: `Exclusive Offer: ${productTitle} only on EarnKaro!`,
+                            url: shareUrl
+                        });
+                        console.log('Content shared successfully');
+                    } catch (error) {
+                        console.error('Sharing failed:', error);
+                    }
+                } else {
+                    // फ़ॉलबैक: लिंक को कॉपी करें
+                    alert("Your device doesn't support the native share dialog. The product link has been copied to your clipboard.");
+                    
+                    navigator.clipboard.writeText(shareUrl)
+                        .then(() => console.log('Fallback: URL copied to clipboard'))
+                        .catch(err => console.error('Fallback copy failed:', err));
+                }
+            });
+        });
+    }
+
+    // 3. प्रोडक्ट टैब स्विचिंग कार्यक्षमता (Tab Switching Functionality)
+    function handleTabSwitching() {
+        const tabs = document.querySelectorAll('.product-tabs .tab');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                // 'active' क्लास हटाएँ और जोड़ें
+                tabs.forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        handleCopyLink();
+        handleShare();
+        handleTabSwitching();
+    });
+    function shareProduct(productId) {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareData = {
+    title: product.name,
+    text: `Check out this ${product.brand} Jewelry! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+    url: product.link
+  };
+
+  
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log('Shared successfully!'))
+      .catch((err) => {
+        console.error('Share failed:', err);
+        alert('❌ Sharing failed. Try copying the link.');
+        copyLink(productId);
+      });
+  } 
+  // 💻 Desktop fallback
+  else {
+    // Try Clipboard API first
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(product.link)
+        .then(() => alert('✅ Link copied! Share it manually.'))
+        .catch(() => prompt('Copy this link:', product.link));
+    } else {
+      prompt('Copy this link:', product.link);
+    }
+  }
+}
+
+</script>
+</body>
+</html>

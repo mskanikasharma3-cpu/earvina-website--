@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | EarnKaro Clone</title>
+<style>
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  background: #f9fafb;
+  color: #333;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    background: #f9fafb;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 6%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: relative;
+}
+header h1 {
+    color: #1a783a;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* ===== Base Styles ===== */
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+body {
+  font-family:'Poppins', sans-serif;
+  background:#f9fafb;
+  color:#1f1f1f;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+   * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f8f9fa;
+    }
+
+    /* HEADER */
+    header {
+      background: #fff;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo h1 {
+      color: #2fb86f;
+      font-size: 1.6rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #2fb86f;
+    }
+
+    /* DROPDOWN */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 200;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 15px;
+      color: #333;
+    }
+
+    .dropdown-menu a:hover {
+      background: #f4f4f4;
+      color: #2fb86f;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #333;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* Hamburger Animation */
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translateY(8px);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-8px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      padding-top: 80px;
+      transition: 0.4s ease;
+      z-index: 1500;
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px 25px;
+      border-bottom: 1px solid #f1f1f1;
+    }
+
+    .sidebar ul li a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      color: #2fb86f;
+    }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+/* ===== Hero Section ===== */
+.hero-section {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:80px 8%;
+  flex-wrap:wrap;
+}
+.hero-content {flex:1; min-width:320px;}
+.hero-graphic {flex:1; display:flex; justify-content:center;}
+.graphic-video {width:600px; border-radius:30px; box-shadow:0 10px 25px rgba(0,0,0,0.15);}
+.main-heading {font-size:60px; font-weight:800; color:#e85550; line-height:1.1;}
+.sub-heading {font-size:26px; color:#333; margin-bottom:25px;}
+.cta-btn {background:#e85550; border:none; color:white; padding:15px 40px; font-size:18px; border-radius:40px; cursor:pointer; font-weight:600; transition:all 0.3s ease;}
+.cta-btn:hover {transform:translateY(-3px); background:#cf3834;}
+
+/* ===== Responsive Media ===== */
+@media (max-width:768px){
+  nav ul {
+    flex-direction:column;
+    display:none;
+    gap:0;
+    background:white;
+    width:100%;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    margin-top:10px;
+  }
+  nav ul li {text-align:center; width:100%;}
+  .hamburger {display:flex;}
+  .dropdown-menu {position:static; display:none; box-shadow:none; border-radius:0; padding:5px 0;}
+  .dropdown.open .dropdown-menu {display:block;}
+  .hero-section {flex-direction:column; text-align:center;}
+  .graphic-video {width:100%; max-width:350px;}
+  .cta-btn {margin-top:20px;}
+}
+.hero-about {
+  background: linear-gradient(135deg, #1a783a 0%, #36b37e 50%, #b9f6ca 100%);
+  color: #fff;
+  text-align: center;
+  padding: 100px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Smooth animated glow */
+.hero-about::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
+  animation: glow 6s infinite linear;
+  z-index: 0;
+}
+@keyframes glow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hero-about h2 {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.hero-about p {
+  font-size: 18px;
+  max-width: 750px;
+  margin: 0 auto;
+  line-height: 1.8;
+  position: relative;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-about {
+    padding: 70px 20px;
+  }
+  .hero-about h2 {
+    font-size: 30px;
+  }
+  .hero-about p {
+    font-size: 16px;
+  }
+}
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .blog-post {
+            background-color: #fff;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .blog-post h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .blog-post p {
+            color: #555;
+            line-height: 1.6;
+        }
+/* Mission Section */
+.mission-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 60px 6%;
+  flex-wrap: wrap;
+  background: #fff;
+}
+.mission-text {
+  max-width: 550px;
+}
+.mission-text h3 {
+  color: #1a783a;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+.mission-text p {
+  font-size: 17px;
+  color: #444;
+  line-height: 1.8;
+}
+.mission-img {
+  width: 400px;
+  border-radius: 10px;
+}
+
+/* Stats Section */
+.stats-section {
+  background: #f1f8f2;
+  text-align: center;
+  padding: 70px 20px;
+}
+.stats-section h3 {
+  color: #1a783a;
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.stat-card {
+  background: #fff;
+  width: 250px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.stat-number {
+  color: #2ab7f6;
+  font-size: 36px;
+  font-weight: 800;
+}
+.stat-label {
+  color: #1a783a;
+  font-size: 18px;
+}
+
+/* Investors */
+.investors {
+  background: #fff;
+  padding: 70px 20px;
+  text-align: center;
+}
+.investors h3 {
+  color: #1a783a;
+  font-size: 32px;
+  margin-bottom: 25px;
+}
+.investors img {
+  width: 120px;
+  border-radius: 50%;
+  margin-top: 20px;
+}
+.investors p {
+  font-size: 18px;
+  color: #444;
+  margin-top: 10px;
+}
+
+/* Footer */
+footer {
+  background: #222;
+  color: #ccc;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .mission-section { flex-direction: column; text-align: center; }
+  .mission-img { width: 90%; margin-top: 25px; }
+}
+/* --- General Layout Styles for Home Page --- */
+.section-title {
+    font-size: 38px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.section-subtitle {
+    font-size: 20px;
+    text-align: center;
+    color: #555;
+    margin-bottom: 30px;
+}
+.dark-green-title {
+    color: #1a3838; /* Dark Green */
+}
+.blue-text {
+    color: #007bff; /* Blue for stats */
+}
+.red-text {
+    color: #e85550;
+}
+.center-title {
+    margin-top: 40px; 
+}
+
+
+/* --- 1. HERO SECTION --- */
+.hero-section {
+    padding: 60px 0;
+    background-color: white;
+}
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+.hero-text {
+    max-width: 50%;
+}
+.welcome-text {
+    font-size: 32px;
+    color: #1a3838;
+    margin: 0;
+    font-weight: 500;
+}
+.main-title {
+    font-size: 80px;
+    font-weight: 900;
+    color: #1a3838;
+    line-height: 1;
+    margin: 10px 0;
+}
+.subtitle {
+    font-size: 30px;
+    color: #4CAF50; /* EarnKaro Green */
+    margin: 0;
+    font-weight: 600;
+}
+.hero-image-area {
+    max-width: 45%;
+    text-align: right;
+}
+.hero-main-img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+}
+
+/* --- 2. VALUE PROPOSITION & HIGHLIGHTS --- */
+.value-highlights-section {
+    padding: 60px 0;
+    background-color: #f7f7f7;
+}
+.highlights-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.value-card, .stat-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+.value-card {
+    width: 250px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.blue-card {
+    background-color: #007bff;
+    color: white;
+    padding: 40px 25px;
+}
+.funding-card {
+    width: 250px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.funder-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.funder-name {
+    color: #1a3838;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+.stats-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+.stat-card {
+    text-align: center;
+    padding: 15px;
+}
+.stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 0;
+}
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* --- 3. PROFIT CALCULATOR --- */
+.profit-calculator-section {
+    padding: 60px 0;
+    background-color: white;
+    text-align: center;
+}
+.calculator-card {
+    max-width: 700px;
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+.slider-group {
+    margin: 25px 0;
+    text-align: left;
+    position: relative;
+}
+.profit-slider {
+    width: 100%;
+    height: 8px;
+    /* -webkit-appearance: none; */
+    background: #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.estimated-profit {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+.profit-amount {
+    font-size: 30px;
+}
+
+/* --- 4. RECOMMENDED BRANDS --- */
+.recommended-brands-section {
+    padding: 60px 0;
+    background-color: #f7f7f7;
+}
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+.brand-logo-card {
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #666;
+    opacity: 0.6; /* Simulate grayscale logo */
+}
+
+/* --- 5. TESTIMONIALS --- */
+.testimonials-section {
+    padding: 60px 0;
+    background-color: white;
+}
+.testimonials-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+.testimonial-card {
+    width: 350px;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+.user-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 5px solid #333; /* Dark border jaisa image mein hai */
+}
+.user-name {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    margin-top: -30px; /* Position adjust karna */
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.user-quote {
+    font-style: italic;
+    color: #e85550; /* Reddish text */
+    margin-top: 20px;
+    line-height: 1.5;
+}
+
+/* --- 6. INVESTORS --- */
+.investors-section {
+    padding: 60px 0;
+    background-color: #f7f7f7;
+}
+.investors-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+.investor-card {
+    width: 300px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border-right: 1px solid #eee; /* Vertical line simulation */
+}
+.investor-logo, .investor-photo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 15px;
+    object-fit: contain;
+}
+.investor-photo {
+    border-radius: 50%;
+    filter: grayscale(100%);
+    margin: 0 auto 15px;
+}
+.investor-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a3838;
+}
+.investor-details {
+    color: #4CAF50;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.investor-description {
+    font-size: 14px;
+    color: #666;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-text, .hero-image-area {
+        max-width: 100%;
+    }
+    .main-title {
+        font-size: 60px;
+    }
+    .investor-card {
+        border-right: none; 
+        border-bottom: 1px solid #eee;
+    }
+}
+@media (max-width: 768px) {
+    .brands-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .highlights-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .value-card, .stats-cards {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+</style>
+</head>
+ <header>
+    <div class="logo">
+      <h1>Earniva</h1>
+    </div>
+
+    <nav>
+      <ul id="nav-links">
+        <li><a href="index.html">Home</a></li>
+
+        <li class="dropdown">
+          <div class="dropdown-toggle">
+            Company <span class="dropdown-arrow">▼</span>
+          </div>
+          <div class="dropdown-menu">
+            <a href="about.html" class="dropdown-item">About Us</a>
+            <a href="EarnKaroWorks.html" class="dropdown-item">How Earniva Works</a>
+            <a href="contact.html" class="dropdown-item">Contact</a>
+          </div>
+        </li>
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="LoginPage.html">Login/signup</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hamburger Icon -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="blog.html">Blogs</a></li>
+      <li><a href="EarnKaroWorks.html">How Earniva works</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="LoginPage.html">Login/signup</a></li>
+      <li><a href="about.html">Back</a></li>
+    </ul>
+  </div>
+
+
+<section class="hero-about">
+  <h2>About Earniva Clone</h2>
+  <p>We empower millions of Indians to earn online from the comfort of their homes. Our platform connects brands, affiliates, and smart shoppers in one ecosystem built on trust and innovation.</p>
+</section>
+
+<section class="mission-section">
+  <div class="mission-text">
+    <h3>Our Mission</h3>
+    <p>Earniva Clone’s mission is to make affiliate marketing accessible to everyone. Whether you’re a student, homemaker, or professional, we help you earn profit by sharing deals and offers from top brands.</p>
+  </div>
+  <img src="data:image/jpeg;base64,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" alt="Mission" class="mission-img">
+</section>
+
+<section class="stats-section">
+  <h3>Our Achievements</h3>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">30L+</div>
+      <div class="stat-label">Affiliate Marketers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1Cr+</div>
+      <div class="stat-label">Transactions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">₹40Cr+</div>
+      <div class="stat-label">Paid to Users</div>
+    </div>
+  </div>
+</section>
+
+<main>
+    <section class="hero-section">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h2 class="welcome-text">Welcome To</h2>
+                <h1 class="main-title">India's #1</h1>
+                <h2 class="subtitle">Affiliate Marketing Platform</h2>
+            </div>
+            <div class="hero-image-area">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3PtE54IjyjxvgCdY4P6W2uHcFd44EW0a6gw&s" alt="Biggest Brands, Highest Earnings" class="hero-main-img">
+            </div>
+        </div>
+    </section>
+
+ >
+    
+    <section class="profit-calculator-section">
+        <div class="container calculator-card">
+            <h2 class="section-title">Calculate Your Monthly Profit</h2>
+            <p class="section-subtitle">Choose Number Of Orders</p>
+            
+            <div class="slider-group">
+                <label>Electronics</label>
+                <input type="range" min="1" max="50" value="7" class="profit-slider" id="electronics-slider">
+                <span class="slider-value" data-value="7">7</span>
+            </div>
+            <div class="slider-group">
+                <label>Beauty & Fashion</label>
+                <input type="range" min="1" max="50" value="15" class="profit-slider" id="beauty-slider">
+                <span class="slider-value" data-value="15">15</span>
+            </div>
+            <div class="slider-group">
+                <label>Grocery & Home Essentials</label>
+                <input type="range" min="1" max="50" value="20" class="profit-slider" id="grocery-slider">
+                <span class="slider-value" data-value="20">20</span>
+            </div>
+            
+            <div class="estimated-profit">
+                Estimated Profit: <span class="profit-amount red-text">₹9,650*</span>
+            </div>
+            <small>*T&Cs Apply</small>
+        </div>
+    </section>
+    
+    
+
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title dark-green-title">Hear It From Our Rockstars</h2>
+            <p class="section-subtitle">Join 30L+ Earning Users</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <img src="https://asset22.ckassets.com/resources/image/staticpage_images/about_arumai_desktop.png" alt="Sunder" class="user-photo">
+                        <div class="user-details">
+                            <p class="user-name">Sunder, Telegrammer</p>
+                        </div>
+                    </div>
+                    <p class="user-quote">"I just made a Telegram group & kept sharing deals. I get good income from orders that get placed"</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <img src="https://asset22.ckassets.com/resources/image/staticpage_images/rohan-img-1feb.jpg" alt="Raj" class="user-photo">
+                        <div class="user-details">
+                            <p class="user-name">Raj, Student</p>
+                        </div>
+                    </div>
+                    <p class="user-quote">"EarnKaro is the best source of pocket money for students like me"</p>
+                </div>
+                </div>
+        </div>
+    </section>
+
+    <section class="investors-section">
+        <div class="container">
+            <h2 class="section-title dark-green-title center-title">OUR INVESTORS</h2>
+            <div class="investors-grid">
+                <div class="investor-card">
+                    <img src="https://asset22.ckassets.com/resources/image/staticpage_images/ck_kalaari_capital.png" alt="Kalaari Capital" class="investor-logo">
+                    <h3 class="investor-name">Kalaari Capital</h3>
+                    <p class="investor-details">India's Leading Venture Capital Firm</p>
+                    <p class="investor-description">Invested $3.4 Million as Series 'A' Funding making EarnKaro India's 1st VC funded deal-sharing site...</p>
+                </div>
+                <div class="investor-card">
+                     <img src="https://asset22.ckassets.com/resources/image/staticpage_images/korea-investment-1654842838.png" alt="Korea investment" class="investor-logo">
+                    <h3 class="investor-name">Korea Investment Partners</h3>
+                    <p class="investor-details">A Leading Venture Capital Firm</p>
+                    <p class="investor-description">Invested $10 Million in Series 'B' Funding to help EarnKaro grow in new avenues and become a household name.</p>
+                </div>
+                <div class="investor-card">
+                    <img src="https://asset22.ckassets.com/resources/image/staticpage_images/ck_ratan_tata.png" alt="Late Ratan Tata" class="investor-photo">
+                    <h3 class="investor-name">Late Ratan Tata</h3>
+                    <p class="investor-details">Former Chairman, Tata Group</p>
+                    <p class="investor-description">Invested & helped reinforce EarnKaro's position as the strongest player in the deal-hungry Affiliate Marketing industry.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+  <p>Earniva created By Nikhil Sharma. All Rights Reserved 2025.</p>
+</footer>
+<script>
+        const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+
+    // Toggle sidebar on hamburger click
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      hamburger.classList.toggle('open');
+    });
+
+    // Close sidebar when link clicked
+    const sidebarLinks = document.querySelectorAll('#sidebar a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        hamburger.classList.remove('open');
+      });
+    });   
+
+</script>
+</body>
+</html>

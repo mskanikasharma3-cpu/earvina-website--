@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>/* Basic styling to match the look */
+.main-categories {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.category-tab {
+  text-decoration: none;
+  color: #333;
+  padding: 0 15px 10px 15px; /* Added bottom padding for the underline effect */
+  margin-right: 15px;
+  font-size: 14px;
+  position: relative; /* Needed for the underline */
+}
+
+.category-tab.active {
+  color: #000; /* Darker color for active tab */
+  font-weight: 600;
+}
+
+/* Underline effect for the active tab */
+.category-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; /* Position it on the bottom border/hr */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #f40000; /* Example red color for the underline */
+}
+
+/* Content visibility logic */
+.category-content {
+  display: none; /* Hidden by default */
+  padding: 20px 0;
+}
+
+.category-content.active {
+  display: block; /* Shown when active */
+}
+
+/* Style for the tiles */
+.content-row {
+  display: flex;
+  gap: 15px;
+}
+
+.tile {
+  width: 250px; /* Adjust as needed */
+  height: 150px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #eee; /* Default */
+}
+
+/* Specific tile colors from image 1 */
+.flash-sale { background-color: #d90000; }
+.flipkart { background-color: #0056e6; }
+.myntra { background-color: #e60086; }
+.finance { background-color: #003300; }
+
+/* Background for image 2 content */
+.yellow-bg {
+  background-color: #fffae6; /* Light yellow background */
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* Tile styling for image 2 (Headphones, etc.) */
+.yellow-bg .tile {
+  background: none; /* Remove background on tiles */
+  color: #38761d; /* Greenish text */
+  font-size: 24px;
+}</style>
+
+<hr> <div id="super-sellers-content" class="category-content active">
+  <div class="content-row">
+    <div class="tile flash-sale">FLASH SALE</div>
+    <div class="tile flipkart">Flipkart</div>
+    <div class="tile myntra">Myntra</div>
+    <div class="tile finance">FINANCE BEST CARDS</div>
+  </div>
+</div>
+
+<div id="accessories-content" class="category-content">
+  <div class="content-row">
+    <div class="tile">Watches</div>
+    <div class="tile">Bags</div>
+    <div class="tile">Jewelry</div>
+  </div>
+</div>
+
+<div id="electronics-content" class="category-content">
+  <div class="content-row yellow-bg">
+    <div class="tile headphones">Headphones</div>
+    <div class="tile powerbanks">Powerbanks</div>
+    <div class="tile speakers">Speakers</div>
+  </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const tabs = document.querySelectorAll('.category-tab');
+  const contentSections = document.querySelectorAll('.category-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function(event) {
+      event.preventDefault(); // Stop the link from jumping
+
+      // 1. Update the active tab styling
+      tabs.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+
+      // 2. Determine which content to show
+      const targetContentId = this.getAttribute('data-content');
+
+      // 3. Show the corresponding content and hide others
+      contentSections.forEach(content => {
+        content.classList.remove('active'); // Hide all content
+      });
+
+      const targetContent = document.getElementById(targetContentId);
+      if (targetContent) {
+        targetContent.classList.add('active'); // Show the target content
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

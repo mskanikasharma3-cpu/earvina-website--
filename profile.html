@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Profile Dashboard</title>
+    <style>
+        :root {
+            --bg: #f4f6fb;
+            --card: #fff;
+            --muted: #141415;
+            --accent: #4a90e2;
+            --danger: #d74848;
+            --glass: rgba(255, 236, 236, 0.5);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --muted: #084e94;
+            --accent: #2b9cff;
+            --glass: rgba(255, 255, 255, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #0b1220;
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+            gap: 20px;
+            padding: 18px;
+            align-items: flex-start
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 400px;
+            background: var(--card);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 8px 30px rgba(11, 17, 32, 0.06);
+            position: sticky;
+            top: 18px;
+            height: calc(100vh - 36px);
+            overflow: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px
+        }
+
+        .logo-dot {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), #2fb86f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700
+        }
+
+        .brand h3 {
+            margin: 0;
+            font-size: 18px
+        }
+
+        nav {
+            margin-top: 8px
+        }
+
+        .nav-item {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(42, 126, 255, 0.08), transparent);
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px
+        }
+
+        .search {
+            flex: 1;
+            display: flex;
+            gap: 8px
+        }
+
+        .search input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(11, 17, 32, 0.06)
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer
+        }
+
+        .ghost {
+            background: transparent;
+            border: 1px solid rgba(11, 17, 32, 0.06);
+            color: var(--muted)
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 18px
+        }
+
+        @media(max-width:900px) {
+            .app {
+                padding: 12px
+            }
+
+            .sidebar {
+                display: none
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* PROFILE CARD */
+        .card {
+            background: var(--card);
+            padding: 18px;
+            border-radius: 12px;
+            background-color: #91e0fd;
+            box-shadow: 0 6px 22px rgba(206, 206, 206, 0.04)
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            display: block;
+            margin: 0 auto 10px
+        }
+
+        .center {
+            text-align: center
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        /* lists */
+        .list {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            background: linear-gradient(180deg, var(--glass), transparent)
+        }
+
+        .row .left {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .pill {
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 13px
+        }
+
+        /* table like */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px
+        }
+
+        .table th {
+            text-align: left;
+            padding: 10px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .table td {
+            padding: 12px;
+            border-top: 1px solid rgba(11, 17, 32, 0.04)
+        }
+
+        /* earnings */
+        .earnings {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .kpi {
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .kpi .value {
+            font-size: 20px;
+            font-weight: 700
+        }
+
+        .kpi .note {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        /* responsive tweaks */
+        @media(max-width:700px) {
+            .avatar {
+                width: 70px;
+                height: 70px
+            }
+
+            .grid {
+                display: block
+            }
+
+            .card {
+                padding: 14px
+            }
+
+            .nav-item {
+                padding: 8px
+            }
+        }
+        .sidebar { width:220px; background:var(--card); padding:20px; box-shadow:2px 0 5px var(--shadow); display:flex; flex-direction:column; transition:0.3s; }
+.sidebar a { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); padding:10px; border-radius:8px; margin-bottom:5px; transition:0.2s; }
+.sidebar a:hover, .sidebar a.active { background:var(--accent); color:#fff; }
+    </style>
+</head>
+
+<body>
+
+    <div class="app" id="app">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <div class="logo-dot">E</div>
+                <div>
+                    <h3>Earvina</h3>
+                    <div class="small">Affiliate Dashboard</div>
+                </div>
+            </div>
+
+                 <div class="nav-item active" data-tab="profile">👤 Profile</div>
+                <div class="nav-item" data-tab="orders">📦 Orders</div>
+                <div class="nav-item" data-tab="transactions">💳 Transactions</div>
+                <div class="nav-item" data-tab="earnings">💰 Earnings</div>
+                <div class="nav-item" data-tab="settings">⚙️ Settings</div>
+             <a href="Dashboard.html" class="nav-item"><i class="fas fa-user-circle"></i>Dashboard</a>
+
+            <div style="margin-top:20px" class="small muted">Theme</div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn" id="darkToggle">Toggle Dark</button>
+                <button class="ghost" id="sidebarToggle">Hide</button>
+            </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <main class="content">
+            <div class="topbar">
+                <div class="search">
+                    <input id="globalSearch" placeholder="Search orders, transactions, products...">
+                </div>
+                <div class="controls">
+                    <button class="ghost" id="exportBtn">Export</button>
+                    <button class="btn" id="addOrderBtn">+ New Order</button>
+                </div>
+            </div>
+
+            <div class="grid">
+                <!-- LEFT (Profile Summary) -->
+                <section>
+                    <div class="card center" id="profileCard">
+                        <img id="avatar" class="avatar" src="" alt="avatar">
+                        <h2 id="displayName">User Name</h2>
+                        <div class="muted" id="displayEmail">email@example.com</div>
+
+                        <div class="list" style="margin-top:14px">
+                            <div class="row">
+                                <div class="left">
+                                    <div><b id="displayMethod">email</b>
+                                        <div class="muted">Login method</div>
+                                    </div>
+                                </div>
+                                <div><button class="ghost" onclick="editName()">Edit</button></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="left">
+                                    <div><b id="displayCreated">-</b>
+                                        <div class="muted">Account created</div>
+                                    </div>
+                                </div>
+                                <div ><button class="ghost" onclick="changePassword()">Change</button></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="left">
+                                    <div><b id="displayLast">-</b>
+                                        <div class="muted">Last login</div>
+                                    </div>
+                                </div>
+                                <div><button class="ghost" onclick="logout()">Logout</button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick KPIs -->
+                    <div class="card" style="margin-top:14px">
+                        <div class="earnings">
+                            <div class="kpi">
+                                <div>
+                                    <div class="muted">Pending Earnings</div>
+                                    <div class="value" id="pendingAmt">₹0</div>
+                                </div>
+                            </div>
+                            <div class="kpi">
+                                <div>
+                                    <div class="muted">Total Earnings</div>
+                                    <div class="value" id="totalAmt">₹0</div>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:8px;margin-top:8px">
+                                <button class="btn" id="withdrawBtn">Withdraw</button>
+                                <button class="ghost" id="txHistoryBtn">View Tx</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- RIGHT (Tabs) -->
+                <section>
+                    <div id="tabContent">
+                        <!-- Profile Tab -->
+                        <div class="card" id="tab-profile">
+                            <h3>Profile Details</h3>
+                            <p class="muted">Manage your profile info below.</p>
+                            <div style="margin-top:12px">
+                                <table class="table">
+                                    <tr>
+                                        <th>Full Name</th>
+                                        <td id="tName"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td id="tEmail"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Method</th>
+                                        <td id="tMethod"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Created</th>
+                                        <td id="tCreated"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Device</th>
+                                        <td id="tDevice"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- <div class="profile-box">
+    <h2>User Profile</h2>
+
+    <p><strong>Name:</strong> <span id="profile-name"></span></p>
+    <p><strong>Email:</strong> <span id="profile-email"></span></p>
+    <p><strong>Mobile:</strong> <span id="profile-mobile"></span></p>
+    <p><strong>Login Method:</strong> <span id="profile-method"></span></p>
+    <p><strong>Account Created:</strong> <span id="profile-date"></span></p>
+</div> -->
+
+
+                        <!-- Orders Tab -->
+                        <div class="card" id="tab-orders" style="display:none">
+                            <h3>Orders</h3>
+                            <p class="muted">Recent orders generated via your links.</p>
+                            <div style="margin-top:12px">
+                                <table class="table" id="ordersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Product</th>
+                                            <th>Status</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Transactions Tab -->
+                        <div class="card" id="tab-transactions" style="display:none">
+                            <h3>Transactions</h3>
+                            <p class="muted">Payments & withdrawals.</p>
+                            <div style="margin-top:12px">
+                                <table class="table" id="txTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Note</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Earnings Tab -->
+                        <div class="card" id="tab-earnings" style="display:none">
+                            <h3>Earnings</h3>
+                            <p class="muted">Affiliate breakdown</p>
+                            <div style="margin-top:12px">
+                                <div id="earnList"></div>
+                                <div style="margin-top:12px;display:flex;gap:8px">
+                                    <button class="btn" id="requestPayoutBtn">Request Payout</button>
+                                    <button class="ghost" id="calcEarningsBtn">Recalculate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Settings Tab -->
+                        <div class="card" id="tab-settings" style="display:none">
+                            <h3>Settings</h3>
+                            <p class="muted">Account & preferences</p>
+
+                            <div style="margin-top:12px">
+                                <label class="small">Dark mode</label><br>
+                                <input type="checkbox" id="darkModeSwitch">
+
+                                <div style="height:25px"></div>
+
+                                <!-- Exclusive Tools -->
+                                <h4 style="margin:0">Exclusive Tools</h4>
+                                <p class="muted" style="margin:4px 0 10px">Special tools available for EK Affiliaters
+                                </p>
+
+                                <div class="row">
+                                    <div class="left">
+                                        <div>
+                                            <b>EK Affiliaters</b>
+                                            <div class="muted">High-level exclusive tools</div>
+                                        </div>
+                                    </div>
+                                    <div><button class="btn" onclick="openExclusiveTools()">Open</button></div>
+                                </div>
+                                <div style="width:100%;padding:10px;border-radius:8px">
+                                    <a href="privacy-policy.html" class="read-more">privacy-policy</a>
+                                </div>
+                                <div style="height:20px"></div>
+
+                                <!-- Profit Share -->
+                                <h4 style="margin:0">Profit Share</h4>
+                                <p class="muted" style="margin:4px 0 10px">Check your referral-based earnings share</p>
+
+                                <div class="row">
+                                    <div class="left">
+                                        <div>
+                                            <b>Profit Share</b>
+                                            <div class="muted">Your shared commission earnings</div>
+                                        </div>
+                                    </div>
+                                    <div><button class="btn" onclick="openProfitShare()">View</button></div>
+                                </div>
+
+                                <div style="height:25px"></div>
+
+                                <!-- Logout -->
+                                <button class="ghost" onclick="logout()"
+                                    style="width:100%;padding:10px;border-radius:8px;">
+                                    🔒 Logout
+                                </button>
+
+                                <div style="height:10px"></div>
+
+                                <!-- Delete Account -->
+                                <button onclick="deleteAccount()" style="
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:none;
+      background:#ff4d4d;
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;">
+                                    ❌ Delete Account
+                                </button>
+
+                                <div style="height:20px"></div>
+
+                                <button class="ghost" onclick="clearData()">Clear Local Data</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+    
+
+    <script>
+        
+        function seedMockData(email) {
+            let users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (!users[email]) {
+                users[email] = {
+                    name: email.split('@')[0].replace(/[^a-z0-9]/ig, ' ').trim(),
+                    email: email,
+                    password: '***',
+                    method: 'email',
+                    createdAt: new Date().toLocaleString(),
+                    lastLogin: new Date().toLocaleString()
+                };
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            if (orders.length === 0) {
+                orders = [
+                    { id: 'ORD-1001', product: 'Running Shoes', status: 'Delivered', amount: 1299, date: '2025-10-01' },
+                    { id: 'ORD-1002', product: 'Yoga Mat', status: 'Pending', amount: 399, date: '2025-10-12' },
+                    { id: 'ORD-1003', product: 'Denim Jeans', status: 'Cancelled', amount: 699, date: '2025-10-20' }
+                ];
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+            // Mock transactions
+            let tx = JSON.parse(localStorage.getItem('transactions') || '[]');
+            if (tx.length === 0) {
+                tx = [
+                    { date: '2025-10-02', type: 'credit', amount: 120, note: 'Commission ORD-1001' },
+                    { date: '2025-10-15', type: 'credit', amount: 40, note: 'Commission ORD-1002' },
+                    { date: '2025-11-01', type: 'debit', amount: 1000, note: 'Payout to bank' }
+                ];
+                localStorage.setItem('transactions', JSON.stringify(tx));
+            }
+            // Earnings aggregate
+            if (!localStorage.getItem('earnings')) {
+                localStorage.setItem('earnings', JSON.stringify({ total: 160, pending: 40 }));
+            }
+        }
+
+        /* ========= Load loggedInUser ========= */
+        let logged = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+        // If not found, try to auto-login using first user (for demo)
+        if (!logged) {
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            const keys = Object.keys(users);
+            if (keys.length > 0) {
+                logged = users[keys[0]];
+                localStorage.setItem('loggedInUser', JSON.stringify(logged));
+            } else {
+                // seed demo user
+                const demoEmail = 'kanika@example.com';
+                seedMockData(demoEmail);
+                const users2 = JSON.parse(localStorage.getItem('users'));
+                logged = users2[demoEmail];
+                localStorage.setItem('loggedInUser', JSON.stringify(logged));
+            }
+        }
+
+        // Ensure mock data
+        seedMockData(logged.email);
+
+        /* ========= Fill UI ========= */
+        function renderProfile() {
+            document.getElementById('avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(logged.name)}&background=4a90e2&color=fff&size=256`;
+            document.getElementById('displayName').textContent = logged.name;
+            document.getElementById('displayEmail').textContent = logged.email;
+            document.getElementById('displayMethod').textContent = logged.method || 'email';
+            document.getElementById('displayCreated').textContent = logged.createdAt || '-';
+            document.getElementById('displayLast').textContent = logged.lastLogin || new Date().toLocaleString();
+
+            // detail table
+            document.getElementById('tName').textContent = logged.name;
+            document.getElementById('tEmail').textContent = logged.email;
+            document.getElementById('tMethod').textContent = logged.method || 'email';
+            document.getElementById('tCreated').textContent = logged.createdAt || '-';
+            document.getElementById('tDevice').textContent = navigator.userAgent;
+
+            // earnings
+            const earnings = JSON.parse(localStorage.getItem('earnings') || '{"total":0,"pending":0}');
+            document.getElementById('pendingAmt').textContent = `₹${earnings.pending}`;
+            document.getElementById('totalAmt').textContent = `₹${earnings.total}`;
+        }
+        renderProfile();
+
+        /* ========= Render Orders & Transactions ========= */
+        function renderOrders(filter) {
+            const rows = document.querySelector('#ordersTable tbody');
+            rows.innerHTML = '';
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const list = orders.filter(o => !filter ? true : JSON.stringify(o).toLowerCase().includes(filter));
+            list.forEach(o => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${o.id}</td><td>${o.product}</td><td>${o.status}</td><td>₹${o.amount}</td>`;
+                rows.appendChild(tr);
+            });
+        }
+
+        function renderTx(filter) {
+            const rows = document.querySelector('#txTable tbody');
+            rows.innerHTML = '';
+            const tx = JSON.parse(localStorage.getItem('transactions') || '[]');
+            const list = tx.filter(t => !filter ? true : JSON.stringify(t).toLowerCase().includes(filter));
+            list.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${t.date}</td><td>${t.type}</td><td>₹${t.amount}</td><td>${t.note}</td>`;
+                rows.appendChild(tr);
+            });
+        }
+
+        function renderEarnings() {
+            const earn = JSON.parse(localStorage.getItem('earnings') || '{"total":0,"pending":0}');
+            const el = document.getElementById('earnList');
+            el.innerHTML = `<div class="row"><div><b>Total:</b> ₹${earn.total}</div></div>
+                  <div class="row"><div><b>Pending:</b> ₹${earn.pending}</div></div>`;
+        }
+
+        /* initial render */
+        renderOrders(); renderTx(); renderEarnings();
+
+        /* ========= Tabs ========= */
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+                item.classList.add('active');
+                const tab = item.getAttribute('data-tab');
+                document.querySelectorAll('#tabContent > div.card').forEach(card => {
+                    card.style.display = card.id === `tab-${tab}` ? 'block' : 'none';
+                });
+            });
+        });
+
+        /* ========= Search ========= */
+        document.getElementById('globalSearch').addEventListener('input', function () {
+            const v = this.value.trim().toLowerCase();
+            renderOrders(v); renderTx(v);
+        });
+
+        /* ========= Actions ========= */
+        document.getElementById('addOrderBtn').addEventListener('click', () => {
+            const id = 'ORD-' + (Math.floor(Math.random() * 9000) + 1000);
+            const prod = prompt('Product name', 'New Product');
+            const amt = Number(prompt('Amount', '199'));
+            if (!prod || !amt) return;
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.unshift({ id: id, product: prod, status: 'Pending', amount: amt, date: new Date().toLocaleDateString() });
+            localStorage.setItem('orders', JSON.stringify(orders));
+            // add commission to earnings
+            const earnings = JSON.parse(localStorage.getItem('earnings') || '{"total":0,"pending":0}');
+            const commission = Math.round(amt * 0.1);
+            earnings.total += commission; earnings.pending += commission;
+            localStorage.setItem('earnings', JSON.stringify(earnings));
+            // add transaction
+            const tx = JSON.parse(localStorage.getItem('transactions') || '[]');
+            tx.unshift({ date: new Date().toLocaleDateString(), type: 'credit', amount: commission, note: `Commission ${id}` });
+            localStorage.setItem('transactions', JSON.stringify(tx));
+            renderOrders(); renderEarnings(); renderTx();
+        });
+
+        document.getElementById('withdrawBtn').addEventListener('click', () => {
+            const earnings = JSON.parse(localStorage.getItem('earnings') || '{"total":0,"pending":0}');
+            if (earnings.pending <= 0) { alert('No pending amount'); return; }
+            const toPay = earnings.pending;
+            if (confirm(`Request payout of ₹${toPay}?`)) {
+                // create tx
+                const tx = JSON.parse(localStorage.getItem('transactions') || '[]');
+                tx.unshift({ date: new Date().toLocaleDateString(), type: 'debit', amount: toPay, note: 'Payout requested' });
+                localStorage.setItem('transactions', JSON.stringify(tx));
+                earnings.pending = 0;
+                localStorage.setItem('earnings', JSON.stringify(earnings));
+                renderEarnings(); renderTx();
+                alert('Payout requested. Admin will process.');
+            }
+        });
+
+        document.getElementById('requestPayoutBtn').addEventListener('click', () => document.getElementById('withdrawBtn').click());
+        document.getElementById('calcEarningsBtn').addEventListener('click', () => { renderEarnings(); alert('Earnings recalculated (mock).'); });
+
+        /* ========= Export ========= */
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const data = {
+                user: logged,
+                orders: JSON.parse(localStorage.getItem('orders') || '[]'),
+                transactions: JSON.parse(localStorage.getItem('transactions') || '[]'),
+                earnings: JSON.parse(localStorage.getItem('earnings') || '{}')
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'profile-data.json'; a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        /* ========= Edit / Password / Logout ========= */
+        function editName() {
+            const newName = prompt('Enter your full name:', logged.name);
+            if (!newName) return;
+            logged.name = newName;
+            // update users record too
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[logged.email]) users[logged.email].name = newName;
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('loggedInUser', JSON.stringify(logged));
+            renderProfile();
+        }
+        function changePassword() {
+            const newPass = prompt('Enter new password:');
+            if (!newPass) return;
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            if (users[logged.email]) users[logged.email].password = newPass;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Password updated');
+        }
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            alert('Logged out');
+            window.location.href = 'loginPage.html';
+        }
+        function openExclusiveTools() {
+            window.location.href = "exclusive-tools.html";
+        }
+
+        function openProfitShare() {
+            window.location.href = "profit-share.html";
+        }
+
+        /* ========= Dark Mode & Sidebar ========= */
+        const themeKey = 'ek_theme';
+        const savedTheme = localStorage.getItem(themeKey) || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
+        document.getElementById('darkToggle').addEventListener('click', () => {
+            const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            const next = cur === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem(themeKey, next);
+        });
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            const s = document.getElementById('sidebar');
+            if (s.style.display === 'none') { s.style.display = ''; document.getElementById('sidebarToggle').textContent = 'Hide'; }
+            else { s.style.display = 'none'; document.getElementById('sidebarToggle').textContent = 'Show'; }
+        });
+
+        /* ========= Clear local data (settings) ========= */
+        function clearData() {
+            if (confirm('Clear all local data (users, orders, transactions, earnings)?')) {
+                localStorage.removeItem('users');
+                localStorage.removeItem('orders');
+                localStorage.removeItem('transactions');
+                localStorage.removeItem('earnings');
+                localStorage.removeItem('loggedInUser');
+                alert('Local data cleared — reloading');
+                location.reload();
+            }
+        }
+
+        // ==========================
+        // DARK MODE
+        // ==========================
+        const darkSwitch = document.getElementById("darkModeSwitch");
+
+        // Load saved theme
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark");
+            if (darkSwitch) darkSwitch.checked = true;
+        }
+
+        // When user toggles
+        if (darkSwitch) {
+            darkSwitch.addEventListener("change", () => {
+                if (darkSwitch.checked) {
+                    document.body.classList.add("dark");
+                    localStorage.setItem("darkMode", "enabled");
+                } else {
+                    document.body.classList.remove("dark");
+                    localStorage.setItem("darkMode", "disabled");
+                }
+            });
+        }
+
+
+        // ==========================
+        // OPEN EXCLUSIVE TOOLS PAGE
+        // ==========================
+        function openExclusiveTools() {
+            window.location.href = "exclusive-tools.html";
+        }
+
+
+        // ==========================
+        // OPEN PROFIT SHARE PAGE
+        // ==========================
+        function openProfitShare() {
+            window.location.href = "profit-share.html";
+        }
+
+
+        // ==========================
+        // LOGOUT
+        // ==========================
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+
+            alert("Logged out successfully!");
+
+            // Back to login page
+            window.location.href = "loginPage.html";
+        }
+
+
+
+        function deleteAccount() {
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+            if (!user) {
+                alert("No user logged in!");
+                return;
+            }
+
+            if (!confirm("Are you sure? Your account will be deleted permanently.")) return;
+
+            let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+            // Delete this user by email key
+            delete users[user.email];
+
+            // Save updated users list
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // Remove logged in session
+            localStorage.removeItem("loggedInUser");
+
+            alert("Account deleted successfully!");
+
+            window.location.href = "loginPage.html";
+        }
+
+
+        // ==========================
+        // CLEAR LOCAL DATA
+        // ==========================
+        function clearData() {
+            if (!confirm("Clear all saved data?")) return;
+
+            localStorage.clear();
+            alert("Local storage cleared.");
+
+            window.location.reload();
+        }
+
+        function openProfitShare() {
+            window.location.href = "privacy-policy.html";
+        }
+        // ===============================
+        // SIDEBAR TAB SWITCHING
+        // ===============================
+
+        const navItems = document.querySelectorAll('#nav .nav-item');
+        const tabs = document.querySelectorAll('.tab'); // all tab content sections
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+
+                // remove active class from all
+                navItems.forEach(i => i.classList.remove('active'));
+
+                // set active on clicked
+                item.classList.add('active');
+
+                // show selected tab
+                const selectedTab = item.getAttribute('data-tab');
+
+                tabs.forEach(tab => {
+                    if (tab.id === selectedTab) {
+                        tab.style.display = 'block';
+                    } else {
+                        tab.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+
+
+        // ===============================
+        // DARK MODE TOGGLE
+        // ===============================
+
+        document.getElementById("darkToggle").addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+
+            // save mode
+            const darkMode = document.body.classList.contains("dark");
+            localStorage.setItem("darkMode", darkMode);
+        });
+
+        // Load saved theme on page load
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark");
+        }
+
+
+
+        // ===============================
+        // SIDEBAR HIDE / SHOW
+        // ===============================
+
+        const sidebar = document.getElementById("sidebar");
+        const sidebarToggle = document.getElementById("sidebarToggle");
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("hidden");
+
+            if (sidebar.classList.contains("hidden")) {
+                sidebarToggle.textContent = "Show";
+            } else {
+                sidebarToggle.textContent = "Hide";
+            }
+        });
+const sections=document.querySelectorAll('section');
+sidebarLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    sidebarLinks.forEach(l=>l.classList.remove('active'));
+    link.classList.add('active');
+    const target=link.dataset.section;
+    sections.forEach(s=>s.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+window.addEventListener('load', () => {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if(!user){
+        alert("Please login first!");
+        window.location.href = "login.html";
+        return;
+    }
+
+    // जहाँ भी आपको data दिखाना है
+    document.getElementById("profile-name").innerText = user.name || "No Name";
+    document.getElementById("profile-email").innerText = user.email || "Not Provided";
+    document.getElementById("profile-mobile").innerText = user.mobile || "Not Provided";
+    document.getElementById("profile-method").innerText = user.method.toUpperCase();
+    document.getElementById("profile-date").innerText = user.createdAt;
+});
+
+    </script>
+</body>
+
+</html>

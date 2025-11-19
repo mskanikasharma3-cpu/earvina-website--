@@ -1,0 +1,140 @@
+/* ===== Login Page Styles (image_267b2c.png) ===== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Thoda upar se shuru ho */
+    min-height: 100vh;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 450px; /* Thoda chhota container jaisa image mein hai */
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.login-container {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.back-arrow {
+    font-size: 28px;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.login-heading {
+    font-size: 32px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.sms-note {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+/* --- Form Elements --- */
+.login-form {
+    text-align: left;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    /* Image mein input field green border ke saath dikhta hai */
+    border-color: #4CAF50; 
+}
+
+.social-or {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    margin: 15px 0;
+}
+
+.google-login-btn {
+    display: block;
+    width: 50px; /* Small square button */
+    height: 50px;
+    margin: 0 auto 30px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%; /* Circular button jaisa image mein hai */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+
+.google-login-btn:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.terms-note {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.policy-link {
+    color: #007bff; /* Blue links jaisa image mein hai */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.policy-link:hover {
+    text-decoration: underline;
+}
+
+.continue-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #4CAF50; /* Green button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.continue-btn:hover {
+    background-color: #45a049;
+}

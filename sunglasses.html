@@ -1,0 +1,694 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EARNKARO - Responsive Sunglasses Listing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+/* Base & Responsive Styles (Consistency maintained across all pages) */
+body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; box-sizing: border-box; color: #333; }
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 1000; }
+.logo-section { display: flex; align-items: center; }
+.menu-icon { background: none; border: none; font-size: 1.5em; cursor: pointer; margin-right: 15px; display: block; }
+.logo-text { font-size: 1.5em; font-weight: bold; color: #333; }
+.logo-karo { color: #f7a01a; }
+.search-bar { display: flex; flex-grow: 1; max-width: 400px; margin: 0 20px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+.search-bar input { border: none; padding: 8px 10px; width: 100%; outline: none; }
+.search-btn { background-color: #f7a01a; color: white; border: none; padding: 8px 15px; cursor: pointer; }
+.nav-links { display: flex; gap: 15px; }
+.nav-item { text-decoration: none; color: #333; font-size: 0.9em; display: flex; align-items: center; white-space: nowrap; }
+.nav-item i { margin-right: 5px; color: #f7a01a; }
+.main-content-wrapper { display: grid; grid-template-areas: "breadcrumb breadcrumb" "sidebar listing"; grid-template-columns: 250px 1fr; gap: 20px; padding: 15px 20px; max-width: 1400px; margin: 0 auto; }
+.breadcrumb { grid-area: breadcrumb; padding: 10px 0; font-size: 0.9em; color: #666; }
+.breadcrumb a { text-decoration: none; color: #666; }
+.current-page { font-weight: bold; color: #333; }
+.sidebar { grid-area: sidebar; background-color: #fff; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+.sidebar h3 { margin: 0 0 15px 0; font-size: 1.1em; font-weight: bold; color: #333; }
+.filter-group { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+.filter-group h4 { margin: 0 0 10px 0; font-size: 1em; color: #555; }
+.category-list, .filter-options { list-style: none; padding: 0; margin: 0; }
+.category-list li { font-weight: bold; padding: 5px 0; color: #f7a01a; }
+.price-range { display: flex; gap: 5px; align-items: center; }
+.price-range input { width: 60px; padding: 5px; border: 1px solid #ddd; text-align: center; }
+.go-btn { background-color: #4CAF50; color: white; border: none; padding: 6px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+.search-input { width: 100%; padding: 5px; margin-bottom: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+.filter-options li { display: flex; align-items: center; padding: 4px 0; font-size: 0.9em; }
+.filter-options input[type="checkbox"] { margin-right: 8px; }
+.brand-list-container { max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; }
+.product-listing { grid-area: listing; }
+.page-title { font-size: 1.8em; margin: 0 0 5px 0; }
+.deal-count { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+.sort-options { display: flex; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px; }
+.sort-btn { background: none; border: none; padding: 10px 15px; cursor: pointer; font-weight: bold; color: #666; transition: color 0.3s, border-bottom 0.3s; }
+.sort-btn.active { color: #f7a01a; border-bottom: 2px solid #f7a01a; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.product-card { background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); padding: 15px; box-sizing: border-box; position: relative; overflow: hidden; }
+.sale-badge { position: absolute; top: 0; right: 0; background-color: #e84c3d; color: white; padding: 5px 10px; font-size: 0.8em; font-weight: bold; border-bottom-left-radius: 8px; z-index: 10; }
+.product-image-section { margin-bottom: 10px; text-align: center; }
+.main-image { width: 100%; height: auto; max-height: 200px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; }
+.product-details { padding: 5px 0; text-align: left; }
+.brand { font-size: 0.8em; color: #555; margin: 0 0 5px 0; }
+.name { font-size: 0.9em; font-weight: 500; margin: 0 0 10px 0; height: 36px; overflow: hidden; }
+.price-info { margin-bottom: 10px; }
+.original-price { text-decoration: line-through; color: #999; font-weight: normal; font-size: 0.9em; margin-right: 5px; }
+.sale-price { font-size: 1.1em; font-weight: bold; color: #e84c3d; margin-right: 5px; }
+.discount-percent { color: #4CAF50; font-size: 0.9em; font-weight: bold; }
+.your-profit { border: 1px solid #4CAF50; padding: 5px 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; background-color: #e8f5e9; margin-bottom: 15px; }
+.your-profit .label { font-size: 0.8em; color: #333; }
+.your-profit .value { font-size: 1.1em; font-weight: bold; color: #4CAF50; }
+.actions { display: flex; gap: 5px; }
+.copy-link-btn, .share-now-btn { width: 50%; padding: 10px 5px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8em; transition: background-color 0.3s; }
+.copy-link-btn { background-color: #f0f0f0; color: #333; border: 1px solid #ccc; }
+.share-now-btn { background-color: #4CAF50; color: white; }
+.copy-link-btn:hover, .share-now-btn:hover { opacity: 0.9; }
+.copy-link-btn:active, .share-now-btn:active { transform: scale(0.98); }
+@media (max-width: 900px) {
+    .search-bar { max-width: 300px; margin: 0 10px; }
+    .nav-links { display: none; }
+    .menu-icon { display: block; }
+    .main-content-wrapper { grid-template-areas: "breadcrumb" "listing" "sidebar"; grid-template-columns: 1fr; padding: 10px; gap: 15px; }
+    .sidebar { position: fixed; top: 0; left: -250px; width: 250px; height: 100%; transition: left 0.3s ease; z-index: 100; overflow-y: auto; padding-top: 60px; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); }
+    .sidebar.active { left: 0; }
+    .product-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .sort-options { justify-content: space-around; }
+    .sort-btn { padding: 8px 10px; font-size: 0.8em; }
+}
+@media (max-width: 480px) {
+    .navbar { padding: 8px 10px; }
+    .search-bar { width: 150px; }
+    .search-bar input { padding: 5px; font-size: 0.8em; }
+    .product-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-section">
+            <button class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <span class="logo-text">Earniva<span class="logo-karo"></span></span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for partners or deals">
+            <button class="search-btn" onclick="alert('Search initiated!')"><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="nav-links">
+            <a href="profile.html" class="nav-item"><i class="fas fa-chart-line"></i> Profit Rates</a>
+            <a href="MakeLinks .html" class="nav-item"><i class="fas fa-link"></i> Make Links</a>
+            <a href="profile.html" class="nav-item profile"><i class="fas fa-user-circle"></i> My Profile</a>
+        </nav>
+    </header>
+
+    <main class="main-content-wrapper">
+        <div class="breadcrumb">
+            <a href="earnkaro_dashboard_with_nav.html">Home</a> / <a href="earnkaro_dashboard_with_nav.html">Accessories</a> / <span class="current-page">Sunglasses</span>
+        </div>
+        
+        <aside class="sidebar" id="sidebar">
+            <h3>FILTER BY</h3>
+            <div class="filter-group">
+                <h4>Accessories</h4>
+                <ul class="category-list">
+                    <li>Sunglasses</li>
+                </ul>
+            </div>
+            <div class="filter-group">
+                <h4>Price</h4>
+                <div class="price-range">
+                    <input type="number" id="min-price" value="499" min="0" max="15000">
+                    <input type="number" id="max-price" value="7999" min="0" max="15000">
+                    <button class="go-btn" onclick="applyFilters()">GO</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4>Seller</h4>
+                <input type="text" placeholder="Search Seller" class="search-input">
+                <ul class="filter-options" id="seller-filters">
+                    <li><input type="checkbox" data-filter="seller" value="Lenskart" checked> Lenskart</li>
+                    <li><input type="checkbox" data-filter="seller" value="Myntra"> Myntra</li>
+                    <li><input type="checkbox" data-filter="seller" value="Amazon"> Amazon</li>
+                </ul>
+            </div>
+            <div class="filter-group">
+                <h4>Brand</h4>
+                <input type="text" placeholder="Search Brand" class="search-input">
+                <div class="brand-list-container">
+                    <ul class="filter-options brand-list">
+                        <li><input type="checkbox" data-filter="brand" value="Ray-Ban" checked> Ray-Ban</li>
+                        <li><input type="checkbox" data-filter="brand" value="Fastrack"> Fastrack</li>
+                        <li><input type="checkbox" data-filter="brand" value="Oakley"> Oakley</li>
+                        <li><input type="checkbox" data-filter="brand" value="Vogue"> Vogue</li>
+                        <li><input type="checkbox" data-filter="brand" value="Carrera"> Carrera</li>
+                        <li><input type="checkbox" data-filter="brand" value="Fossil"> Fossil</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <section class="product-listing">
+            <h1 class="page-title">SUNGLASSES</h1>
+            <p class="deal-count">Choose from <span id="deal-count-display"></span> deals</p>
+            
+            <div class="sort-options">
+                <button class="sort-btn active" data-sort="popularity" onclick="sortProducts('popularity', this)">Popularity</button>
+                <button class="sort-btn" data-sort="discount" onclick="sortProducts('discount', this)">Discount</button>
+                <button class="sort-btn" data-sort="high-price" onclick="sortProducts('high-price', this)">High Price</button>
+                <button class="sort-btn" data-sort="low-price" onclick="sortProducts('low-price', this)">Low Price</button>
+            </div>
+            
+            <div class="product-grid" id="product-grid">
+                </div>
+        </section>
+    </main>
+    
+    <script>
+        // --- 30 Sunglasses Product Data (JSON format) ---
+        const productData = [
+            { id: 1, brand: "Ray-Ban", name: "Aviator Gold Frame Green Lens", originalPrice: 6500, salePrice: 4875, discountPercent: 25, yourProfit: 390, isSale: true, image: "placeholder-sun1.jpg", seller: "Lenskart", link: "https://example.com/rayban-aviator" },
+            { id: 2, brand: "Fastrack", name: "UV Protected Wayfarer Sunglasses", originalPrice: 1599, salePrice: 799, discountPercent: 50, yourProfit: 64, isSale: true, image: "placeholder-sun2.jpg", seller: "Myntra", link: "https://example.com/fastrack-wayfarer" },
+            { id: 3, brand: "Oakley", name: "Polarized Sport Wrap Sunglasses", originalPrice: 8999, salePrice: 8999, discountPercent: 0, yourProfit: 720, isSale: false, image: "placeholder-sun3.jpg", seller: "Amazon", link: "https://example.com/oakley-sport" },
+            { id: 4, brand: "Vogue", name: "Women's Cat Eye Black Frame", originalPrice: 3999, salePrice: 1999, discountPercent: 50, yourProfit: 160, isSale: true, image: "placeholder-sun4.jpg", seller: "Lenskart", link: "https://example.com/vogue-cateye" },
+            { id: 5, brand: "Carrera", name: "Rectangular Frame Sunglasses", originalPrice: 5500, salePrice: 2750, discountPercent: 50, yourProfit: 220, isSale: true, image: "placeholder-sun5.jpg", seller: "Myntra", link: "https://example.com/carrera-rect" },
+            { id: 6, brand: "Fossil", name: "Square Oversized Sunglasses", originalPrice: 4999, salePrice: 2499, discountPercent: 50, yourProfit: 200, isSale: true, image: "placeholder-sun6.jpg", seller: "Amazon", link: "https://example.com/fossil-square" },
+            { id: 7, brand: "Ray-Ban", name: "Clubmaster Black Frame", originalPrice: 7200, salePrice: 5400, discountPercent: 25, yourProfit: 432, isSale: true, image: "placeholder-sun7.jpg", seller: "Lenskart", link: "https://example.com/rayban-clubmaster" },
+            { id: 8, brand: "Fastrack", name: "Round Blue Tinted Lenses", originalPrice: 1999, salePrice: 999, discountPercent: 50, yourProfit: 80, isSale: true, image: "placeholder-sun8.jpg", seller: "Myntra", link: "https://example.com/fastrack-round" },
+            { id: 9, brand: "Oakley", name: "Holbrook Polarized Sunglasses", originalPrice: 10500, salePrice: 10500, discountPercent: 0, yourProfit: 840, isSale: false, image: "placeholder-sun9.jpg", seller: "Amazon", link: "https://example.com/oakley-holbrook" },
+            { id: 10, brand: "Vogue", name: "Mirrored Lens Shield Sunglasses", originalPrice: 4500, salePrice: 2250, discountPercent: 50, yourProfit: 180, isSale: true, image: "placeholder-sun10.jpg", seller: "Lenskart", link: "https://example.com/vogue-shield" },
+            { id: 11, brand: "Carrera", name: "Unisex Pilot Sunglasses", originalPrice: 6200, salePrice: 3100, discountPercent: 50, yourProfit: 248, isSale: true, image: "placeholder-sun11.jpg", seller: "Myntra", link: "https://example.com/carrera-pilot" },
+            { id: 12, brand: "Fossil", name: "Classic Tortoise Shell Sunglasses", originalPrice: 3500, salePrice: 1750, discountPercent: 50, yourProfit: 140, isSale: true, image: "placeholder-sun12.jpg", seller: "Amazon", link: "https://example.com/fossil-tortoise" },
+            { id: 13, brand: "Ray-Ban", name: "Erika Velvet Texture Frame", originalPrice: 5800, salePrice: 4350, discountPercent: 25, yourProfit: 348, isSale: true, image: "placeholder-sun13.jpg", seller: "Lenskart", link: "https://example.com/rayban-erika" },
+            { id: 14, brand: "Fastrack", name: "Hexagonal Frame Sunglasses", originalPrice: 1799, salePrice: 899, discountPercent: 50, yourProfit: 72, isSale: true, image: "placeholder-sun14.jpg", seller: "Myntra", link: "https://example.com/fastrack-hexagonal" },
+            { id: 15, brand: "Oakley", name: "Frogskins Lite Prizm Lens", originalPrice: 9500, salePrice: 9500, discountPercent: 0, yourProfit: 760, isSale: false, image: "placeholder-sun15.jpg", seller: "Amazon", link: "https://example.com/oakley-frogskins" },
+            { id: 16, brand: "Vogue", name: "Gradient Lens Square Sunglasses", originalPrice: 3200, salePrice: 1600, discountPercent: 50, yourProfit: 128, isSale: true, image: "placeholder-sun16.jpg", seller: "Lenskart", link: "https://example.com/vogue-gradient" },
+            { id: 17, brand: "Carrera", name: "Rimless Oversized Sunglasses", originalPrice: 7500, salePrice: 3750, discountPercent: 50, yourProfit: 300, isSale: true, image: "placeholder-sun17.jpg", seller: "Myntra", link: "https://example.com/carrera-rimless" },
+            { id: 18, brand: "Fossil", name: "Metal Aviator with Blue Lens", originalPrice: 4200, salePrice: 2100, discountPercent: 50, yourProfit: 168, isSale: true, image: "placeholder-sun18.jpg", seller: "Amazon", link: "https://example.com/fossil-blue-aviator" },
+            { id: 19, brand: "Ray-Ban", name: "Round Metal Frame Sunglasses", originalPrice: 6900, salePrice: 5175, discountPercent: 25, yourProfit: 414, isSale: true, image: "placeholder-sun19.jpg", seller: "Lenskart", link: "https://example.com/rayban-round-metal" },
+            { id: 20, brand: "Fastrack", name: "Sporty Wrap-Around Sunglasses", originalPrice: 2499, salePrice: 1249, discountPercent: 50, yourProfit: 100, isSale: true, image: "placeholder-sun20.jpg", seller: "Myntra", link: "https://example.com/fastrack-sporty" },
+            { id: 21, brand: "Oakley", name: "Sutro Lite Sweep Cycling Glasses", originalPrice: 11999, salePrice: 11999, discountPercent: 0, yourProfit: 960, isSale: false, image: "placeholder-sun21.jpg", seller: "Amazon", link: "https://example.com/oakley-sutro" },
+            { id: 22, brand: "Vogue", name: "Geometric Gold Frame", originalPrice: 3700, salePrice: 1850, discountPercent: 50, yourProfit: 148, isSale: true, image: "placeholder-sun22.jpg", seller: "Lenskart", link: "https://example.com/vogue-geometric" },
+            { id: 23, brand: "Carrera", name: "Bold Plastic Frame Sunglasses", originalPrice: 4800, salePrice: 2400, discountPercent: 50, yourProfit: 192, isSale: true, image: "placeholder-sun23.jpg", seller: "Myntra", link: "https://example.com/carrera-bold" },
+            { id: 24, brand: "Fossil", name: "Transparent Frame Sunglasses", originalPrice: 3999, salePrice: 1999, discountPercent: 50, yourProfit: 160, isSale: true, image: "placeholder-sun24.jpg", seller: "Amazon", link: "https://example.com/fossil-transparent" },
+            { id: 25, brand: "Ray-Ban", name: "New Wayfarer Classic", originalPrice: 6100, salePrice: 4575, discountPercent: 25, yourProfit: 366, isSale: true, image: "placeholder-sun25.jpg", seller: "Lenskart", link: "https://example.com/rayban-new-wayfarer" },
+            { id: 26, brand: "Fastrack", name: "Pink Aviator for Women", originalPrice: 1699, salePrice: 849, discountPercent: 50, yourProfit: 68, isSale: true, image: "placeholder-sun26.jpg", seller: "Myntra", link: "https://example.com/fastrack-pink-aviator" },
+            { id: 27, brand: "Oakley", name: "Flak 2.0 XL Sunglasses", originalPrice: 10999, salePrice: 10999, discountPercent: 0, yourProfit: 880, isSale: false, image: "placeholder-sun27.jpg", seller: "Amazon", link: "https://example.com/oakley-flak" },
+            { id: 28, brand: "Vogue", name: "Round Metal with Colored Lens", originalPrice: 4100, salePrice: 2050, discountPercent: 50, yourProfit: 164, isSale: true, image: "placeholder-sun28.jpg", seller: "Lenskart", link: "https://example.com/vogue-colored-round" },
+            { id: 29, brand: "Carrera", name: "Square Oversized with Bridge Detail", originalPrice: 5999, salePrice: 2999, discountPercent: 50, yourProfit: 240, isSale: true, image: "placeholder-sun29.jpg", seller: "Myntra", link: "https://example.com/carrera-oversized-bridge" },
+            { id: 30, brand: "Fossil", name: "Retro Style Sunglasses", originalPrice: 3499, salePrice: 1749, discountPercent: 50, yourProfit: 140, isSale: true, image: "placeholder-sun30.jpg", seller: "Amazon", link: "https://example.com/fossil-retro" }
+        ];
+
+        let currentProducts = [...productData];
+
+        function formatPrice(price) { return `₹${price.toLocaleString('en-IN')}`; }
+        
+        function renderProducts(products) {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            products.forEach(product => {
+                const discountText = product.discountPercent > 0 ? `(${product.discountPercent}% Off)` : '';
+                let priceHTML = product.discountPercent > 0 ? 
+                    `<span class="original-price strike-through">${formatPrice(product.originalPrice)}</span>
+                     <span class="sale-price">${formatPrice(product.salePrice)}</span>
+                     <span class="discount-percent">${discountText}</span>` : 
+                    `<span class="sale-price">${formatPrice(product.salePrice)}</span>`;
+
+                const cardHTML = `
+                    <div class="product-card" data-id="${product.id}">
+                        ${product.isSale ? '<div class="sale-badge">On Sale</div>' : ''}
+                        <div class="product-image-section">
+                            <img src="${product.image}" alt="${product.name}" class="main-image">
+                        </div>
+                        <div class="product-details">
+                            <p class="brand">Brand: **${product.brand}**</p>
+                            <p class="name">${product.name}</p>
+                            <div class="price-info">${priceHTML}</div>
+                            <div class="your-profit">
+                                <span class="label">Your Profit</span>
+                                <span class="value">₹${product.yourProfit}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="copy-link-btn" onclick="copyLink(${product.id})">COPY LINK</button>
+                            <button class="share-now-btn" onclick="shareProduct(${product.id})"><i class="fas fa-share-alt"></i> SHARE NOW</button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHTML;
+            });
+            document.getElementById('deal-count-display').textContent = products.length;
+        }
+
+        async function copyLink(productId) {
+            const product = productData.find(p => p.id === productId);
+            const linkToCopy = product ? product.link : window.location.href; 
+            try { await navigator.clipboard.writeText(linkToCopy); alert('✅ Link Copied to Clipboard: ' + linkToCopy); } 
+            catch (err) { console.error('Copy failed: ', err); prompt('Copy the following link:', linkToCopy); }
+        }
+
+        function shareProduct(productId) {
+            const product = productData.find(p => p.id === productId);
+            if (navigator.share) {
+                navigator.share({
+                    title: product.name,
+                    text: `Check out these ${product.brand} Sunglasses! Only ${formatPrice(product.salePrice)}! Profit: ₹${product.yourProfit}`,
+                    url: product.link,
+                }).catch((error) => alert('❌ Sharing failed. You can copy the link instead.'));
+            } else {
+                alert(`Sharing feature not supported. Product: ${product.name}`);
+                copyLink(productId);
+            }
+        }
+        
+        function sortProducts(criteria, button) {
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            let sortedArray = [...currentProducts];
+            switch (criteria) {
+                case 'discount': sortedArray.sort((a, b) => b.discountPercent - a.discountPercent); break;
+                case 'high-price': sortedArray.sort((a, b) => b.salePrice - a.salePrice); break;
+                case 'low-price': sortedArray.sort((a, b) => a.salePrice - b.salePrice); break;
+                case 'popularity': default: sortedArray.sort((a, b) => a.id - b.id); break;
+            }
+            currentProducts = sortedArray;
+            renderProducts(currentProducts);
+        }
+        
+        function applyFilters() {
+            const minPrice = parseInt(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseInt(document.getElementById('max-price').value) || 99999;
+            let filteredArray = productData.filter(product => {
+                const price = product.salePrice;
+                return price >= minPrice && price <= maxPrice;
+            });
+            currentProducts = filteredArray;
+            renderProducts(currentProducts);
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-sort="popularity"]').classList.add('active');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(productData);
+        });
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earniva - Sunglasses</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ---------- Base ---------- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    /* ---------- Header ---------- */
+    header {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.6em;
+      font-weight: bold;
+    }
+    .logo span {
+      color: #f7a01a;
+    }
+    .search-bar {
+      display: flex;
+      max-width: 400px;
+      flex-grow: 1;
+      margin: 0 20px;
+    }
+    .search-bar input {
+      flex-grow: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+    }
+    .search-bar button {
+      background-color: #f7a01a;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+    .nav-item i {
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    /* ---------- Layout ---------- */
+    .main-content-wrapper {
+      display: grid;
+      grid-template-areas:
+        "breadcrumb breadcrumb"
+        "sidebar listing";
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+      padding: 15px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ---------- Breadcrumb ---------- */
+    .breadcrumb {
+      grid-area: breadcrumb;
+      font-size: 0.9em;
+      color: #666;
+    }
+    .breadcrumb a {
+      text-decoration: none;
+      color: #555;
+    }
+    .current-page {
+      font-weight: bold;
+      color: #000;
+    }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      grid-area: sidebar;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      padding: 15px;
+    }
+    .sidebar h3 {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    .filter-group {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    .filter-group h4 {
+      font-size: 1em;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    .price-range {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .price-range input {
+      width: 80px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .go-btn {
+      padding: 6px 10px;
+      background-color: #f7a01a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .search-input {
+      width: 100%;
+      padding: 6px;
+      margin-bottom: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .filter-options {
+      list-style: none;
+    }
+    .filter-options li {
+      margin: 5px 0;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-options input { accent-color: #f7a01a; }
+
+    /* ---------- Product Listing ---------- */
+    .product-listing {
+      grid-area: listing;
+    }
+    .page-title {
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .deal-count {
+      color: #555;
+      margin-bottom: 15px;
+    }
+    .sort-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .sort-btn {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .sort-btn:hover,
+    .sort-btn.active {
+      background-color: #f7a01a;
+      color: #fff;
+      border-color: #f7a01a;
+    }
+
+    /* ---------- Product Cards ---------- */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .product-details { text-align: left; }
+    .product-details p { margin-bottom: 4px; }
+    .sale-price { color: #e84c3d; font-weight: bold; }
+    .discount { color: #2e7d32; font-size: 0.9em; }
+    .actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .copy-link-btn,
+    .share-now-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      cursor: pointer;
+    }
+    .copy-link-btn {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+    }
+    .share-now-btn {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .main-content-wrapper {
+        grid-template-areas:
+          "breadcrumb"
+          "listing"
+          "sidebar";
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        order: 2;
+      }
+      .price-range { flex-direction: column; align-items: flex-start; }
+      .go-btn { width: 100%; margin-top: 5px; }
+      .sort-options { flex-direction: column; }
+      .sort-btn { width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      header { flex-wrap: wrap; }
+      .search-bar { margin: 10px 0; width: 100%; }
+      .nav-item { margin-left: auto; }
+      .product-card img { height: 150px; }
+      .page-title { font-size: 1.3em; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">Earn<span>iva</span></div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search Sunglasses..." id="searchBox" />
+      <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+    </div>
+    <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i></a>
+  </header>
+
+  <main class="main-content-wrapper">
+    <div class="breadcrumb">
+      <a href="#">Home</a> / <a href="#">Fashion</a> / <span class="current-page">Sunglasses</span>
+    </div>
+
+    <aside class="sidebar">
+      <h3>FILTER BY</h3>
+
+      <div class="filter-group">
+        <h4>Price</h4>
+        <div class="price-range">
+          <input type="number" id="min-price" value="499" min="0" />
+          <input type="number" id="max-price" value="2999" min="0" />
+          <button class="go-btn" onclick="applyFilters()">GO</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4>Brand</h4>
+        <ul class="filter-options" id="brand-filters">
+          <li><input type="checkbox" value="Ray-Ban" checked /> Ray-Ban</li>
+          <li><input type="checkbox" value="Fastrack" /> Fastrack</li>
+          <li><input type="checkbox" value="Polaroid" /> Polaroid</li>
+          <li><input type="checkbox" value="Oakley" /> Oakley</li>
+          <li><input type="checkbox" value="Vogue" /> Vogue</li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="product-listing">
+      <h1 class="page-title">Sunglasses</h1>
+      <p class="deal-count">Showing <span id="deal-count-display"></span> items</p>
+
+      <div class="sort-options">
+        <button class="sort-btn active" onclick="sortProducts('popularity', this)">Popularity</button>
+        <button class="sort-btn" onclick="sortProducts('discount', this)">Discount</button>
+        <button class="sort-btn" onclick="sortProducts('high-price', this)">High Price</button>
+        <button class="sort-btn" onclick="sortProducts('low-price', this)">Low Price</button>
+      </div>
+
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const sunglassesData = [
+      { id: 1, brand: "Ray-Ban", name: "Aviator Classic Sunglasses", price: 2499, discount: 20, image: "data:image/jpeg;base64,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" },
+      { id: 2, brand: "Fastrack", name: "Men Black UV Protected Sunglasses", price: 999, discount: 15, image: "data:image/jpeg;base64,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" },
+      { id: 3, brand: "Oakley", name: "Rectangular Sports Sunglasses", price: 2899, discount: 25, image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTiQSflkeLeB0w468KjDxTVhIiusDtJEDiduW6Z4chwTbA1qIbZnR4s0-jbuJZ4Hv2u4fuRNg2Htli2o20zCztTSGnXIAoj2ZJSubuBk8-YQz2U3oxXLyGWdQ" },
+      { id: 4, brand: "Vogue", name: "Round Polarized Sunglasses", price: 1599, discount: 30, image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcScCuEc-xs_Elt8EImn0iZ4DKEKXN0f64i7s3Wqa-2tehDCMjGXJ5lvj0toid_YHJUX0LUTmdmXMblGyhL2eUGEEhvP24BogxS5U9kd8fSK4eS65qTwlVhwVf4" },
+      { id: 5, brand: "Polaroid", name: "Wayfarer Unisex Sunglasses", price: 1299, discount: 10, image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcStGIDvSRpwy5hZujWXdnZ784NEmSDikKf5sBVTnzXSlHKPfA4I7-xM9IeBvn0dzCQ94GC-lprAzhaUeKBHGZS-n7GUvb1SzFmB0dhjtDI" }
+    ];
+
+    function renderProducts(data) {
+      const grid = document.getElementById("product-grid");
+      grid.innerHTML = "";
+      data.forEach((p) => {
+        grid.innerHTML += `
+          <div class="product-card">
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-details">
+              <p class="brand">${p.brand}</p>
+              <p class="name">${p.name}</p>
+              <p><span class="sale-price">₹${p.price}</span> 
+              <span class="discount">(${p.discount}% OFF)</span></p>
+            </div>
+            <div class="actions">
+              <button class="copy-link-btn" onclick="copyLink('#')">Copy Link</button>
+              <button class="share-now-btn" onclick="shareProduct('${p.name}', '#')">
+                <i class="fas fa-share-alt"></i> Share
+              </button>
+            </div>
+          </div>`;
+      });
+      document.getElementById("deal-count-display").textContent = data.length;
+    }
+
+    function sortProducts(type, btn) {
+      document.querySelectorAll(".sort-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      let sorted = [...sunglassesData];
+      if (type === "high-price") sorted.sort((a, b) => b.price - a.price);
+      else if (type === "low-price") sorted.sort((a, b) => a.price - b.price);
+      else if (type === "discount") sorted.sort((a, b) => b.discount - a.discount);
+      renderProducts(sorted);
+    }
+
+    function applyFilters() {
+      const min = parseInt(document.getElementById("min-price").value);
+      const max = parseInt(document.getElementById("max-price").value);
+      const checkedBrands = [...document.querySelectorAll("#brand-filters input:checked")].map(b => b.value);
+      const filtered = sunglassesData.filter(p =>
+        p.price >= min && p.price <= max && checkedBrands.includes(p.brand)
+      );
+      renderProducts(filtered);
+    }
+
+    function copyLink(link) {
+      navigator.clipboard.writeText(link);
+      alert("✅ Link copied!");
+    }
+
+    function shareProduct(name, link) {
+      if (navigator.share) navigator.share({ title: name, url: link });
+      else alert("Share not supported on this device.");
+    }
+
+    function searchProducts() {
+      const query = document.getElementById("searchBox").value.toLowerCase();
+      const filtered = sunglassesData.filter(p =>
+        p.name.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query)
+      );
+      renderProducts(filtered);
+    }
+
+    renderProducts(sunglassesData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earniva - Watches Listing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-icon {
+            background: none;
+            border: none;
+            font-size: 1.6em;
+            cursor: pointer;
+            color: #333;
+            display: none;
+        }
+
+        .logo-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo-karo {
+            color: #f7a01a;
+        }
+
+        .search-bar {
+            display: flex;
+            flex-grow: 1;
+            max-width: 450px;
+            margin: 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 8px 10px;
+            width: 100%;
+        }
+
+        .search-btn {
+            background: #f7a01a;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            color: #f7a01a;
+            margin-right: 5px;
+        }
+
+        /* Layout */
+        .main-content-wrapper {
+            display: grid;
+            grid-template-areas: "breadcrumb breadcrumb" "sidebar listing";
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .breadcrumb {
+            grid-area: breadcrumb;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            text-decoration: none;
+            color: #666;
+        }
+
+        .breadcrumb .current-page {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all .3s;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f7a01a;
+            padding-bottom: 5px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group h4 {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .filter-options,
+        .category-list {
+            list-style: none;
+        }
+
+        .filter-options li {
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .filter-options input {
+            margin-right: 8px;
+        }
+
+        .price-range input {
+            width: 60px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .go-btn {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Product List */
+        .product-listing {
+            grid-area: listing;
+        }
+
+        .page-title {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .deal-count {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .sort-options {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .sort-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sort-btn.active {
+            color: #f7a01a;
+            border-bottom: 2px solid #f7a01a;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            position: relative;
+            transition: transform .3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #e84c3d;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 0.8em;
+            border-bottom-left-radius: 8px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .brand {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .name {
+            font-size: 0.95em;
+            font-weight: 600;
+            margin: 5px 0 8px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .sale-price {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #e84c3d;
+            margin-right: 5px;
+        }
+
+        .discount-percent {
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .your-profit {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .copy-link-btn,
+        .share-now-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.85em;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .copy-link-btn {
+            background: #f0f0f0;
+        }
+
+        .share-now-btn {
+            background: #4caf50;
+            color: white;
+        }
+
+        /* Responsive */
+        @media(max-width:1024px) {
+            .main-content-wrapper {
+                grid-template-columns: 220px 1fr;
+            }
+        }
+
+        @media(max-width:768px) {
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .search-bar {
+                max-width: 250px;
+            }
+
+            .main-content-wrapper {
+                grid-template-areas: "breadcrumb" "listing";
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                height: 100%;
+                width: 250px;
+                background: white;
+                box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
+                z-index: 2000;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+        }
+
+        @media(max-width:480px) {
+            .search-bar {
+                max-width: 180px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 8px 12px;
+            }
+
+            .page-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-section">
+            <button class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <span class="logo-text">Earniva<span class="logo-karo"></span></span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for partners or deals">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="nav-links">
+            <a href="profile.html" class="nav-item"><i class="fas fa-chart-line"></i> Profit Rates</a>
+            <a href="MakeLinks .html" class="nav-item"><i class="fas fa-link"></i> Make Links</a>
+            <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i> My Profile</a>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main class="main-content-wrapper">
+        <div class="breadcrumb">
+            <a href="earnkaro_dashboard_with_nav.html">Home</a> / <a href="earnkaro_dashboard_with_nav.html">Accessories</a> / <span class="current-page">Powerbanks</span>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <h3>FILTER BY</h3>
+
+            <div class="filter-group">
+                <h4>Price</h4>
+                <div class="price-range">
+                    <input type="number" id="min-price" value="999">
+                    <input type="number" id="max-price" value="9999">
+                    <button class="go-btn" onclick="applyFilters()">GO</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <h4>Seller</h4>
+                <input type="text" placeholder="Search Seller" class="search-input">
+                <ul class="filter-options" id="seller-filters">
+                    <li><input type="checkbox" data-filter="seller" value="Flipkart" checked> Flipkart</li>
+                    <li><input type="checkbox" data-filter="seller" value="Ajio"> Ajio</li>
+                    <li><input type="checkbox" data-filter="seller" value="Amazon"> Amazon</li>
+                </ul>
+            </div>
+
+            <div class="filter-group">
+                <h4>Brand</h4>
+                <input type="text" placeholder="Search Brand" class="search-input">
+                <div class="brand-list-container">
+                    <ul class="filter-options brand-list" id="brand-filters">
+                        <li><input type="checkbox" data-filter="brand" value="Fastrack" checked>boat life style </li>
+                        <li><input type="checkbox" data-filter="brand" value="Titan">ubuy</li>
+                        <li><input type="checkbox" data-filter="brand" value="Casio"> Belkin</li>
+                        <li><input type="checkbox" data-filter="brand" value="Fossil">accecess</li>
+                        <li><input type="checkbox" data-filter="brand" value="Timex">portronices</li>
+                              
+                        <div>
+                            <a href="Powerbanks.html" class="nav-item"><i class="fas fa-link"></i> Back</a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Section -->
+        <section class="product-listing">
+            <h1 class="page-title">Headphones</h1>
+            <p class="deal-count">Choose from <span id="deal-count-display">0</span> deals</p>
+
+            <div class="sort-options">
+                <button class="sort-btn active" onclick="sortProducts('popularity', this)">Popularity</button>
+                <button class="sort-btn" onclick="sortProducts('discount', this)">Discount</button>
+                <button class="sort-btn" onclick="sortProducts('high-price', this)">High Price</button>
+                <button class="sort-btn" onclick="sortProducts('low-price', this)">Low Price</button>
+
+            </div>
+
+
+            <div class="product-grid" id="product-grid"></div>
+        </section>
+    </main>
+
+    <script>
+        const productData = [
+{
+    "id": 1,
+    "brand": "Mi",
+    "name": "Mi 20000mAh Power Bank 3i",
+    "originalPrice": 2499,
+    "salePrice": 1999,
+    "discountPercent": 20,
+    "yourProfit": 500,
+    "isSale": true,
+   "image": "data:image/jpeg;base64,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",
+    }
+];
+
+       let currentProducts = [...productData];
+const formatPrice = p => `₹${p.toLocaleString("en-IN")}`;
+
+
+function renderProducts(list) {
+  const grid = document.getElementById("product-grid");
+  grid.innerHTML = "";
+
+  list.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card">
+        ${p.discountPercent > 0 ? '<div class="sale-badge">SALE</div>' : ""}
+        <img src="${p.image}" class="main-image" alt="${p.name}">
+
+        <div class="product-details">
+          <p class="brand">Brand: ${p.brand}</p>
+          <p class="name">${p.name}</p>
+
+          <div class="price-info">
+            ${p.discountPercent ? `<span class="original-price">${formatPrice(p.originalPrice)}</span>` : ""}
+            <span class="sale-price">${formatPrice(p.salePrice)}</span>
+            ${p.discountPercent ? `<span class="discount-percent">(${p.discountPercent}% OFF)</span>` : ""}
+          </div>
+
+          <div class="your-profit">
+            <span>Your Profit</span>
+            <span>${formatPrice(p.yourProfit)}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="copy-link-btn" onclick="copyLink('${p.link}')">COPY LINK</button>
+          <button class="share-now-btn" onclick="shareProduct(${p.id})">
+            <i class="fas fa-share-alt"></i> SHARE
+          </button>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById("deal-count-display").textContent = list.length;
+}
+
+
+
+function applyFilters() {
+  const min = +document.getElementById("min-price").value;
+  const max = +document.getElementById("max-price").value;
+
+  const selectedBrands = [...document.querySelectorAll('input[data-filter="brand"]:checked')]
+    .map(b => b.value);
+
+  const selectedSellers = [...document.querySelectorAll('input[data-filter="seller"]:checked')]
+    .map(s => s.value);
+
+  currentProducts = productData.filter(p =>
+    p.salePrice >= min &&
+    p.salePrice <= max &&
+    selectedBrands.includes(p.brand) &&
+    selectedSellers.includes(p.seller)
+  );
+
+  renderProducts(currentProducts);
+}
+
+
+// ==================== SORT PRODUCTS ====================
+function sortProducts(type, btn) {
+  document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  if (type === "discount") currentProducts.sort((a, b) => b.discountPercent - a.discountPercent);
+  if (type === "high-price") currentProducts.sort((a, b) => b.salePrice - a.salePrice);
+  if (type === "low-price") currentProducts.sort((a, b) => a.salePrice - b.salePrice);
+
+  renderProducts(currentProducts);
+}
+
+
+// ==================== SIDEBAR TOGGLE ====================
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+
+// ==================== COPY LINK FUNCTION ====================
+function copyLink(link) {
+  navigator.clipboard.writeText(link)
+    .then(() => alert("✅ Link Copied Successfully!"))
+    .catch(() => alert("❌ Failed to copy link"));
+}
+
+
+function shareProduct(productId) {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareData = {
+    title: product.name,
+    text: `Check out this ${product.brand}! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+    url: product.link
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData)
+      .catch(() => copyLink(product.link));
+  } else {
+    copyLink(product.link);
+  }
+}
+
+
+
+document.addEventListener("DOMContentLoaded", () => renderProducts(productData));
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener("change", applyFilters));
+    </script>
+    
+</body>
+
+</html>

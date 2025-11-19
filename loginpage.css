@@ -1,0 +1,83 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.logo { font-size: 2.2em; font-weight: 600; color: #1a73e8; margin-bottom: 5px; }
+.tagline { color: #6a6e71; margin-bottom: 30px; font-size: 0.95em; }
+
+.input-group { margin-bottom: 20px; text-align: left; }
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+}
+.input-group input:focus {
+    border-color: #1a73e8;
+    outline: none;
+    box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-login { background-color: #1a73e8; color: #fff; }
+.btn-login:hover { background-color: #135eb6; }
+
+.btn-google {
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+.btn-google img { margin-right: 10px; }
+.btn-google:hover { background-color: #f1f1f1; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+.separator { margin: 25px 0; color: #aaa; position: relative; font-size: 0.9em; }
+.separator::before, .separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #e0e0e0;
+}
+.separator::before { left: 0; }
+.separator::after { right: 0; }
+
+.footer-note { font-size: 0.8em; color: #999; margin-top: 30px; }
+
+@media (max-width: 480px) {
+    .login-container { padding: 30px; }
+    .input-group input { padding: 10px; }
+    .btn { padding: 10px; font-size: 0.95em; }
+}

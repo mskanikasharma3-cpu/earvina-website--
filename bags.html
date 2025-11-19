@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EARNKARO - Responsive Bags Listing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+/* Base & Responsive Styles (Consistency maintained across all pages) */
+body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; box-sizing: border-box; color: #333; }
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 1000; }
+.logo-section { display: flex; align-items: center; }
+.menu-icon { background: none; border: none; font-size: 1.5em; cursor: pointer; margin-right: 15px; display: block; }
+.logo-text { font-size: 1.5em; font-weight: bold; color: #333; }
+.logo-karo { color: #f7a01a; }
+.search-bar { display: flex; flex-grow: 1; max-width: 400px; margin: 0 20px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+.search-bar input { border: none; padding: 8px 10px; width: 100%; outline: none; }
+.search-btn { background-color: #f7a01a; color: white; border: none; padding: 8px 15px; cursor: pointer; }
+.nav-links { display: flex; gap: 15px; }
+.nav-item { text-decoration: none; color: #333; font-size: 0.9em; display: flex; align-items: center; white-space: nowrap; }
+.nav-item i { margin-right: 5px; color: #f7a01a; }
+.main-content-wrapper { display: grid; grid-template-areas: "breadcrumb breadcrumb" "sidebar listing"; grid-template-columns: 250px 1fr; gap: 20px; padding: 15px 20px; max-width: 1400px; margin: 0 auto; }
+.breadcrumb { grid-area: breadcrumb; padding: 10px 0; font-size: 0.9em; color: #666; }
+.breadcrumb a { text-decoration: none; color: #666; }
+.current-page { font-weight: bold; color: #333; }
+.sidebar { grid-area: sidebar; background-color: #fff; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+.sidebar h3 { margin: 0 0 15px 0; font-size: 1.1em; font-weight: bold; color: #333; }
+.filter-group { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+.filter-group h4 { margin: 0 0 10px 0; font-size: 1em; color: #555; }
+.category-list, .filter-options { list-style: none; padding: 0; margin: 0; }
+.category-list li { font-weight: bold; padding: 5px 0; color: #f7a01a; }
+.price-range { display: flex; gap: 5px; align-items: center; }
+.price-range input { width: 60px; padding: 5px; border: 1px solid #ddd; text-align: center; }
+.go-btn { background-color: #4CAF50; color: white; border: none; padding: 6px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+.search-input { width: 100%; padding: 5px; margin-bottom: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+.filter-options li { display: flex; align-items: center; padding: 4px 0; font-size: 0.9em; }
+.filter-options input[type="checkbox"] { margin-right: 8px; }
+.brand-list-container { max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; }
+.product-listing { grid-area: listing; }
+.page-title { font-size: 1.8em; margin: 0 0 5px 0; }
+.deal-count { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+.sort-options { display: flex; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px; }
+.sort-btn { background: none; border: none; padding: 10px 15px; cursor: pointer; font-weight: bold; color: #666; transition: color 0.3s, border-bottom 0.3s; }
+.sort-btn.active { color: #f7a01a; border-bottom: 2px solid #f7a01a; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.product-card { background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); padding: 15px; box-sizing: border-box; position: relative; overflow: hidden; }
+.sale-badge { position: absolute; top: 0; right: 0; background-color: #e84c3d; color: white; padding: 5px 10px; font-size: 0.8em; font-weight: bold; border-bottom-left-radius: 8px; z-index: 10; }
+.product-image-section { margin-bottom: 10px; text-align: center; }
+.main-image { width: 100%; height: auto; max-height: 200px; object-fit: contain; border: 1px solid #eee; border-radius: 4px; }
+.product-details { padding: 5px 0; text-align: left; }
+.brand { font-size: 0.8em; color: #555; margin: 0 0 5px 0; }
+.name { font-size: 0.9em; font-weight: 500; margin: 0 0 10px 0; height: 36px; overflow: hidden; }
+.price-info { margin-bottom: 10px; }
+.original-price { text-decoration: line-through; color: #999; font-weight: normal; font-size: 0.9em; margin-right: 5px; }
+.sale-price { font-size: 1.1em; font-weight: bold; color: #e84c3d; margin-right: 5px; }
+.discount-percent { color: #4CAF50; font-size: 0.9em; font-weight: bold; }
+.your-profit { border: 1px solid #4CAF50; padding: 5px 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; background-color: #e8f5e9; margin-bottom: 15px; }
+.your-profit .label { font-size: 0.8em; color: #333; }
+.your-profit .value { font-size: 1.1em; font-weight: bold; color: #4CAF50; }
+.actions { display: flex; gap: 5px; }
+.copy-link-btn, .share-now-btn { width: 50%; padding: 10px 5px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8em; transition: background-color 0.3s; }
+.copy-link-btn { background-color: #f0f0f0; color: #333; border: 1px solid #ccc; }
+.share-now-btn { background-color: #4CAF50; color: white; }
+.copy-link-btn:hover, .share-now-btn:hover { opacity: 0.9; }
+.copy-link-btn:active, .share-now-btn:active { transform: scale(0.98); }
+@media (max-width: 900px) {
+    .search-bar { max-width: 300px; margin: 0 10px; }
+    .nav-links { display: none; }
+    .menu-icon { display: block; }
+    .main-content-wrapper { grid-template-areas: "breadcrumb" "listing" "sidebar"; grid-template-columns: 1fr; padding: 10px; gap: 15px; }
+    .sidebar { position: fixed; top: 0; left: -250px; width: 250px; height: 100%; transition: left 0.3s ease; z-index: 100; overflow-y: auto; padding-top: 60px; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); }
+    .sidebar.active { left: 0; }
+    .product-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .sort-options { justify-content: space-around; }
+    .sort-btn { padding: 8px 10px; font-size: 0.8em; }
+}
+@media (max-width: 480px) {
+    .navbar { padding: 8px 10px; }
+    .search-bar { width: 150px; }
+    .search-bar input { padding: 5px; font-size: 0.8em; }
+    .product-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-section">
+            <button class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <span class="logo-text">Earniva<span class="logo-karo"></span></span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for partners or deals">
+            <button class="search-btn" onclick="alert('Search initiated!')"><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="nav-links">
+            <a href="profile.html" class="nav-item"><i class="fas fa-chart-line"></i> Profit Rates</a>
+            <a href="MakeLinks .html" class="nav-item"><i class="fas fa-link"></i> Make Links</a>
+            <a href="profile.html" class="nav-item profile"><i class="fas fa-user-circle"></i> My Profile</a>
+        </nav>
+    </header>
+
+    <main class="main-content-wrapper">
+        <div class="breadcrumb">
+            <a href="earnkaro_dashboard_with_nav.html">Home</a> / <a href="earnkaro_dashboard_with_nav.html">Accessories</a> / <span class="current-page">Bags</span>
+        </div>
+        
+        <aside class="sidebar" id="sidebar">
+            <h3>FILTER BY</h3>
+            <div class="filter-group">
+                <h4>Accessories</h4>
+                <ul class="category-list">
+                    <li>Bags</li>
+                </ul>
+            </div>
+            <div class="filter-group">
+                <h4>Price</h4>
+                <div class="price-range">
+                    <input type="number" id="min-price" value="599" min="0" max="15000">
+                    <input type="number" id="max-price" value="5999" min="0" max="15000">
+                    <button class="go-btn" onclick="applyFilters()">GO</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4>Seller</h4>
+                <input type="text" placeholder="Search Seller" class="search-input">
+                <ul class="filter-options" id="seller-filters">
+                    <li><input type="checkbox" data-filter="seller" value="Myntra" checked> Myntra</li>
+                    <li><input type="checkbox" data-filter="seller" value="Ajio"> Ajio</li>
+                    <li><input type="checkbox" data-filter="seller" value="Amazon"> Amazon</li>
+                </ul>
+            </div>
+            <div class="filter-group">
+                <h4>Brand</h4>
+                <input type="text" placeholder="Search Brand" class="search-input">
+                <div class="brand-list-container">
+                    <ul class="filter-options brand-list">
+                        <li><input type="checkbox" data-filter="brand" value="Skybags" checked> Skybags</li>
+                        <li><input type="checkbox" data-filter="brand" value="American Tourister"> American Tourister</li>
+                        <li><input type="checkbox" data-filter="brand" value="Puma"> Puma</li>
+                        <li><input type="checkbox" data-filter="brand" value="Lavie"> Lavie</li>
+                        <li><input type="checkbox" data-filter="brand" value="Fastrack"> Fastrack</li>
+                        <li><input type="checkbox" data-filter="brand" value="Caprese"> Caprese</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <section class="product-listing">
+            <h1 class="page-title">BAGS</h1>
+            <p class="deal-count">Choose from <span id="deal-count-display"></span> deals</p>
+            
+            <div class="sort-options">
+                <button class="sort-btn active" data-sort="popularity" onclick="sortProducts('popularity', this)">Popularity</button>
+                <button class="sort-btn" data-sort="discount" onclick="sortProducts('discount', this)">Discount</button>
+                <button class="sort-btn" data-sort="high-price" onclick="sortProducts('high-price', this)">High Price</button>
+                <button class="sort-btn" data-sort="low-price" onclick="sortProducts('low-price', this)">Low Price</button>
+            </div>
+            
+            <div class="product-grid" id="product-grid">
+                </div>
+        </section>
+    </main>
+    
+    <script>
+        // --- 30 Bags Product Data (JSON format) ---
+        const productData = [
+            { id: 1, brand: "Skybags", name: "Laptop Backpack with Rain Cover", originalPrice: 3500, salePrice: 1750, discountPercent: 50, yourProfit: 140, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG7PFFmYrck8LEe8O-ASGZJzVHBvOS0jPn5A&s", seller: "Myntra", link: "https://example.com/skybags-laptop" },
+            { id: 2, brand: "American Tourister", name: "Casual Backpack for College", originalPrice: 2200, salePrice: 1100, discountPercent: 50, yourProfit: 88, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmYKoNA29_OU_UeNa-ZrtNSnA0kzIQhRYICA&s", seller: "Ajio", link: "https://example.com/at-college" },
+            { id: 3, brand: "Puma", name: "Training Sports Duffel Bag", originalPrice: 1899, salePrice: 1899, discountPercent: 0, yourProfit: 152, isSale: false, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAqIfKjSZpHMhw7mU6N6NeNQfKkHQNn9M5Ow&s", seller: "Amazon", link: "https://example.com/puma-duffel" },
+            { id: 4, brand: "Lavie", name: "Women's Textured Handbag", originalPrice: 3999, salePrice: 1999, discountPercent: 50, yourProfit: 160, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZTZ_FYCyE9zgteJgkWJD4qRgAaF-LzEaRCg&s", seller: "Myntra", link: "https://example.com/lavie-handbag" },
+            { id: 5, brand: "Fastrack", name: "Faux Leather Sling Bag", originalPrice: 1499, salePrice: 749, discountPercent: 50, yourProfit: 60, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf7L2g_4C8uxDNVd-WSeHQ0Fg72ZJCQlFpLw&s", seller: "Ajio", link: "https://example.com/fastrack-sling" },
+            { id: 6, brand: "Caprese", name: "Women's Solid Tote Bag", originalPrice: 4500, salePrice: 2250, discountPercent: 50, yourProfit: 180, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoNW-_lvZ5rWY23L4hW1TN4d7YXBa2SFMolQ&s", seller: "Amazon", link: "https://example.com/caprese-tote" },
+            { id: 7, brand: "Skybags", name: "Travel Backpack for Hiking", originalPrice: 4999, salePrice: 2499, discountPercent: 50, yourProfit: 200, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuKrJ3ZrnFeodI5x0jZWQPbqcAxNU8QykjlQ&s", seller: "Myntra", link: "https://example.com/skybags-hiking" },
+            { id: 8, brand: "American Tourister", name: "Trolley Bag Set of 3", originalPrice: 15999, salePrice: 7999, discountPercent: 50, yourProfit: 640, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2vl9khvXpYrqOLzDxp2Rl1YON6K9ltOCDiA&s", seller: "Ajio", link: "https://example.com/at-trolley-set" },
+            { id: 9, brand: "Puma", name: "Small Backpack for Gym", originalPrice: 1299, salePrice: 1299, discountPercent: 0, yourProfit: 104, isSale: false, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbu5P4AqSShBHZLzYLuHnX-OfmzYx0uXnd6g&s", seller: "Amazon", link: "https://example.com/puma-gym-small" },
+            { id: 10, brand: "Lavie", name: "Shoulder Bag with Chain Detail", originalPrice: 3299, salePrice: 1649, discountPercent: 50, yourProfit: 132, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnKEbLchwyQrevP_Zkd6nMo2TPZFx272bM_w&s", seller: "Myntra", link: "https://example.com/lavie-shoulder" },
+            { id: 11, brand: "Fastrack", name: "Messenger Bag for Men", originalPrice: 2500, salePrice: 1250, discountPercent: 50, yourProfit: 100, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO871JAfDFI6m5dNtga-Fx4_SSSJ6S14KIeg&s", seller: "Ajio", link: "https://example.com/fastrack-messenger" },
+            { id: 12, brand: "Caprese", name: "Structured Satchel Bag", originalPrice: 5999, salePrice: 2999, discountPercent: 50, yourProfit: 240, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRey9ILCDg2besCr3SLTxbPfwWHv1xUKMHncw&s", seller: "Amazon", link: "https://example.com/caprese-satchel" },
+            { id: 13, brand: "Skybags", name: "Polycarbonate Hardsided Luggage", originalPrice: 6500, salePrice: 3250, discountPercent: 50, yourProfit: 260, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz0podhEs_FOYm1rQlQmM1ez-Fmg8ERmcfPQ&s", seller: "Myntra", link: "https://example.com/skybags-hardsided" },
+            { id: 14, brand: "American Tourister", name: "Office Laptop Backpack", originalPrice: 3000, salePrice: 1500, discountPercent: 50, yourProfit: 120, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbu5P4AqSShBHZLzYLuHnX-OfmzYx0uXnd6g&s", seller: "Ajio", link: "https://example.com/at-office-laptop" },
+            { id: 15, brand: "Puma", name: "Vibe Backpack with Logo Detail", originalPrice: 2499, salePrice: 2499, discountPercent: 0, yourProfit: 200, isSale: false, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9slH-X3KInddybFnnwCkPqLL2-aAXLboGPQ&s", seller: "Amazon", link: "https://example.com/puma-vibe" },
+            { id: 16, brand: "Lavie", name: "Party Clutch Bag", originalPrice: 1999, salePrice: 999, discountPercent: 50, yourProfit: 80, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_fihMfiXW_qEgUcIVXAaINlE-GiwlPn3kHg&s", seller: "Myntra", link: "https://example.com/lavie-clutch" },
+            { id: 17, brand: "Fastrack", name: "Travel Duffle Bag", originalPrice: 2999, salePrice: 1499, discountPercent: 50, yourProfit: 120, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXi7lDylj3DkyVnY0EhhMwzLCPEGxIR53wOg&s", seller: "Ajio", link: "https://example.com/fastrack-duffle" },
+            { id: 18, brand: "Caprese", name: "Quilted Shoulder Bag", originalPrice: 4200, salePrice: 2100, discountPercent: 50, yourProfit: 168, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuNaxUzIN05YxPBW1V62kjXr7g-sM-z6zAVg&s", seller: "Amazon", link: "https://example.com/caprese-quilted" },
+            { id: 19, brand: "Skybags", name: "Casual Daypack", originalPrice: 1800, salePrice: 900, discountPercent: 50, yourProfit: 72, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUdazzce_YxFrQbvMctijisrlMaCLzeUnoGQ&s", seller: "Myntra", link: "https://example.com/skybags-daypack" },
+            { id: 20, brand: "American Tourister", name: "Small Sling Bag", originalPrice: 1300, salePrice: 650, discountPercent: 50, yourProfit: 52, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCBJY7--VZIYKXuKwmBUayEPOnKktD2FsUkw&s", seller: "Ajio", link: "https://example.com/at-small-sling" },
+            { id: 21, brand: "Puma", name: "Unisex Phase Backpack", originalPrice: 1799, salePrice: 1799, discountPercent: 0, yourProfit: 144, isSale: false, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7tuGS3qAjXlUwQliEjH8U2QwkEvProS0NqA&s", seller: "Amazon", link: "https://example.com/puma-phase" },
+            { id: 22, brand: "Lavie", name: "Women's Backpack", originalPrice: 2899, salePrice: 1449, discountPercent: 50, yourProfit: 116, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7VKpfSrSDmb6XXr8uiw33z2MpwMiXZi8Q6Q&s", seller: "Myntra", link: "https://example.com/lavie-women-backpack" },
+            { id: 23, brand: "Fastrack", name: "Laptop Sleeve Bag", originalPrice: 1100, salePrice: 550, discountPercent: 50, yourProfit: 44, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7VKpfSrSDmb6XXr8uiw33z2MpwMiXZi8Q6Q&s", seller: "Ajio", link: "https://example.com/fastrack-sleeve" },
+            { id: 24, brand: "Caprese", name: "Solid Cross Body Bag", originalPrice: 3499, salePrice: 1749, discountPercent: 50, yourProfit: 140, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThv76GswsEylGk-ETzxhfxXFsFJtKp5RUZ_Q&s", seller: "Amazon", link: "https://example.com/caprese-crossbody" },
+            { id: 25, brand: "Skybags", name: "Premium Office Bag", originalPrice: 4200, salePrice: 2100, discountPercent: 50, yourProfit: 168, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReK0VmejAlVbb79sXi4OJJ3I8PwuO_VZNpOg&s", seller: "Myntra", link: "https://example.com/skybags-office" },
+            { id: 26, brand: "American Tourister", name: "Hydra Backpack", originalPrice: 2500, salePrice: 1250, discountPercent: 50, yourProfit: 100, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgIb_tZBAznFXs4tvG8eZ2lAbzNXSs9ELpow&s", seller: "Ajio", link: "https://example.com/at-hydra" },
+            { id: 27, brand: "Puma", name: "Hip Hop Waist Bag", originalPrice: 999, salePrice: 999, discountPercent: 0, yourProfit: 80, isSale: false, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhSDfnBty6K_SRtUwbgO11ujAuginhD7Io2w&s", seller: "Amazon", link: "https://example.com/puma-waist" },
+            { id: 28, brand: "Lavie", name: "Suede Handbag", originalPrice: 3800, salePrice: 1900, discountPercent: 50, yourProfit: 152, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9KUb0qy2hSvdwuZ5HavC9LsVGXFhkkbIsYA&s", seller: "Myntra", link: "https://example.com/lavie-suede" },
+            { id: 29, brand: "Fastrack", name: "Small College Backpack", originalPrice: 1999, salePrice: 999, discountPercent: 50, yourProfit: 80, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0v1K8eU4q1aSRRURTDX349dvK6Zg6SaNYkA&s", seller: "Ajio", link: "https://example.com/fastrack-college" },
+            { id: 30, brand: "Caprese", name: "Round Sling Bag", originalPrice: 2999, salePrice: 1499, discountPercent: 50, yourProfit: 120, isSale: true, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoCxS0qBqvsWokoQUeh1mSjBxEZfiswUFJsQ&s", seller: "Amazon", link: "https://example.com/caprese-round-sling" }
+        ];
+
+        let currentProducts = [...productData];
+
+        function formatPrice(price) { return `₹${price.toLocaleString('en-IN')}`; }
+        
+        function renderProducts(products) {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            products.forEach(product => {
+                const discountText = product.discountPercent > 0 ? `(${product.discountPercent}% Off)` : '';
+                let priceHTML = product.discountPercent > 0 ? 
+                    `<span class="original-price strike-through">${formatPrice(product.originalPrice)}</span>
+                     <span class="sale-price">${formatPrice(product.salePrice)}</span>
+                     <span class="discount-percent">${discountText}</span>` : 
+                    `<span class="sale-price">${formatPrice(product.salePrice)}</span>`;
+
+                const cardHTML = `
+                    <div class="product-card" data-id="${product.id}">
+                        ${product.isSale ? '<div class="sale-badge">On Sale</div>' : ''}
+                        <div class="product-image-section">
+                            <img src="${product.image}" alt="${product.name}" class="main-image">
+                        </div>
+                        <div class="product-details">
+                            <p class="brand">Brand: **${product.brand}**</p>
+                            <p class="name">${product.name}</p>
+                            <div class="price-info">${priceHTML}</div>
+                            <div class="your-profit">
+                                <span class="label">Your Profit</span>
+                                <span class="value">₹${product.yourProfit}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="copy-link-btn" onclick="copyLink(${product.id})">COPY LINK</button>
+                            <button class="share-now-btn" onclick="shareProduct(${product.id})"><i class="fas fa-share-alt"></i> SHARE NOW</button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHTML;
+            });
+            document.getElementById('deal-count-display').textContent = products.length;
+        }
+
+        async function copyLink(productId) {
+            const product = productData.find(p => p.id === productId);
+            const linkToCopy = product ? product.link : window.location.href; 
+            try { await navigator.clipboard.writeText(linkToCopy); alert('✅ Link Copied to Clipboard: ' + linkToCopy); } 
+            catch (err) { console.error('Copy failed: ', err); prompt('Copy the following link:', linkToCopy); }
+        }
+
+        function shareProduct(productId) {
+            const product = productData.find(p => p.id === productId);
+            if (navigator.share) {
+                navigator.share({
+                    title: product.name,
+                    text: `Check out this ${product.brand} Bag! Only ${formatPrice(product.salePrice)}! Profit: ₹${product.yourProfit}`,
+                    url: product.link,
+                }).catch((error) => alert('❌ Sharing failed. You can copy the link instead.'));
+            } else {
+                alert(`Sharing feature not supported. Product: ${product.name}`);
+                copyLink(productId);
+            }
+        }
+        
+        function sortProducts(criteria, button) {
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            let sortedArray = [...currentProducts];
+            switch (criteria) {
+                case 'discount': sortedArray.sort((a, b) => b.discountPercent - a.discountPercent); break;
+                case 'high-price': sortedArray.sort((a, b) => b.salePrice - a.salePrice); break;
+                case 'low-price': sortedArray.sort((a, b) => a.salePrice - b.salePrice); break;
+                case 'popularity': default: sortedArray.sort((a, b) => a.id - b.id); break;
+            }
+            currentProducts = sortedArray;
+            renderProducts(currentProducts);
+        }
+        
+        function applyFilters() {
+            const minPrice = parseInt(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseInt(document.getElementById('max-price').value) || 99999;
+            let filteredArray = productData.filter(product => {
+                const price = product.salePrice;
+                return price >= minPrice && price <= maxPrice;
+            });
+            currentProducts = filteredArray;
+            renderProducts(currentProducts);
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-sort="popularity"]').classList.add('active');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(productData);
+        });
+        function shareProduct(productId) {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareData = {
+    title: product.name,
+    text: `Check out this ${product.brand} Jewelry! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+    url: product.link
+  };
+
+  // ✅ Check if Web Share API is supported
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log('Shared successfully!'))
+      .catch((err) => {
+        console.error('Share failed:', err);
+        alert('❌ Sharing failed. Try copying the link.');
+        copyLink(productId);
+      });
+  } 
+  // 💻 Desktop fallback
+  else {
+    // Try Clipboard API first
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(product.link)
+        .then(() => alert('✅ Link copied! Share it manually.'))
+        .catch(() => prompt('Copy this link:', product.link));
+    } else {
+      prompt('Copy this link:', product.link);
+    }
+  }
+}
+
+    </script>
+</body>
+</html>

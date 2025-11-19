@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnKaro Style Multi-User Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg:#f9f9f9; --card:#fff; --header:#fff; --text:#333; --shadow: rgba(0,0,0,0.1); --primary:#4CAF50; --accent:#2196F3;
+}
+body.dark-mode { --bg:#1e1e2f; --card:#2c2c3c; --header:#2c2c3c; --text:#eee; --shadow: rgba(0,0,0,0.5); }
+body { margin:0; padding:0; font-family: 'Arial', sans-serif; background:var(--bg); color:var(--text); display:flex; transition:0.3s; min-height:100vh; }
+.sidebar { width:220px; background:var(--card); padding:20px; box-shadow:2px 0 5px var(--shadow); display:flex; flex-direction:column; transition:0.3s; }
+.sidebar a { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); padding:10px; border-radius:8px; margin-bottom:5px; transition:0.2s; }
+.sidebar a:hover, .sidebar a.active { background:var(--accent); color:#fff; }
+body.dark-mode .sidebar a:hover, body.dark-mode .sidebar a.active { background:#4e8cf7; margin-left:20px;}
+.main { flex:1; display:flex; flex-direction:column; }
+header { display:flex; justify-content:flex-end; align-items:center; padding:15px 20px; background:var(--header); box-shadow:0 2px 5px var(--shadow); position:sticky; top:0; z-index:100; }
+.mode-toggle { cursor:pointer; padding:5px 10px; border-radius:5px; border:1px solid var(--text); background:transparent; color:var(--text); margin-left:20px; transition:0.3s; margin-left:20px;}
+.notification-icon { position:relative; cursor:pointer; font-size:24px; margin-left:20px; }
+.notification-count { position:absolute; top:-6px; right:-6px; background:red; color:#fff; font-size:12px; padding:2px 6px; border-radius:50%; display:none; transition:0.3s; }
+.notification-count.blink { animation: blink 0.5s alternate 3; }
+@keyframes blink { 0%{opacity:1;} 100%{opacity:0;} }
+.notification-dropdown { position:absolute; top:35px; right:0; background:var(--card); border:1px solid #ccc; border-radius:8px; width:260px; overflow:hidden; box-shadow:0 4px 10px var(--shadow); display:none; opacity:0; transform:translateY(-20px); transition:0.3s; z-index:100; }
+.notification-dropdown.show { display:block; opacity:1; transform:translateY(0); }
+.notification-list { list-style:none; margin:0; padding:0; }
+.notification-list li { padding:10px 15px; border-bottom:1px solid #eee; font-size:14px; }
+body.dark-mode .notification-list li { border-bottom:1px solid #444; }
+section { display:none; padding:20px; flex:1; overflow:auto; }
+section.active { display:block; transition:0.3s; }
+.dashboard-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+.card { background:var(--card); padding:15px; border-radius:10px; box-shadow:0 2px 6px var(--shadow); transition:0.3s; }
+.card h3 { margin-bottom:10px; text-align:center; font-size:16px; }
+.user-selector { margin-right:auto; padding:5px 10px; border-radius:5px; border:1px solid var(--text); background:transparent; color:var(--text); }
+@media(max-width:768px){.sidebar{width:60px;padding:10px;}.sidebar a span{display:none;}}
+a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  text-decoration: none;
+  font-size: 8px;
+  color: #333;
+  border-radius: 10px;
+  transition: 0.3s;
+  text-size-adjust: 20PX;
+}
+
+a i {
+  font-size: 20px;
+}
+
+/* Hover effect */
+a:hover {
+  background: #f0f0f0;
+}
+
+/* Active class style */
+a.active {
+  background: #4a90e2;   /* Blue highlight */
+  color: #fff;
+}
+
+a.active i {
+  color: #fff;
+}
+
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <a href="Dashboard.html" class="active" data-section="dashboard"><i class='bx bx-home'></i><span>Dashboard</span></a>
+ 
+</div>
+
+<div class="main">
+  <header>
+    
+    <select id="userSelect" class="user-selector">
+      <option value="user1">User 1</option>
+      <option value="user2">User 2</option>
+      <option value="user3">User 3</option>
+    </select>
+    <button id="modeToggle" class="mode-toggle">🌙 Dark Mode</button>
+    <div style="position:relative;">
+      <div id="notificationIcon" class="notification-icon"><i class='bx bx-bell'></i><span id="notificationCount" class="notification-count">0</span></div>
+      <div id="notificationDropdown" class="notification-dropdown"><ul id="notificationList" class="notification-list"></ul></div>
+    </div>
+    
+    <div>
+    <a href="Profile.html" class="active" data-section="dashboard">
+  <i class='bx bx-home'></i>
+  <span>Back to Profile</span>
+</a>
+</div>
+  </header>
+
+  <section id="dashboard" class="active">
+    <div class="dashboard-grid">
+      <div class="card"><h3>Daily Earnings</h3><canvas id="dailyEarningsChart"></canvas></div>
+      <div class="card"><h3>Monthly Growth</h3><canvas id="monthlyGrowthChart"></canvas></div>
+      <div class="card"><h3>Orders Overview</h3><canvas id="ordersOverviewChart"></canvas></div>
+      <div class="card"><h3>Referral Earnings</h3><canvas id="referralEarningsChart"></canvas></div>
+    </div>
+  </section>
+
+  <section id="orders"><h2>Orders</h2></section>
+  <section id="referrals"><h2>Referrals</h2></section>
+  <section id="analytics"><h2>Analytics</h2></section>
+  <section id="settings"><h2>Settings</h2></section>
+</div>
+
+<audio id="notificationSound" src="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" preload="auto"></audio>
+
+<script>
+// ---------------- Sidebar Navigation ----------------
+const sidebarLinks=document.querySelectorAll('.sidebar a');
+const sections=document.querySelectorAll('section');
+sidebarLinks.forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    sidebarLinks.forEach(l=>l.classList.remove('active'));
+    link.classList.add('active');
+    const target=link.dataset.section;
+    sections.forEach(s=>s.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+// ---------------- Dark/Light Mode ----------------
+const modeToggle=document.getElementById('modeToggle');
+modeToggle.addEventListener('click',()=>{
+  document.body.classList.toggle('dark-mode');
+  modeToggle.textContent=document.body.classList.contains('dark-mode')?'☀️ Light Mode':'🌙 Dark Mode';
+});
+
+
+const users=["user1","user2","user3"];
+let userNotifications={};
+users.forEach(u=>userNotifications[u]=[]);
+let currentUser=document.getElementById('userSelect').value;
+
+const notificationIcon=document.getElementById('notificationIcon');
+const notificationDropdown=document.getElementById('notificationDropdown');
+const notificationList=document.getElementById('notificationList');
+const notificationCount=document.getElementById('notificationCount');
+const notificationSound=document.getElementById('notificationSound');
+const userSelect=document.getElementById('userSelect');
+
+function loadNotifications(){
+  notificationList.innerHTML='';
+  const notes=userNotifications[currentUser];
+  notes.slice().reverse().forEach(note=>{
+    const li=document.createElement('li'); li.textContent=note; notificationList.appendChild(li);
+  });
+  notificationCount.style.display=notes.length>0?'block':'none';
+  notificationCount.textContent=notes.length;
+}
+
+notificationIcon.addEventListener('click',()=>{
+  notificationDropdown.classList.toggle('show');
+  if(notificationDropdown.classList.contains('show')) notificationCount.style.display='none';
+});
+document.addEventListener('click',(e)=>{
+  if(!notificationIcon.contains(e.target)&&!notificationDropdown.contains(e.target)) notificationDropdown.classList.remove('show');
+});
+userSelect.addEventListener('change',()=>{
+  currentUser=userSelect.value;
+  loadNotifications();
+});
+
+// ---------------- Charts ----------------
+function randomInt(min,max){return Math.floor(Math.random()*(max-min+1)+min);}
+const charts={};
+charts.dailyEarningsChart=new Chart(document.getElementById('dailyEarningsChart').getContext('2d'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Earnings ($)',data:Array(7).fill(0),borderColor:'#4CAF50',backgroundColor:'rgba(76,175,80,0.2)',fill:true,tension:0.3}]},options:{responsive:true}});
+charts.monthlyGrowthChart=new Chart(document.getElementById('monthlyGrowthChart').getContext('2d'),{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Revenue ($)',data:Array(6).fill(0),backgroundColor:'#2196F3'}]},options:{responsive:true}});
+charts.ordersOverviewChart=new Chart(document.getElementById('ordersOverviewChart').getContext('2d'),{type:'pie',data:{labels:['Completed','Pending','Cancelled'],datasets:[{data:[0,0,0],backgroundColor:['#4CAF50','#FFC107','#F44336']}]},options:{responsive:true}});
+charts.referralEarningsChart=new Chart(document.getElementById('referralEarningsChart').getContext('2d'),{type:'doughnut',data:{labels:['You','Friends'],datasets:[{data:[0,0],backgroundColor:['#673AB7','#E91E63']}]},options:{responsive:true}});
+
+// ---------------- WebSocket Multi-User Simulation ----------------
+function simulateEvent(){
+  const user=users[Math.floor(Math.random()*users.length)];
+  const eventData={
+    type:'notification',
+    message:`New order for ${user} at ${new Date().toLocaleTimeString()}`,
+    dailyEarnings:Array.from({length:7},()=>randomInt(100,300)),
+    monthlyGrowth:Array.from({length:6},()=>randomInt(400,1100)),
+    ordersOverview:[randomInt(100,150),randomInt(20,50),randomInt(5,20)],
+    referralEarnings:[randomInt(300,500),randomInt(400,700)]
+  };
+  handleEvent(user,eventData);
+}
+function handleEvent(user,data){
+  if(data.type==='notification' && data.message){
+    userNotifications[user].push(data.message);
+    if(user===currentUser){
+      notificationCount.classList.add('blink');
+      notificationSound.play();
+      setTimeout(()=>notificationCount.classList.remove('blink'),200);
+      loadNotifications();
+    }
+  }
+  if(user===currentUser){
+    if(data.dailyEarnings){ charts.dailyEarningsChart.data.datasets[0].data=data.dailyEarnings; charts.dailyEarningsChart.update(); }
+    if(data.monthlyGrowth){ charts.monthlyGrowthChart.data.datasets[0].data=data.monthlyGrowth; charts.monthlyGrowthChart.update(); }
+    if(data.ordersOverview){ charts.ordersOverviewChart.data.datasets[0].data=data.ordersOverview; charts.ordersOverviewChart.update(); }
+    if(data.referralEarnings){ charts.referralEarningsChart.data.datasets[0].data=data.referralEarnings; charts.referralEarningsChart.update(); }
+  }
+}
+// Simulate every 5s
+setInterval(simulateEvent,500);
+
+
+</script>
+</body>
+</html>

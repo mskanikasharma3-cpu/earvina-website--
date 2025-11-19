@@ -1,0 +1,17 @@
+:root {
+    --sidebar-bg: #0b5799;
+    --sidebar-text: white;
+    --sidebar-hover: #07406f;
+
+    --topbar-bg: #ffffff;
+
+    --main-bg: #f5f7fb;
+
+    --card-bg: white;
+    --card-text: #222;
+    --card-shadow: 0 0 10px #0001;
+
+    --table-bg: white;
+    --table-header: #0b5799;
+    --table-border: #ddd;
+}

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earniva - Watches</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Poppins", sans-serif; background: #f5f5f5; color: #333; }
+
+    /* Navbar */
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff; padding: 10px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .logo-section { display: flex; align-items: center; gap: 10px; }
+    .menu-icon { background: none; border: none; font-size: 1.6em; cursor: pointer; color: #333; display: none; }
+    .logo-text { font-size: 1.5em; font-weight: bold; color: #333; }
+    .logo-karo { color: #f7a01a; }
+    .search-bar { display: flex; flex-grow: 1; max-width: 450px; margin: 0 20px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .search-bar input { border: none; outline: none; padding: 8px 10px; width: 100%; }
+    .search-btn { background: #f7a01a; color: #fff; border: none; padding: 8px 15px; cursor: pointer; }
+    .nav-links { display: flex; gap: 15px; align-items: center; }
+    .nav-item { text-decoration: none; color: #333; font-size: 0.95em; font-weight: 500; }
+    .nav-item i { color: #f7a01a; margin-right: 5px; }
+
+    /* Layout */
+    .main-content-wrapper {
+      display: grid; grid-template-areas: "breadcrumb breadcrumb" "sidebar listing";
+      grid-template-columns: 250px 1fr; gap: 20px; padding: 20px; max-width: 1400px; margin: auto;
+    }
+
+    .breadcrumb { grid-area: breadcrumb; font-size: 0.9em; color: #666; }
+    .breadcrumb a { text-decoration: none; color: #666; }
+    .breadcrumb .current-page { font-weight: bold; color: #333; }
+
+    /* Sidebar */
+    .sidebar {
+      grid-area: sidebar; background: #fff; border-radius: 8px; padding: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+    }
+    .sidebar h3 { font-size: 1.1em; margin-bottom: 10px; border-bottom: 2px solid #f7a01a; padding-bottom: 5px; }
+    .filter-group { margin-bottom: 20px; }
+    .filter-group h4 { font-size: 1em; margin-bottom: 10px; color: #555; }
+    .search-input { width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 8px; }
+    .filter-options { list-style: none; max-height: 120px; overflow-y: auto; }
+    .filter-options li { margin-bottom: 6px; font-size: 0.9em; }
+    .filter-options input { margin-right: 8px; }
+    .price-range input { width: 60px; padding: 5px; text-align: center; }
+    .go-btn { background: #4caf50; color: #fff; border: none; padding: 6px 10px; border-radius: 4px; margin-left: 5px; cursor: pointer; }
+
+    /* Product Section */
+    .product-listing { grid-area: listing; }
+    .page-title { font-size: 1.8em; margin-bottom: 5px; }
+    .deal-count { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+    .sort-options { display: flex; flex-wrap: wrap; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px; }
+    .sort-btn { background: none; border: none; padding: 10px 15px; font-weight: 600; color: #666; cursor: pointer; transition: 0.3s; }
+    .sort-btn.active { color: #f7a01a; border-bottom: 2px solid #f7a01a; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+    .product-card {
+      background: #fff; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 15px; position: relative; overflow: hidden; transition: transform 0.3s;
+    }
+    .product-card:hover { transform: translateY(-3px); }
+    .sale-badge { position: absolute; top: 0; right: 0; background: #e84c3d; color: #fff; padding: 5px 10px; font-size: 0.8em; border-bottom-left-radius: 8px; }
+    .main-image { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
+    .product-details { text-align: left; }
+    .brand { font-size: 0.8em; color: #666; }
+    .name { font-size: 0.95em; font-weight: 600; margin: 5px 0 8px; height: 40px; overflow: hidden; }
+    .price-info { margin-bottom: 10px; }
+    .original-price { text-decoration: line-through; color: #999; font-size: 0.9em; }
+    .sale-price { font-size: 1.1em; font-weight: bold; color: #e84c3d; margin-right: 5px; }
+    .discount-percent { color: #4caf50; font-weight: bold; font-size: 0.9em; }
+    .your-profit { background: #e8f5e9; border: 1px solid #4caf50; border-radius: 6px; padding: 6px 8px; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 0.9em; }
+    .actions { display: flex; gap: 8px; }
+    .copy-link-btn, .share-now-btn { flex: 1; padding: 8px; font-size: 0.85em; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
+    .copy-link-btn { background: #f0f0f0; }
+    .share-now-btn { background: #4caf50; color: white; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-icon { display: block; }
+      .nav-links { display: none; }
+      .sidebar { position: fixed; left: -260px; top: 0; height: 100%; width: 250px; background: white; box-shadow: 3px 0 10px rgba(0,0,0,0.3); z-index: 2000; overflow-y: auto; transition: left 0.3s ease; }
+      .sidebar.active { left: 0; }
+      .main-content-wrapper { grid-template-areas: "breadcrumb" "listing"; grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo-section">
+      <button class="menu-icon" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <span class="logo-text">Earniva<span class="logo-karo"></span></span>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for partners or deals">
+      <button class="search-btn"><i class="fas fa-search"></i></button>
+    </div>
+    <nav class="nav-links">
+      <a href="profile.html" class="nav-item"><i class="fas fa-chart-line"></i> Profit Rates</a>
+      <a href="MakeLinks .html" class="nav-item"><i class="fas fa-link"></i> Make Links</a>
+      <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i> My Profile</a>
+    </nav>
+  </header>
+
+  <main class="main-content-wrapper">
+    <div class="breadcrumb">
+      <a href="earnkaro_dashboard_with_nav.html">Home</a> / <a href="earnkaro_dashboard_with_nav.html">Accessories</a> / <span class="current-page">flats</span>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+      <h3>FILTER BY</h3>
+
+      <div class="filter-group">
+        <h4>Price Range</h4>
+        <div class="price-range">
+          <input type="number" id="min-price" value="999">
+          <input type="number" id="max-price" value="9999">
+          <button class="go-btn" onclick="applyFilters()">Go</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div>
+                            <a href="CasualShoes.html" class="nav-item"><i class="fas fa-link"></i> Back</a>
+                        </div>
+        <h4>Seller</h4>
+        <input type="text" placeholder="Search Seller" class="search-input">
+        <ul class="filter-options" id="seller-filters">
+          <li><input type="checkbox" data-filter="seller" value="Flipkart" checked> Flipkart</li>
+          <li><input type="checkbox" data-filter="seller" value="Ajio"> Ajio</li>
+          <li><input type="checkbox" data-filter="seller" value="Amazon"> Amazon</li>
+        </ul>
+      </div>
+
+      <div class="filter-group">
+        <h4>Brand</h4>
+        <input type="text" placeholder="Search Brand" class="search-input">
+        <ul class="filter-options">
+           <li><input type="checkbox" data-filter="brand" value="Van Heusen" checked> Van Heusen</li>
+                        <li><input type="checkbox" data-filter="brand" value="Louis Philippe"> Louis Philippe</li>
+                        <li><input type="checkbox" data-filter="brand" value="Blackberrys"> Blackberrys</li>
+                        <li><input type="checkbox" data-filter="brand" value="Wrangler"> Wrangler</li>
+                        <li><input type="checkbox" data-filter="brand" value="Arrow"> Arrow</li>
+                        <li><input type="checkbox" data-filter="brand" value="Roadster"> Roadster</li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="product-listing">
+      <h1 class="page-title">Flats</h1>
+      <p class="deal-count">Choose from <span id="deal-count-display">0</span> deals</p>
+
+      <div class="sort-options">
+        <button class="sort-btn active" onclick="sortProducts('popularity', this)">Popularity</button>
+        <button class="sort-btn" onclick="sortProducts('discount', this)">Discount</button>
+        <button class="sort-btn" onclick="sortProducts('high-price', this)">High Price</button>
+        <button class="sort-btn" onclick="sortProducts('low-price', this)">Low Price</button>
+        
+      </div>
+
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const productData = [
+ { 
+    id: 1, 
+    brand: "Catwalk", 
+    name: "Women’s Stylish Flat Sandals", 
+    originalPrice: 1499, 
+    salePrice: 899, 
+    discount: 40, 
+    yourProfit: 110, 
+    image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR4OsFEcK_01PvOtZTfy-rN2toIQmfAABcfogDwD3_IlxWbvtmi5ZPl-E7QWs1OEOEcc5O28NeuybhB3Es8nLH3OC4XYMMnZqEHkH7AL8eiRdvlFF85yGW-", 
+    isSale: true, 
+    link: "#" 
+  },
+
+  { 
+    id: 2, 
+    brand: "Bata", 
+    name: "Women’s Daily Wear Flats", 
+    originalPrice: 1299, 
+    salePrice: 749, 
+    discount: 42, 
+    yourProfit: 95, 
+    image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQmXPKX5rf-yDAgiycqV6CGtP54lncvJGUtbSU5kU2jHGsiQaEfNnHoGKuV9DPTG6BnvLXESVb9dBY3TkHT4b4GBNgflNCMMHi8XAq1Aog0", 
+    isSale: true, 
+    link: "#" 
+  },
+
+  { 
+    id: 3, 
+    brand: "Paragon", 
+    name: "Women’s Comfortable Slip-On Flats", 
+    originalPrice: 999, 
+    salePrice: 599, 
+    discount: 40, 
+    yourProfit: 80, 
+    image:"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRuWDXHk2TtHSgx2AMFjbMok1UzvGNorFf8ioMwhf74lGkvRY9Ohu4sc9a_za22x-FnVldbh6k5Dr2J3YO-MUJ6KJbd3-pJ", 
+    isSale: true, 
+    link: "#" 
+  },
+
+  { 
+    id: 4, 
+    brand: "Metro", 
+    name: "Elegant Fancy Women’s Flats", 
+    originalPrice: 1799, 
+    salePrice: 1099, 
+    discount: 39, 
+    yourProfit: 130, 
+    image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQvNr_7auXhFEG_NQ2mgKdNmMYHbiqYpLo4IjTpr4Ps8C1VHknVRvAPp6pRStR2XK_eafeREK1eEmcW7UxO1S0pJ7EZ9SaLNOy6mySugTtU", 
+    isSale: true, 
+    link: "#" 
+  },
+
+  { 
+    id: 5, 
+    brand: "Khadim’s", 
+    name: "Trendy Casual Women’s Flats", 
+    originalPrice: 899, 
+    salePrice: 499, 
+    discount: 44, 
+    yourProfit: 70, 
+    image: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR4OsFEcK_01PvOtZTfy-rN2toIQmfAABcfogDwD3_IlxWbvtmi5ZPl-E7QWs1OEOEcc5O28NeuybhB3Es8nLH3OC4XYMMnZqEHkH7AL8eiRdvlFF85yGW-", 
+    isSale: true, 
+    link: "#" 
+  }
+];
+let currentProducts = [...productData];
+const formatPrice = p => `₹${p.toLocaleString("en-IN")}`;
+
+
+// ==================== RENDER PRODUCTS ====================
+function renderProducts(list) {
+  const grid = document.getElementById("product-grid");
+  grid.innerHTML = "";
+
+  list.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card">
+        ${p.discountPercent > 0 ? '<div class="sale-badge">SALE</div>' : ""}
+        <img src="${p.image}" class="main-image" alt="${p.name}">
+
+        <div class="product-details">
+          <p class="brand">Brand: ${p.brand}</p>
+          <p class="name">${p.name}</p>
+
+          <div class="price-info">
+            ${p.discountPercent ? `<span class="original-price">${formatPrice(p.originalPrice)}</span>` : ""}
+            <span class="sale-price">${formatPrice(p.salePrice)}</span>
+            ${p.discountPercent ? `<span class="discount-percent">(${p.discountPercent}% OFF)</span>` : ""}
+          </div>
+
+          <div class="your-profit">
+            <span>Your Profit</span>
+            <span>${formatPrice(p.yourProfit)}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="copy-link-btn" onclick="copyLink('${p.link}')">COPY LINK</button>
+          <button class="share-now-btn" onclick="shareProduct(${p.id})">
+            <i class="fas fa-share-alt"></i> SHARE
+          </button>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById("deal-count-display").textContent = list.length;
+}
+
+
+// ==================== FILTER PRODUCTS ====================
+function applyFilters() {
+  const min = +document.getElementById("min-price").value;
+  const max = +document.getElementById("max-price").value;
+
+  const selectedBrands = [...document.querySelectorAll('input[data-filter="brand"]:checked')]
+    .map(b => b.value);
+
+  const selectedSellers = [...document.querySelectorAll('input[data-filter="seller"]:checked')]
+    .map(s => s.value);
+
+  currentProducts = productData.filter(p =>
+    p.salePrice >= min &&
+    p.salePrice <= max &&
+    selectedBrands.includes(p.brand) &&
+    selectedSellers.includes(p.seller)
+  );
+
+  renderProducts(currentProducts);
+}
+
+
+// ==================== SORT PRODUCTS ====================
+function sortProducts(type, btn) {
+  document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  if (type === "discount") currentProducts.sort((a, b) => b.discountPercent - a.discountPercent);
+  if (type === "high-price") currentProducts.sort((a, b) => b.salePrice - a.salePrice);
+  if (type === "low-price") currentProducts.sort((a, b) => a.salePrice - b.salePrice);
+
+  renderProducts(currentProducts);
+}
+
+
+// ==================== SIDEBAR TOGGLE ====================
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+
+// ==================== COPY LINK FUNCTION ====================
+function copyLink(link) {
+  navigator.clipboard.writeText(link)
+    .then(() => alert("✅ Link Copied Successfully!"))
+    .catch(() => alert("❌ Failed to copy link"));
+}
+
+
+// ==================== SHARE FUNCTION ====================
+function shareProduct(productId) {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareData = {
+    title: product.name,
+    text: `Check out this ${product.brand}! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+    url: product.link
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData)
+      .catch(() => copyLink(product.link));
+  } else {
+    copyLink(product.link);
+  }
+}
+
+
+// INITIAL RENDER
+document.addEventListener("DOMContentLoaded", () => renderProducts(productData));
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener("change", applyFilters));
+
+  </script>
+</body>
+</html>

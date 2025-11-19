@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us</title>
+<link rel="stylesheet" href="contact.css">
+</head>
+<body>
+<style>/* GLOBAL */
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* CONTAINER */
+.container {
+    background: #ffffff;
+    padding: 40px 35px;
+    border-radius: 14px;
+    width: 380px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.20);
+}
+
+/* HEADING */
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* INPUT FIELDS */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #2fb86f;
+    box-shadow: 0 0 5px rgba(47,184,111,0.5);
+    outline: none;
+}
+
+/* BUTTON */
+button {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: #2fb86f;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #28a462;
+    transform: scale(1.03);
+}
+
+/* POPUP BACKDROP */
+#popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* POPUP BOX */
+.popup-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+#close-popup {
+    margin-top: 15px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    background: #2fb86f;
+    color: white;
+    cursor: pointer;
+    transition: .2s;
+}
+
+#close-popup:hover {
+    background: #239458;
+}
+
+/* SMALL TEXT */
+.create {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.create a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.create a:hover {
+    text-decoration: underline;
+}
+</style>
+<div class="container">
+    <h2>Contact Us</h2>
+
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="email" id="email" placeholder="Your Email">
+    <input type="text" id="subject" placeholder="Subject">
+    <textarea id="message" placeholder="Write your message..." rows="4"></textarea>
+
+    <button onclick="sendMessage()">Send Message</button>
+
+    <p class="create">Back to <a href="index.html">Home</a></p>
+    <h4>Contact NO => 7988454150</h4>
+</div>
+
+<!-- Popup -->
+<div id="popup">
+    <div class="popup-box">
+        <p id="popup-text"></p>
+        <button id="close-popup">OK</button>
+    </div>
+</div>
+<footer>
+<script>function sendMessage() {
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let subject = document.getElementById("subject").value.trim();
+    let message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !subject || !message) {
+        showPopup("Please fill out all fields.");
+        return;
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+        showPopup("Please enter a valid email address.");
+        return;
+    }
+
+    showPopup("Message sent successfully! We will contact you soon.");
+
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("subject").value = "";
+    document.getElementById("message").value = "";
+}
+
+function showPopup(text) {
+    document.getElementById("popup-text").innerText = text;
+    document.getElementById("popup").style.display = "flex";
+}
+
+
+document.getElementById("close-popup").addEventListener("click", () => {
+    document.getElementById("popup").style.display = "none";
+});
+</script>
+</body>
+</html>

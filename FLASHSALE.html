@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash Sale | Earniva</title>
+<style>
+.flash-sale-page {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 20px;
+  font-family: "Poppins", sans-serif;
+  background: #f9f9f9;
+}
+.flash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+  color: white;
+  border-radius: 10px;
+  padding: 15px 25px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.flash-header h1 {
+  font-size: 1.8em;
+  margin: 0;
+}
+.timer {
+  font-weight: 600;
+  background: white;
+  color: #ff1744;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.flash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 25px;
+}
+.flash-tile {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.flash-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+.flash-tile img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.flash-info {
+  padding: 15px;
+}
+.flash-info h3 {
+  font-size: 1em;
+  color: #333;
+  margin-bottom: 8px;
+}
+.flash-info .price {
+  font-weight: 600;
+  color: #ff1744;
+}
+.flash-info .old-price {
+  text-decoration: line-through;
+  color: #777;
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+.discount-badge {
+  background-color: #ff1744;
+  color: white;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 5px 8px;
+  border-radius: 6px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.copy-btn, .share-btn {
+  background-color: #448aff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: 0.2s;
+}
+.copy-btn:hover, .share-btn:hover {
+  background-color: #2979ff;
+}
+@media (max-width: 900px) {
+  .flash-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .flash-grid { grid-template-columns: 1fr; }
+  .flash-header { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="flash-sale-page">
+  <div class="flash-header">
+    <h1>⚡ Flash Sale Deals</h1>
+    <div class="timer" id="countdown">02:15:30</div>
+  </div>
+
+  <div class="flash-grid">
+
+    <!-- PRODUCT 1 -->
+    <div class="flash-tile">
+      <span class="discount-badge">-50%</span>
+      <img src="https://m.media-amazon.com/images/I/61C1YkP5lzL.jpg" alt="Speaker">
+      <div class="flash-info">
+        <h3>Bluetooth Speaker</h3>
+        <div><span class="price">₹999</span><span class="old-price">₹1999</span></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyLink('https://www.amazon.in/dp/example1')">📎 Copy</button>
+          <button class="share-btn" onclick="shareLink('Bluetooth Speaker', 'https://www.amazon.in/dp/example1')">📤 Share</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT 2 -->
+    <div class="flash-tile">
+      <span class="discount-badge">-40%</span>
+      <img src="data:image/webp;base64,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" alt="Smartwatch">
+      <div class="flash-info">
+        <h3>Smartwatch Pro</h3>
+        <div><span class="price">₹1799</span><span class="old-price">₹2999</span></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyLink('https://www.amazon.in/dp/example2')">📎 Copy</button>
+          <button class="share-btn" onclick="shareLink('Smartwatch Pro', 'https://www.amazon.in/dp/example2')">📤 Share</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT 3 -->
+    <div class="flash-tile">
+      <span class="discount-badge">-35%</span>
+      <img src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTSdbN7vxkjy8l7GcX1UqxvEhg-xMM2735EFMoILY7enxUGUOiqUJhxy6TefCxYp7zLmdnqwZPx_mqslqpVt6tkyNRRqL1O4NmpcpcsrgQ" alt="Earbuds">
+      <div class="flash-info">
+        <h3>Wireless Earbuds</h3>
+        <div><span class="price">₹1299</span><span class="old-price">₹1999</span></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyLink('https://www.amazon.in/dp/example3')">📎 Copy</button>
+          <button class="share-btn" onclick="shareLink('Wireless Earbuds', 'https://www.amazon.in/dp/example3')">📤 Share</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT 4 -->
+    <div class="flash-tile">
+      <span class="discount-badge">-45%</span>
+      <img src="https://rukminim2.flixcart.com/image/1200/1200/kr83ukw0/power-bank/w/5/6/power-bank-plm13zm-mi-original-imag52az6xpcvjdk.jpeg" alt="Powerbank">
+      <div class="flash-info">
+        <h3>Fast Charging Powerbank</h3>
+        <div><span class="price">₹1099</span><span class="old-price">₹1999</span></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyLink('https://www.amazon.in/dp/example4')">📎 Copy</button>
+          <button class="share-btn" onclick="shareLink('Fast Charging Powerbank', 'https://www.amazon.in/dp/example4')">📤 Share</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Flash Sale Timer
+let countdownTime = 2 * 60 * 60 + 15 * 60 + 30;
+const countdownElement = document.getElementById('countdown');
+function updateTimer() {
+  let h = Math.floor(countdownTime / 3600);
+  let m = Math.floor((countdownTime % 3600) / 60);
+  let s = countdownTime % 60;
+  countdownElement.textContent = 
+    `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  if (countdownTime > 0) countdownTime--;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// Copy Link Function
+function copyLink(link) {
+  navigator.clipboard.writeText(link).then(() => {
+    alert("🔗 Product link copied!");
+  });
+}
+
+// Share Function
+function shareLink(title, url) {
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      text: "Check out this great deal!",
+      url: url
+    }).catch(() => alert("Sharing canceled."));
+  } else {
+    alert("Sharing not supported on this browser.");
+  }
+}
+function shareProduct(productId) {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareData = {
+    title: product.name,
+    text: `Check out this ${product.brand} Jewelry! Only ₹${product.salePrice}! Profit: ₹${product.yourProfit}`,
+    url: product.link
+  };
+
+  // ✅ Check if Web Share API is supported
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log('Shared successfully!'))
+      .catch((err) => {
+        console.error('Share failed:', err);
+        alert('❌ Sharing failed. Try copying the link.');
+        copyLink(productId);
+      });
+  } 
+  // 💻 Desktop fallback
+  else {
+    // Try Clipboard API first
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(product.link)
+        .then(() => alert('✅ Link copied! Share it manually.'))
+        .catch(() => prompt('Copy this link:', product.link));
+    } else {
+      prompt('Copy this link:', product.link);
+    }
+  }
+}
+
+</script>
+
+</body>
+</html>

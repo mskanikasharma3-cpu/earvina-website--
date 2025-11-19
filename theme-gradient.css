@@ -1,0 +1,17 @@
+:root {
+    --sidebar-bg: linear-gradient(180deg, #7b2ff7, #f107a3);
+    --sidebar-text: white;
+    --sidebar-hover: #0003;
+
+    --topbar-bg: #ffffff;
+
+    --main-bg: #faf0ff;
+
+    --card-bg: #fff;
+    --card-text: #333;
+    --card-shadow: 0 0 10px #0002;
+
+    --table-bg: #fff;
+    --table-header: #7b2ff7;
+    --table-border: #ddd;
+}

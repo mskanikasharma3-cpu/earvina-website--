@@ -1,0 +1,238 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login or Signup | EarnKaro</title>
+    <link rel="stylesheet" href="login.css">
+    <style>
+        /* Yahan neeche diya gaya CSS aayega */
+    </style>
+</head>
+<body>
+    <div class="login-container">
+    <a href="index.html" class="back-arrow" id="backButton">&#8592;</a>
+    
+    <div id="loginView">
+        <h1 class="login-heading">Login or signup</h1>
+        <p class="sms-note">We will send an SMS to verify</p>
+        
+        <form class="login-form" id="loginForm">
+            <label for="phone-email" class="input-label">Enter phone or email</label>
+            <input 
+                type="text" 
+                id="phone-email" 
+                placeholder=""
+                required
+            >
+            
+            <p class="social-or">Or continue with social account</p>
+            
+            <button type="button" class="google-login-btn">
+                <img src="" alt="Google Icon" class="google-icon">
+            </button>
+            
+            <p class="terms-note">
+                By continuing, you agree to EarnKaro's 
+                <a href="#" class="policy-link">terms & conditions</a> 
+                and 
+                <a href="#" class="policy-link">privacy policy</a>
+            </p>
+            
+            <button type="submit" class="continue-btn">
+                Continue
+            </button>
+        </form>
+    </div>
+    
+    <div id="otpView" style="display: none;">
+        <h1 class="login-heading">Verify OTP</h1>
+        <p class="sms-note">OTP sent to: <strong id="verificationDetail"></strong></p>
+        
+        <form class="login-form">
+            <label for="otp-input" class="input-label">Enter 6 digit OTP</label>
+            <input 
+                type="text" 
+                id="otp-input" 
+                maxlength="6"
+                placeholder="------"
+                required
+            >
+            
+            <p class="resend-timer">Resend OTP in <span id="timer">30</span>s</p>
+            <p class="terms-note">
+                <a href="#" id="changeNumber" class="policy-link">Change Number/Email</a>
+            </p>
+            
+            <button type="submit" class="continue-btn" disabled>
+                Verify & Continue
+            </button>
+        </form>
+    </div>
+    
+</div>
+<script>
+    // === DOM Elements ===
+    const loginForm = document.getElementById('loginForm');
+    const loginView = document.getElementById('loginView');
+    const otpView = document.getElementById('otpView');
+    const phoneEmailInput = document.getElementById('phone-email');
+    const verificationDetail = document.getElementById('verificationDetail');
+    const backButton = document.getElementById('backButton');
+    const changeNumberLink = document.getElementById('changeNumber');
+    const continueButton = loginForm.querySelector('.continue-btn'); // Login screen ka continue button
+
+    // === Flow Control Functions ===
+
+    // 1. OTP View dikhana
+    function showOtpView(detail) {
+        loginView.style.display = 'none';
+        otpView.style.display = 'block';
+        verificationDetail.textContent = detail;
+        
+        // Back button ki functionality ko OTP screen se login screen par jaane ke liye change karna
+        backButton.onclick = function(e) {
+            e.preventDefault();
+            showLoginView();
+        };
+        
+        startResendTimer();
+    }
+    
+    // 2. Login View dikhana
+    function showLoginView() {
+        loginView.style.display = 'block';
+        otpView.style.display = 'none';
+        
+        // Back button ko original index.html link par reset karna
+        backButton.onclick = null;
+        backButton.href = 'index.html';
+    }
+
+    // 3. Timer shuru karna (Simulation)
+    function startResendTimer() {
+        let seconds = 30;
+        const timerElement = document.getElementById('timer');
+        timerElement.textContent = seconds;
+        
+        // Agar pehle se koi timer chal raha ho to usse rokna
+        if (window.timerInterval) {
+            clearInterval(window.timerInterval);
+        }
+        
+        window.timerInterval = setInterval(() => {
+            seconds--;
+            timerElement.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(window.timerInterval);
+                // Yahan aap Resend button ko enable kar sakte hain
+                timerElement.textContent = '0';
+            }
+        }, 1000);
+    }
+
+    // === Event Handlers ===
+
+    // 1. Main Login Form Submit (Server Request Simulation)
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const inputDetail = phoneEmailInput.value.trim();
+
+        if (!inputDetail) {
+            alert('Please enter your phone or email.');
+            return;
+        }
+
+        // --- AJAX Request Simulation Shuru ---
+        continueButton.textContent = 'Sending OTP...';
+        continueButton.disabled = true;
+        
+        // Maan lo yeh data server ko bhej rahe hain
+        const dataToSend = {
+            detail: inputDetail,
+            type: inputDetail.includes('@') ? 'email' : 'phone'
+        };
+
+        // Simulated delay (Jaisa ki server response aane mein lagta hai)
+        setTimeout(() => {
+            // Server se success response mila (Simulated)
+            continueButton.textContent = 'Continue';
+            continueButton.disabled = false;
+            
+            // Yahan par "real" code mein aap server ka response check karte:
+            // if (response.status === 'success') {
+            
+            alert(`Simulated: OTP sent to ${inputDetail}.`);
+            showOtpView(inputDetail);
+            
+            // } else {
+            //   alert('Error sending OTP. Please try again.');
+            // }
+
+        }, 2000); // 2 second ka delay
+    });
+
+    // 2. "Change Number/Email" click
+    changeNumberLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showLoginView();
+    });
+
+    // 3. OTP Input Validation
+    const otpInput = document.getElementById('otp-input');
+    const verifyButton = document.getElementById('verifyButton');
+    
+    otpInput.addEventListener('input', function() {
+        // Sirf numbers allow karein aur limit 6 rakhein
+        this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6); 
+        
+        if (this.value.length === 6) {
+            verifyButton.disabled = false;
+        } else {
+            verifyButton.disabled = true;
+        }
+    });
+
+    // 4. OTP Verification (Final Step Simulation)
+    const otpForm = document.getElementById('otpForm');
+    otpForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        verifyButton.textContent = 'Verifying...';
+        verifyButton.disabled = true;
+
+        // Simulated delay for verification
+        setTimeout(() => {
+            // Yahan par server ko OTP bhejkar check karte hain
+            const enteredOTP = otpInput.value;
+
+            if (enteredOTP === '123456') { // Demo successful OTP
+                alert('Verification Successful! (Simulated). Redirecting to Home...');
+                window.location.href = 'index.html'; 
+            } else {
+                alert('Invalid OTP (Simulated). Please try again.');
+                verifyButton.textContent = 'Verify & Continue';
+                verifyButton.disabled = false;
+            }
+        }, 1500); 
+    });
+const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+
+forgotPasswordLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('Reset password flow is not implemented yet.');
+});
+  function login() {
+    const user = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      userid: document.getElementById("userid").value,
+      loginTime: new Date().toLocaleString()
+    };
+
+    localStorage.setItem("adminUser", JSON.stringify(user));
+    window.location.href = "admin.html";
+  }
+</script>
+</body>
+</html> -->

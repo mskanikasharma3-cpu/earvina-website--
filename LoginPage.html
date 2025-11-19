@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnKaro Login</title>
+<style>
+/* GLOBAL */
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* CONTAINER */
+.container {
+    background: #ffffff;
+    padding: 40px 35px;
+    border-radius: 14px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.container:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(0,0,0,0.20);
+}
+
+/* HEADING */
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* INPUTS */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    border-color: #2fb86f;
+    box-shadow: 0 0 5px rgba(47,184,111,0.5);
+    outline: none;
+}
+
+/* BUTTONS */
+button {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: #2fb86f;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.25s ease;
+}
+
+button:hover {
+    background: #28a462;
+    transform: scale(1.03);
+}
+
+/* Google Button */
+.google-btn {
+    background: #db4437;
+}
+
+.google-btn:hover {
+    background: #c1351d;
+}
+
+/* ADMIN BUTTON */
+#show-saved {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    width: 75px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: .25s ease;
+}
+
+#show-saved:hover {
+    background: #0069d9;
+    transform: scale(1.05);
+}
+
+/* POPUP OVERLAY */
+#saved-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* POPUP BOX */
+#saved-output {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    overflow: auto;
+    white-space: pre-wrap;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* CLOSE BUTTON */
+#close-popup {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.25s;
+}
+
+#close-popup:hover {
+    background: #d93636;
+}
+
+/* CREATE ACCOUNT */
+.create {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.create a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.create a:hover {
+    text-decoration: underline;
+}
+
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Login / Signup</h2>
+        <form id="email-login-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <label style="font-size:13px;">
+                <input type="checkbox" id="rememberMe"> Remember Me
+            </label>
+            <a href="forget_password.html" style="font-size:13px; display:block; margin-top:8px; color:#007bff;">
+    Forgot Password?
+</a>
+
+ <div class="create">
+        Don’t have an account? <a href="signup.html">Create Account</a>
+    </div>
+            <button type="submit">Login / Signup</button>
+        </form>
+        <h3 style="margin-top:15px;">Login with Mobile</h3>
+
+<input type="tel" id="mobile" placeholder="Mobile Number" maxlength="10">
+
+<button type="button" onclick="sendOTP()">Send OTP</button>
+
+<div id="otp-section" style="display:none;">
+    <input type="number" id="otpInput" placeholder="Enter OTP">
+    <button type="button" onclick="verifyOTP()">Verify OTP</button>
+</div>
+
+        <button type="button" class="google-btn" onclick="handleGoogleLogin()">Login with Google</button>
+    </div>
+
+    <!-- Admin Show Button--->
+    <button id="show-saved">Admin Panel</button> 
+
+    <!-- Popup -->
+    <div id="saved-popup">
+        <div id="saved-output">
+            <button id="close-popup">❌ Close</button>
+            <h3 style="text-align:center;">👑 Admin Panel</h3>
+            <div id="data-area"></div>
+        </div>
+    </div>
+
+<script>
+   
+
+
+window.addEventListener('load', () => {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if(user){
+        document.getElementById("email").value = user.email || "";
+        document.getElementById("password").value = user.password || "";
+    }
+});
+
+
+function saveUser(name, email, password, method="email", remember=false){
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    users[email] = {
+        name: name,
+        email: email,
+        password: method === "google" ? null : password,
+        method: method,
+        createdAt: new Date().toLocaleString()
+    };
+
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("loggedInUser", JSON.stringify(users[email]));
+}
+
+
+function checkUser(email, password){
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if(users[email]){
+       
+        if(users[email].method === "google"){
+            return { success: true };
+        }
+
+        if(users[email].password === password){
+            return { success: true };
+        } else {
+            return { success: false, message: "Incorrect Password!" };
+        }
+    }
+
+    return { success: null }; 
+}
+
+
+document.getElementById('email-login-form').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const remember = document.getElementById("rememberMe").checked;
+
+
+    if(email === "admin@earnkaro.com" && password === "admin123"){
+        alert("👑 Welcome Admin!");
+        window.location.href = "admin.html";
+
+        openAdminPanel();
+        return;
+    }
+
+    const result = checkUser(email, password);
+
+  
+    if(result.success === true){
+        const users = JSON.parse(localStorage.getItem("users"));
+        localStorage.setItem("loggedInUser", JSON.stringify(users[email]));
+
+        alert("✔ Login Successful!");
+        window.location.href = "earnkaro_dashboard_with_nav.html";
+        return;
+    }
+
+   
+    if(result.success === false){
+        alert(result.message);
+        return;
+    }
+
+    saveUser("User", email, password, "email", remember);
+
+    alert("🎉 Account login Successfully!");
+    window.location.href = "earnkaro_dashboard_with_nav.html";
+});
+
+
+async function handleGoogleLogin(){
+    let googleEmail = prompt("Enter Google Email:");
+    let googleName = prompt("Enter Your Name:");
+
+    if(!googleEmail) return;
+
+    saveUser(googleName || "User", googleEmail, null, "google", true);
+
+    alert("✔ Google Login Successful!");
+    window.location.href = "earnkaro_dashboard_with_nav.html";
+}
+
+
+document.getElementById('show-saved').addEventListener('click', () => {
+    let email = prompt("Enter admin email:");
+    let password = prompt("Enter admin password:");
+
+    if(email === "admin@earnkaro.com" && password === "admin123"){
+        openAdminPanel();
+    } else {
+        alert("❌ Access Denied!");
+    }
+});
+
+function openAdminPanel(){
+    const popup = document.getElementById("saved-popup");
+    const data = document.getElementById("data-area");
+
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const logged = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+    data.textContent =
+        "Logged In User:\n" + JSON.stringify(logged, null, 2) +
+        "\n\nAll Users:\n" + JSON.stringify(users, null, 2);
+
+    popup.style.display = "flex";
+}
+
+document.getElementById("close-popup").addEventListener("click", () => {
+    document.getElementById("saved-popup").style.display = "none";
+});
+
+function loginUser() {
+    let email = document.getElementById("login-email").value;
+    let pass = document.getElementById("login-password").value;
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if (!users[email]) {
+        alert("❌ User not found!");
+        return;
+    }
+
+    if (users[email].password !== pass) {
+        alert("❌ Incorrect password!");
+        return;
+    }
+
+    localStorage.setItem("loggedInUser", JSON.stringify(users[email]));
+
+    alert("✅ Login Successful!");
+    window.location.href = "dashboard.html"; 
+}
+
+let generatedOTP = null;
+let mobileNumber = null;
+
+function sendOTP() {
+    mobileNumber = document.getElementById("mobile").value;
+
+    if (mobileNumber.length !== 10) {
+        alert("Please enter a valid 10-digit mobile number");
+        return;
+    }
+
+    generatedOTP = Math.floor(1000 + Math.random() * 9000); 
+    alert("Your OTP is: " + generatedOTP);
+
+    document.getElementById("otp-section").style.display = "block";
+}
+
+function verifyOTP() {
+    let enteredOTP = document.getElementById("otpInput").value;
+
+    if (enteredOTP == generatedOTP) {
+        alert("✔ OTP Verified!");
+
+        saveMobileUser(mobileNumber);
+
+        window.location.href = "earnkaro_dashboard_with_nav.html";
+    } else {
+        alert("❌ Incorrect OTP!");
+    }
+}
+
+function saveMobileUser(mobile) {
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    users[mobile] = {
+        name: "User",
+        mobile: mobile,
+        method: "mobile",
+        createdAt: new Date().toLocaleString()
+    };
+
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("loggedInUser", JSON.stringify(users[mobile]));
+}
+localStorage.setItem("loggedInUser", JSON.stringify(users[mobile]));
+
+</script>
+</body>
+</html>

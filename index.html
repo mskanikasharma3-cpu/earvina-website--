@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earniva | India's #1 Affiliate Marketing Platform (Clone)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+ <header>
+    <div class="logo">
+      <h1>Earniva</h1>
+    </div>
+
+    <nav>
+      <ul id="nav-links">
+        <li><a href="index.html">Home</a></li>
+
+        <li class="dropdown">
+          <div class="dropdown-toggle">
+            Company <span class="dropdown-arrow">▼</span>
+          </div>
+          <div class="dropdown-menu">
+            <a href="about.html" class="dropdown-item">About Us</a>
+            <a href="EarnKaroWorks.html" class="dropdown-item">How Earniva Works</a>
+            <a href="contact.html" class="dropdown-item">Contact</a>
+          </div>
+        </li>
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="LoginPage.html">Login/signup</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hamburger Icon -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="blog.html">Blogs</a></li>
+      <li><a href="EarnKaroWorks.html">How Earniva works</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      
+      <li class="login-link">
+  <a href="AffiliateStore.html"></a>
+</li>
+
+<li class="login-link">
+  <a href="LoginPage.html">Login / Signup</a>
+</li>
+
+      <li><a href="index.html">Back</a></li>
+    </ul>
+  </div>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="welcome-text">Welcome To</h1>
+            <h2 class="main-heading">India's #1</h2>
+            <p class="sub-heading">Affiliate Marketing Platform</p>
+            <button class="cta-btn">Start Earning Now</button>
+        </div>
+<BR>
+    <br>
+        <div class="hero-graphic">
+            <video autoplay muted loop playsinline class="graphic-video">
+                <source src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/wel_v1.mp4" type="video/mp4" />
+            </video>
+        </div>
+    </section>
+
+    <section class="feature-highlight-section">
+        
+        <div class="blocks-container">
+            <div class="feature-block blue-bg">
+                <h3>Join for Free</h3>
+                <p>Earn from Home</p>
+                <p>Highest Earnings</p>
+                <p class="highlight-amount">Min Withdrawal: ₹10</p>
+            </div>
+
+            <div class="feature-block tata-block">
+                <img src="welcome_tata_desk.png" alt="Mr. Ratan Tata" class="tata-img" />
+                <p>Funded by</p>
+                <h4>Mr. Ratan Tata</h4>
+            </div>
+        </div>
+
+        </section>
+
+
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="step-video-container">
+            <video autoplay muted loop playsinline class="step-video">
+                <source src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/wel_v3.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+            <div class="highlights-container">
+  <h2>Our Highlights</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">30L+</div>
+      <div class="stat-label">Affiliate Marketers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1 Cr+</div>
+      <div class="stat-label">Transactions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">₹40 Cr+</div>
+      <div class="stat-label">Paid to Users</div>
+    </div>
+  </div>
+</div>
+
+<section class="brands-profit-section">
+    
+     <div class="step-video-container">
+    <img 
+      src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/brandIcons.gif"
+      alt="Brand Icons Animation"
+      class="step-video"
+    />
+  </div>
+
+    <div class="profit-highlight-card">
+        <p class="profit-text-small">Earn Up To</p>
+        <p class="profit-percent">50%</p>
+        <p class="profit-text-large">Profit</p>
+        <p class="profit-text-bottom">on 200+ Brands</p>
+    </div>
+</section>
+
+<section class="profit-calculator-section">
+    <div class="calculator-card">
+        <h2>Calculate Your Monthly Profit</h2>
+        <p class="sub-heading-calc">Choose Number Of Orders</p>
+
+        <div class="sliders-container">
+            
+            <div class="category-slider" data-category="Electronics" data-base-profit="50">
+                <label>Electronics</label>
+                <input type="range" min="0" max="30" value="7" class="order-slider" id="slider-electronics">
+                <span class="slider-value" id="value-electronics">7</span>
+            </div>
+
+            <div class="category-slider" data-category="Fashion" data-base-profit="120">
+                <label>Beauty & Fashion</label>
+                <input type="range" min="0" max="30" value="15" class="order-slider" id="slider-fashion">
+                <span class="slider-value" id="value-fashion">15</span>
+            </div>
+
+            <div class="category-slider" data-category="Grocery" data-base-profit="70">
+                <label>Grocery & Home Essentials</label>
+                <input type="range" min="0" max="30" value="20" class="order-slider" id="slider-grocery">
+                <span class="slider-value" id="value-grocery">20</span>
+            </div>
+
+            <div class="category-slider" data-category="Health" data-base-profit="90">
+                <label>Medicines & Healthcare</label>
+                <input type="range" min="0" max="30" value="8" class="order-slider" id="slider-health">
+                <span class="slider-value" id="value-health">8</span>
+            </div>
+
+            <div class="category-slider" data-category="Cards" data-base-profit="200">
+                <label>Cards & Subscriptions</label>
+                <input type="range" min="0" max="30" value="3" class="order-slider" id="slider-cards">
+                <span class="slider-value" id="value-cards">3</span>
+            </div>
+
+        </div>
+        
+        <div class="profit-estimate">
+            <p>Estimated Profit: <span id="estimated-profit">₹9,650</span>*</p>
+            <p class="tnc-apply">*T&Cs Apply</p>
+        </div>
+    </div>
+</section>
+
+<!-- 
+<section class="learn-to-earn-section">
+    <div class="container">
+        <h2>Learn To Earn</h2>
+        <p class="sub-heading-learn">Kickstart Your Journey</p>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/watch?v=7UxibGtWAPI&t=6s" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                
+                <button class="overlay-cta-button">
+                    Why we are the <br> <strong>#1 Affiliate App</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+</section> -->
+<section class="rockstars-section">
+    <div class="container">
+        <h2>Hear It From Our Rockstars</h2>
+        <p class="sub-heading-rockstar">Join 30L+ Earning Users</p>
+
+        <div class="testimonials-grid">
+            
+            <div class="testimonial-card">
+                <div class="rockstar-profile">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/welcome_user1_desk.png" alt="Sunder, Telegrammer" class="rockstar-img">
+                    <p class="rockstar-info">Sunder, Telegrammer</p>
+                </div>
+                <p class="rockstar-quote">
+                    "I just made a Telegram group & kept sharing deals. I get good income from orders that get placed"
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="rockstar-profile">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/welcome_user2_desk.png" alt="Raj, Student" class="rockstar-img">
+                    <p class="rockstar-info">Raj, Student</p>
+                </div>
+                <p class="rockstar-quote">
+                    "EarnKaro is the best source of pocket money for students like me"
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="rockstar-profile">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/welcome_user3_desk.png" alt="Priyanka, Housewife" class="rockstar-img">
+                    <p class="rockstar-info">Priyanka, Housewife</p>
+                </div>
+                <p class="rockstar-quote red-text">
+                    "I have made ₹3500 from family's grocery & medicine shopping. Must try."
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="rockstar-profile">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/welcome_user4_desk.png" alt="Sachin, Youtuber" class="rockstar-img">
+                    <p class="rockstar-info">Sachin, Youtuber</p>
+                </div>
+                <p class="rockstar-quote red-text">
+                    "I love using this app because in just a matter of 60 days, I was able to earn over ₹15000!"
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="recommended-brands-section">
+    <div class="container">
+        <h2>Top Recommended</h2>
+        <p class="sub-heading-rec">Affiliate Programmes</p>
+
+        <div class="brands-grid-card">
+            <div class="brands-grid">
+                
+                <div class="brand-item">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/flipkart-logo.png" alt="Flipkart" class="brand-logo" /> 
+                </div>
+
+                <div class="brand-item">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/myntra-logo.png" alt="Myntra" class="brand-logo" />
+                </div>
+
+                <div class="brand-item">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/axis-bank-logo.png" alt="AXIS BANK" class="brand-logo" />
+                </div>
+
+                <div class="brand-item">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/nykaa-logo.png" alt="NYKAA" class="brand-logo" />
+                </div>
+
+                <div class="brand-item">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/wow-skin-science-logo.png" alt="WOW Skin Science" class="brand-logo" />
+                </div>
+
+                <div class="brand-item">
+                    <img src="https://asset21.ckassets.com/wp/wp-content/themes/Cashkaro_SocialMedia/img/mkmytrip-logo.png" alt="MakeMyTrip" class="brand-logo" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="faq-section">
+    <div class="faq-card">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-list">
+            
+            <details class="faq-item">
+                <summary>What is Earniva?</summary>
+                <p>Earniva is India's #1 Affiliate Marketing Platform. You can convert any e-commerce product link (from platforms like Flipkart, Myntra, etc.) into a Profit Link and share it with your network to earn real cash/profit on every purchase.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>How do I use Earniva?</summary>
+                <p>Simply paste any product link into the Make Link section, share the generated Profit Link, and earn a fixed profit margin when someone shops through your link.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Why is Earniva the best Indian affiliate platform?</summary>
+                <p>It's 100% free, requires no technical knowledge, offers the highest earnings, and allows withdrawal to your bank account with a minimum balance of just ₹10.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>How easy is this experience?</summary>
+                <p>The platform is designed to be extremely easy to use. Anyone, from students to housewives and influencers, can start earning instantly without any investment.</p>
+            </details>
+            
+            <details class="faq-item">
+                <summary>Is Earniva 100% Free?</summary>
+                <p>Yes, joining and earning through Earniva is 100% free. There are no registration or annual fees whatsoever.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>How do I transfer money to my bank?</summary>
+                <p>Once your confirmed profit reaches ₹10 or more, you can easily request a transfer directly to your bank account via NEFT/IMPS from the Earnings page.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>How can I become an affiliate of 200+ Brands?</summary>
+                <p>By simply signing up on Earniva, you automatically gain access to affiliate programs for over 200 brands, including Flipkart, Myntra, Nykaa, and many more, without individual applications.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Who can make money from home using Earniva?</summary>
+                <p>Anyone who has a social network (WhatsApp, Telegram, Facebook, etc.) or an audience (Students, Homemakers, Influencers, Bloggers) can earn money from home.</p>
+            </details>
+            
+            <details class="faq-item">
+                <summary>How do we help homemakers earn from home?</summary>
+                <p>Homemakers can share deals on household items, groceries, and fashion within their family and friend groups, earning profit on their daily shopping.</p>
+            </details>
+
+            <details class="faq-item">
+                <summary>How do students earn money on the go?</summary>
+                <p>Students can share deals on electronics, fashion, and books in their college groups and earn easy pocket money without disturbing their studies.</p>
+            </details>
+
+        </div>
+    </div>
+</section>
+
+<div class="testimonial-box">
+    <p class="quote">
+        “At Eravina, real success comes from innovation, collaboration, and commitment.”
+    </p>
+    <p class="author">
+        — Payal Behal, Founder Eravina
+    </p>
+</div>
+<style>body {
+    font-family: Arial, sans-serif;
+    background: #f9fbfd;
+    margin: 0;
+    padding: 0;
+}
+
+.testimonial-box {
+    background: #f4f8fc;     /* हल्का नीला */
+    padding: 45px;
+    margin: 60px auto;
+    max-width: 1100px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.quote {
+    font-size: 22px;
+    font-style: italic;
+    color: #444;
+    line-height: 1.5;
+}
+
+.author {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #111;
+}
+@media (max-width: 600px) {
+    .testimonial-box {
+        padding: 25px;
+        margin: 20px;
+    }
+    .quote {
+        font-size: 16px;
+    }
+    .author {
+        font-size: 15px;
+    }
+}
+
+</style>
+
+    <footer>
+        <footer class="main-footer">
+    <div class="footer-container">
+        
+        <div class="footer-col">
+            <h4 class="col-heading">About Earniva</h4>
+            <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="blog.html">Blog</a></li>
+         
+                <li><a href="EarnKaroWorks.html"></a>How Earniva works</li>
+                
+                <li><h5>Contact NO => 7988454150</h5></li>
+                
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="col-heading">Useful Reads</h4>
+            <ul>
+                <li><a href="te">Terms and Conditions</a></li>
+                <li><a href="#">Privacy & Cookie Policy</a></li>
+                <li><a href="#">Anti-Spam Policy</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="col-heading">Connect With Us</h4>
+            <ul>
+                <li><a href="#">Get Help</a></li>
+                <li><a href="#">Telegram</a></li>
+                <li><a href="#">YouTube</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">LinkedIn</a></li>
+            </ul>
+        </div>
+
+        <!-- <div class="footer-col download-col">
+            <h4 class="col-heading">Download App</h4>
+            <a href="https://play.google.com/store/apps/details?id=com.earnkaro&hl=en_IN" target="_blank">
+                <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="google-play-btn">
+            </a>
+        </div> -->
+        
+    </div>
+
+    <div class="copyright-bar">
+        <p>Earniva created By Nikhil Sharma. All Rights Reserved 2025.</p>
+    </div>
+
+    <button class="scroll-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">▲</button>
+</footer>
+    </footer>
+
+    <script>
+     const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+
+    // Toggle sidebar on hamburger click
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      hamburger.classList.toggle('open');
+    });
+
+    // Close sidebar when link clicked
+    const sidebarLinks = document.querySelectorAll('#sidebar a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        hamburger.classList.remove('open');
+      });
+    });   
+
+
+document.querySelector(".login-btn").addEventListener("click", () => {
+  alert("🔐 Login functionality coming soon!");
+  
+});
+    const companyDropdown = document.getElementById('companyDropdown');
+    const dropdown = companyDropdown.closest('.dropdown');
+
+    companyDropdown.addEventListener('click', function(e) {
+        e.preventDefault(); 
+        dropdown.classList.toggle('active');
+    });
+
+    
+    document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target) && dropdown.classList.contains('active')) {
+            dropdown.classList.remove('active');
+        }
+    });
+
+    
+
+
+        document.querySelector(".login-btn").addEventListener("click", () => {
+            alert("This is a demo clone. Visit EarnKaro.com for the real site!");
+        });
+
+        // ===== Profit Calculator Logic =====
+    const sliders = document.querySelectorAll('.order-slider');
+    const profitDisplay = document.getElementById('estimated-profit');
+    
+    // Base Profit Rate (A rough estimate for simulation)
+    // Real profit rate is: Order Count * Avg Order Value * Category Commission Rate
+    
+    function updateCalculator() {
+        let totalEstimatedProfit = 0;
+
+        sliders.forEach(slider => {
+            const valueSpan = document.getElementById(`value-${slider.id.split('-')[1]}`);
+            const categoryDiv = slider.closest('.category-slider');
+            const orders = parseInt(slider.value);
+            const maxOrders = parseInt(slider.max);
+            const baseProfitPerOrder = parseFloat(categoryDiv.dataset.baseProfit);
+
+            // 1. Update Slider Value and Bubble Position
+            valueSpan.textContent = orders;
+            
+            // Calculate thumb position percentage
+            const percent = (orders / maxOrders) * 100;
+            // Position the value bubble based on the percentage (adjusting for bubble width)
+            const thumbOffset = (percent * 0.95) + 2; // Adjusted for visual centering
+            valueSpan.style.left = `${thumbOffset}%`;
+            
+            // 2. Update Slider Track Color (Red fill)
+            slider.style.background = `linear-gradient(to right, #e85550 ${percent}%, #e0e0e0 ${percent}%)`;
+            
+            // 3. Calculate Profit for this Category
+            // Simple Linear calculation: Orders * Base Profit per order
+            const categoryProfit = orders * baseProfitPerOrder;
+            totalEstimatedProfit += categoryProfit;
+        });
+
+        // Update Total Estimated Profit Display
+        // Add some base starting amount (like the 9650 in the image) for a better feel
+        let finalProfit = 2000 + totalEstimatedProfit; 
+        
+        // Format the profit with commas and Rupee symbol
+        profitDisplay.textContent = `₹${finalProfit.toLocaleString('en-IN')}`;
+    }
+
+    // Event Listeners for all sliders
+    sliders.forEach(slider => {
+        slider.addEventListener('input', updateCalculator);
+    });
+
+    // Initial calculation on load
+    updateCalculator();
+    </script>
+</body>
+</html>

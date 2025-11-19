@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Deal Card Auto Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f1f1f1;
+        padding: 20px;
+    }
+
+    h2 { margin-bottom: 10px; }
+
+    /* FORM DESIGN */
+    .form-box {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 0 10px #0002;
+    }
+
+    .form-box input {
+        width: 100%;
+        padding: 10px;
+        margin: 6px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        padding: 10px 20px;
+        background: #2fb86f;
+        color: #fff;
+        border: none;
+        margin-top: 10px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    /* CARD DESIGN */
+    .card {
+        background: #fff;
+        width: 330px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px #0002;
+    }
+
+    .banner {
+        padding: 15px;
+        color: #fff;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 130px;
+    }
+
+    .banner-image img {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+    }
+
+    .banner-text {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .logo-pill {
+        background: #fff;
+        color: #000;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .starting {
+        font-size: 12px;
+        color: gray;
+    }
+
+    .price {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .profit {
+        background: #2fb86f;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn {
+        background: #2fb86f;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Deal Card Auto Generator</h2>
+
+<!-- PRODUCT INPUT FORM -->
+<div class="form-box">
+    <input type="text" id="brand" placeholder="Brand Name (e.g., AJIO)">
+    <input type="text" id="title" placeholder="Product Title">
+    <input type="text" id="price" placeholder="Price (e.g., ₹249)">
+    <input type="text" id="profit" placeholder="Profit (e.g., 12.5%)">
+    <input type="text" id="image" placeholder="Product Image URL">
+    <input type="text" id="link" placeholder="Affiliate Link">
+
+    <button onclick="generateCard()">Generate Card</button>
+</div>
+
+<!-- OUTPUT: AUTO DEAL CARDS -->
+<div id="output"></div>
+
+<script>
+function generateCard() {
+    let brand = document.getElementById("brand").value;
+    let title = document.getElementById("title").value;
+    let price = document.getElementById("price").value;
+    let profit = document.getElementById("profit").value;
+    let image = document.getElementById("image").value;
+    let link = document.getElementById("link").value;
+
+    let card = `
+    <article class="card" data-link="${link}">
+      <div class="banner" style="background:linear-gradient(90deg,#2fb86f,#d14bd3);">
+        <div class="logo-pill">${brand}</div>
+        <div class="banner-content">
+          <div class="banner-text">${title}<br><span style="font-weight:500;font-size:12px;">Best Deal</span></div>
+          <div class="banner-image"><img src="${image}" alt="Product"></div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="price-row">
+          <div>
+            <div class="starting">STARTING FROM</div>
+            <div class="price">${price}</div>
+          </div>
+          <div class="profit">Upto ${profit} Profit</div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" onclick="copyLink('${link}')">COPY LINK</button>
+          <button class="btn" onclick="shareDeal('${title}', '${link}')">SHARE NOW</button>
+        </div>
+      </div>
+    </article>
+    `;
+
+    document.getElementById("output").innerHTML += card;
+}
+
+function copyLink(link) {
+    navigator.clipboard.writeText(link);
+    alert("Link Copied!");
+}
+
+function shareDeal(title, link) {
+    let msg = `${title} - Best Deal!\n${link}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+</script>
+
+</body>
+</html>

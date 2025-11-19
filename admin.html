@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel - EarnKaro</title>
+<style>
+    body {
+        font-family: Poppins, Arial;
+        margin: 0;
+        background: #f5f7fa;
+    }
+
+    .header {
+        background: #2fb86f;
+        padding: 15px;
+        color: #fff;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .container {
+        width: 90%;
+        margin: 30px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    th {
+        background: #2fb86f;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background: #f2f2f2;
+    }
+
+    .delete-btn {
+        padding: 5px 10px;
+        background: #ff4d4d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        background: #d93636;
+    }
+
+    .logout-btn {
+        background: #007bff;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        float: right;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: -40px;
+        margin-right: 20px;
+    }
+
+    .box {
+        background: #eef8f3;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #2fb86f;
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    EarnKaro Admin Panel
+</div>
+
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<div class="container">
+
+    <h2>Logged-in User</h2>
+    <div id="logged-user-box" class="box"></div>
+
+    <h2>All Registered Users</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email / Mobile</th>
+                <th>Login Method</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="user-table-body"></tbody>
+    </table>
+</div>
+
+
+<script>
+
+// Show logged in user
+function showLoggedInUser() {
+    let user = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+    let box = document.getElementById("logged-user-box");
+
+    if (!user) {
+        box.innerHTML = "<b>No user is currently logged in.</b>";
+        return;
+    }
+
+    box.innerHTML = `
+        <b>Name:</b> ${user.name} <br>
+        <b>Email / Mobile:</b> ${user.email || user.mobile} <br>
+        <b>Method:</b> ${user.method.toUpperCase()} <br>
+        <b>Login Time:</b> ${user.createdAt}
+    `;
+}
+
+
+// Load all users from LocalStorage
+function loadUsers() {
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    const tableBody = document.getElementById("user-table-body");
+    tableBody.innerHTML = "";
+
+    Object.values(users).forEach(user => {
+        tableBody.innerHTML += `
+            <tr>
+                <td>${user.name || "-"}</td>
+                <td>${user.email || user.mobile}</td>
+                <td>${user.method.toUpperCase()}</td>
+                <td>${user.createdAt}</td>
+                <td>
+                    <button class="delete-btn" onclick="deleteUser('${user.email || user.mobile}')">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+
+// Delete user
+function deleteUser(id) {
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if (users[id]) {
+        delete users[id];
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers();
+        alert("User Deleted!");
+    }
+}
+
+
+// Logout
+function logout() {
+    alert("Logged Out!");
+    window.location.href = "index.html"; 
+}
+
+showLoggedInUser();
+loadUsers();
+
+</script>
+
+</body>
+</html>
