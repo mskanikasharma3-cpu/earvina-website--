@@ -521,7 +521,8 @@ body {
   font-weight: 600;
 }
 .red-text {
-  color: #e85550;
+  color: BLACK
+  ;
   font-weight: 600;
 }
 
@@ -742,4 +743,5 @@ body {
         padding-left: 40px; /* Sub-item indent */
     }
 }
+
 
